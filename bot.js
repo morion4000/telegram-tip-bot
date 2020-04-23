@@ -75,7 +75,7 @@ bot.onText(/\/help$/, help_command);
 bot.onText(/\/fees$/, fees_command);
 bot.onText(/\/price$/, price_command);
 bot.onText(/\/staking$/, staking_command);
-bot.onText(/\/system/, system_command);
+bot.onText(/\/system$/, system_command);
 
 bot.onText(/\/start@webdollar_tip_bot$/, start_command);
 bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
