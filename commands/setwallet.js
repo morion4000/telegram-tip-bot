@@ -66,8 +66,6 @@ var Command = function(bot) {
           .then(function (result) {
             var found_user = result[0];
 
-            
-
             user.model.update({
               wallet: wallet
             }, {
