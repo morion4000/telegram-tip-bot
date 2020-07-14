@@ -66,7 +66,7 @@ var Command = function(bot) {
           .then(function (result) {
             var found_user = result[0];
 
-            resp = 'You wallet was set to: *' + wallet + '*';
+            
 
             user.model.update({
               wallet: wallet
@@ -74,13 +74,27 @@ var Command = function(bot) {
               where: {
                 id: found_user.id
               }
-            });
-
-            bot.sendMessage(msg.chat.id, resp, {
-              parse_mode: 'Markdown',
-              disable_web_page_preview: true,
-              disable_notification: true,
-            });
+            })
+              .then(function (result) {
+                resp = 'You wallet was set to: *' + wallet + '*.';
+              
+                bot.sendMessage(msg.chat.id, resp, {
+                  parse_mode: 'Markdown',
+                  disable_web_page_preview: true,
+                  disable_notification: true,
+                });
+              })
+              .catch(function (error) {
+                console.error(error);
+              
+                resp = 'There was an error setting your wallet. Wallet is not available.';
+              
+                bot.sendMessage(msg.chat.id, resp, {
+                  parse_mode: 'Markdown',
+                  disable_web_page_preview: true,
+                  disable_notification: true,
+                });
+              });
           })
           .catch(function (error) {
             console.error(error);
