@@ -74,7 +74,7 @@ var Command = function(bot) {
               }
             })
               .then(function (result) {
-                resp = 'You wallet was set to: *' + wallet + '*.';
+                resp = 'You wallet was set to: `' + wallet + '`.';
               
                 bot.sendMessage(msg.chat.id, resp, {
                   parse_mode: 'Markdown',

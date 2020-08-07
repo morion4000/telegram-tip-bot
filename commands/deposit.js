@@ -43,7 +43,7 @@ var Command = function(bot) {
               if (found_user.wallet) {
                 //var link = 'https://webdollar.io/payment/' + config.vault;
                 //resp = 'Go to ' + link + ' and complete the transfer, or deposit WEBD to the following address: *' + config.vault + '*';
-                resp = 'Send WEBD to the following address: *' + config.vault + '*\n\nMake sure you make the transfer from the /wallet you set.';
+                resp = 'Send WEBD to the following address: `' + config.vault + '`\n\nMake sure you make the transfer from the /wallet you set.';
               } else {
                 resp = 'Configure your wallet first /setwallet';
               }

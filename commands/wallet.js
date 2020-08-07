@@ -42,7 +42,7 @@ var Command = function(bot) {
             if (found_user) {
               var wallet = found_user.wallet || 'None';
 
-              resp = 'You set the following wallet: *' + wallet + '*\n\nUse /setwallet to change it.';
+              resp = 'You set the following wallet: `' + wallet + '`\n\nUse /setwallet to change it.';
             } else {
               resp = 'Your user can not be found. Create a new acount /start';
             }
