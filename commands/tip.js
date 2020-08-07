@@ -133,7 +133,7 @@ var Command = function(bot) {
               });
 
               if (to_user.telegram_id) {
-                var tip_msg = '💰 You were tipped ' + numeral(amount).format('0,0') + ' WEBD by @' + from_user.telegram_username;
+                var tip_msg = '💰 You were tipped ' + numeral(amount).format('0,0') + ' WEBD by @' + from_user.telegram_username + '. *Tip*: Funds in your /tipbalance are receiving /staking rewards.';
 
                 bot.sendMessage(to_user.telegram_id, tip_msg, {
                   //parse_mode: 'Markdown',

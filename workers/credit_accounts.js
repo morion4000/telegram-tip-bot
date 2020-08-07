@@ -64,7 +64,7 @@ transaction_model.findAll({
             });
 
             if (user.telegram_id) {
-              var resp = '🆕 *Update*: Your account was credited with ' + numeral(_transaction.amount).format('0,0') + ' WEBD.';
+              var resp = '🆕 *Update*: Your account was credited with ' + numeral(_transaction.amount).format('0,0') + ' WEBD. *Tip*: Funds in your /tipbalance are receiving /staking rewards.';
 
               bot.sendMessage(user.telegram_id, resp, {
                 parse_mode: 'Markdown',

@@ -41,7 +41,7 @@ var Command = function(bot) {
       })
           .then(function (found_user) {
             if (found_user) {
-              resp = 'Balance @' + found_user.telegram_username + ': ' + numeral(found_user.balance).format('0,0') + ' WEBD';
+              resp = 'Balance @' + found_user.telegram_username + ': ' + numeral(found_user.balance).format('0,0') + ' WEBD. *Tip*: Your funds are receiving /staking rewards.';
             } else {
               resp = 'Your user can not be found. Create a new acount /start';
             }
