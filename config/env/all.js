@@ -28,8 +28,16 @@ module.exports = {
     withdraw: 10, // fixed
     deposit: 0, // fixed
   },
+  /*
+  reward per day: 12,960,000
+  reward per year: 4,730,400,000
+  total supply: 14,000,000,000
+  staking supply: 10,000,000,000
+  total APR: 33%
+  staking APR: 30% (90% POS)
+  */
   staking: {
-    monthly_percentage: 0.5,
+    monthly_percentage: 1.5, // 18 yearly
   },
   mailgun: {
     key: process.env.MAILGUN_KEY,
