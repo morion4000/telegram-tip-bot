@@ -16,6 +16,7 @@
 * __price__ - Shows the price and volume for WEBD
 * __staking__ - Shows the staking rewards received
 * __system__ - Private and hidden command. Only admin can call it
+* __stats__ - Bot statistics
 
 ## Install
 
