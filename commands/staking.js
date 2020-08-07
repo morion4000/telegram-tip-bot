@@ -44,7 +44,7 @@ var Command = function(bot) {
             if (found_user) {
               var minimum_balance = parseInt(1 / (config.staking.monthly_percentage / 3000));
 
-              resp += 'The staking reward is ' + config.staking.monthly_percentage + '% per month, compounded daily.\n';
+              resp += 'The staking reward is ' + (config.staking.monthly_percentage * 12) + '% per year, compounded daily.\n';
               resp += 'Your /tipbalance must be at least ' + numeral(minimum_balance).format('0,0') + ' WEBD to get staking rewards.\n\n';
               resp += 'Staking rewards for @' + found_user.telegram_username + '\n\n';
 
