@@ -44,9 +44,9 @@ var Command = function(bot) {
             if (found_user) {
               var minimum_balance = parseInt(1 / (config.staking.monthly_percentage / 3000));
 
-              resp += 'The staking reward is ' + (config.staking.monthly_percentage * 12) + '% per year, compounded daily.\n';
+              resp += 'The staking reward is ' + (config.staking.monthly_percentage * 12) + '% per year, compounded daily.\n\n';
               resp += 'Your /tipbalance must be at least ' + numeral(minimum_balance).format('0,0') + ' WEBD to get staking rewards.\n\n';
-              resp += 'Staking rewards for @' + found_user.telegram_username + '\n\n';
+              resp += 'Latest rewards for @' + found_user.telegram_username + '\n\n';
 
               log.model.findAll({
                 where: {
@@ -55,7 +55,7 @@ var Command = function(bot) {
                 }
               }).then(function (logs) {
                 if (logs.length === 0) {
-                  resp += 'No rewards yet. /deposit funds to start staking.';
+                  resp += 'No rewards yet, /deposit funds to start staking.';
                 }
 
                 var reversed = logs.reverse();
@@ -65,17 +65,17 @@ var Command = function(bot) {
                   var extra = JSON.parse(l.extra_message);
 
                   if (i >= 20) {
-                    resp += '\t - ...\n';
+                    resp += '\t ...\n';
                     break;
                   }
 
-                  resp += '\t - (' + l.createdAt.toDateString() + ') ' + l.message + ', amount ' + numeral(extra.reward).format('0,0') + ' WEBD\n';
+                  resp += '\t ✅ ' + l.message + ': *' + numeral(extra.reward).format('0,0') + '* WEBD (' + l.createdAt.toDateString() + ')\n';
                 }
 
-                resp += '\nFor bigger staking rewards we recommend: https://www.hostero.eu/docs/webdollar-pos-mining';
+                //resp += '\nFor bigger staking rewards we recommend: https://www.hostero.eu/docs/webdollar-pos-mining';
 
                 bot.sendMessage(msg.chat.id, resp, {
-                  //parse_mode: 'Markdown',
+                  parse_mode: 'Markdown',
                   disable_web_page_preview: true,
                   disable_notification: true,
                 });
