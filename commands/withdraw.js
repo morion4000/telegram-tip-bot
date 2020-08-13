@@ -90,7 +90,7 @@ var Command = function(bot) {
                     }
                   });
 
-                  resp = 'The withdraw request has been made and the funds *' + numeral(amount).format('0,0') + ' WEBD* are going to be in your wallet *' + found_user.wallet + '* in up to an hour.\n\n*Withdraw fee:* ' + config.fees.withdraw + ' WEBD';
+                  resp = 'The withdraw request has been made and the funds *' + numeral(amount).format('0,0') + ' WEBD* are going to be in your wallet `' + found_user.wallet + '` in up to an hour.\n\n*Withdraw fee:* ' + config.fees.withdraw + ' WEBD';
 
                   mailgun.messages().send({
                     from: 'Hostero <no-reply@mg.hostero.eu>',
