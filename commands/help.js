@@ -18,7 +18,9 @@ var Command = function(bot) {
     resp += '\t /transactions - Shows the transactions for your account \n';
     resp += '\t /fees - Shows the fees \n';
     resp += '\t /price - Shows the price and volume for WEBD \n';
-    resp += '\t /staking - Shows the staking rewards received \n';
+    resp += '\t /staking - Shows the staking rewards received \n\n';
+    
+    resp += '🆘 You can contact @morion4000 for any issues you encounter with the bot.';
 
     bot.sendMessage(msg.chat.id, resp, {
       parse_mode: 'Markdown',
