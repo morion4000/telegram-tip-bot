@@ -8,10 +8,6 @@ var Command = function(bot) {
 
       console.log(msg.text);
 
-      if (!msg.from.username) {
-        return;
-      }
-
       resp = 'Top 10 tippers (only public tips are counted)\n\n';
 
       sequelize.query('select sum(amount) as amount, u.telegram_username as username from tips as t left join users as u on u.id = t.from_user where private = 0 group by username order by amount desc limit 10')
