@@ -33,6 +33,7 @@ var price_command = commands.price(bot);
 var staking_command = commands.staking(bot);
 var system_command = commands.system(bot);
 var stats_command = commands.stats(bot);
+var scoreboard_command = commands.scoreboard(bot);
 
 // For debugging
 /*
@@ -78,6 +79,7 @@ bot.onText(/\/price$/, price_command);
 bot.onText(/\/staking$/, staking_command);
 bot.onText(/\/system$/, system_command);
 bot.onText(/\/stats$/, stats_command);
+bot.onText(/\/scoreboard$/, scoreboard_command);
 
 bot.onText(/\/start@webdollar_tip_bot$/, start_command);
 bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
@@ -96,3 +98,4 @@ bot.onText(/\/price@webdollar_tip_bot$/, price_command);
 bot.onText(/\/staking@webdollar_tip_bot$/, staking_command);
 bot.onText(/\/system@webdollar_tip_bot$/, system_command);
 bot.onText(/\/stats@webdollar_tip_bot$/, stats_command);
+bot.onText(/\/scoreboard@webdollar_tip_bot$/, scoreboard_command);
