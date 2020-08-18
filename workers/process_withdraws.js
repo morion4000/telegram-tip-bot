@@ -83,7 +83,7 @@ transaction_model.findAll({
                 })
                 .then(function(user) {
                   if (user.telegram_id) {
-                    var resp = '🆕 *Update*: Withdraw transaction is being processed. Your wallet *' + _transaction.transaction_to + '* will receive *' + numeral(_transaction.amount).format('0,0') + ' WEBD*.';
+                    var resp = '🆕 *Update*: Withdraw transaction is being processed. Your wallet `' + _transaction.transaction_to + '` will receive *' + numeral(_transaction.amount).format('0,0') + ' WEBD*.';
 
                     bot.sendMessage(user.telegram_id, resp, {
                       parse_mode: 'Markdown',
