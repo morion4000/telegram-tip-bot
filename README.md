@@ -1,6 +1,10 @@
-# telegram-tip-bot
+# Telegram Tip Bot
 
 <https://t.me/webdollar_tip_bot>
+
+## Supported cryptocurrencies
+
+* WebDollar - <https://webdollar.io>
 
 ## Commands
 
@@ -30,3 +34,7 @@
 ## Start bot
 
 `node bot`
+
+## Docker image
+
+https://hub.docker.com/repository/docker/morion4000/telegram-tip-bot
