@@ -10,7 +10,14 @@ var Command = function (bot) {
       console.log(msg.text);
 
       if (!msg.from.username) {
-        return;
+        resp =
+          'You need to create an username for your account on Telegram to be able to use the bot.';
+
+        return bot.sendMessage(msg.chat.id, resp, {
+          //parse_mode: 'Markdown',
+          disable_web_page_preview: true,
+          disable_notification: true,
+        });
       }
 
       if (msg.chat.type !== 'private') {
