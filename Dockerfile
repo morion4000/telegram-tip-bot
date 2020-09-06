@@ -11,4 +11,4 @@ ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 RUN npm install
 
-CMD [ "node bot" ]
+CMD [ "node app" ]
