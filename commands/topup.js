@@ -29,8 +29,8 @@ var Command = function (bot) {
           'When you complete the payment, the WEBD amount you purchased is going to be credited to your tip bot account instantly.\n\n' +
           'Available packages:\n\n' +
           '\t 💰 10,000 WEBD - 💵 1 USD\n' +
-          '\t 💰 100,000 WEBD - 💵 5 USD\n' +
-          '\t 💰 1,000,000 WEBD - 💵 50 USD\n\n' +
+          '\t 💰 100,000 WEBD - 💵 10 USD\n' +
+          '\t 💰 1,000,000 WEBD - 💵 100 USD\n\n' +
           'By clicking on the button, you will be redirected to a payment page where you can select the payment method.\n';
 
         bot.sendMessage(msg.chat.id, resp, {
@@ -47,13 +47,13 @@ var Command = function (bot) {
                   text: 'Buy 100,000 WEBD',
                   url:
                     url +
-                    '&amount=100000&price=5&stripe_price=price_1HOIgvAYZXIJrrBKGQyEmPki',
+                    '&amount=100000&price=10&stripe_price=price_1HOIgvAYZXIJrrBKGQyEmPki',
                 },
                 {
                   text: 'Buy 1,000,000 WEBD',
                   url:
                     url +
-                    '&amount=1000000&price=50&stripe_price=price_1HOIgvAYZXIJrrBKZ1pHwyet',
+                    '&amount=1000000&price=100&stripe_price=price_1HOIgvAYZXIJrrBKZ1pHwyet',
                 },
               ],
             ],
