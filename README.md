@@ -36,6 +36,10 @@
 
 `node bot`
 
+## Start app (bot + API)
+
+`node app`
+
 ## Docker image
 
 https://hub.docker.com/repository/docker/morion4000/telegram-tip-bot
