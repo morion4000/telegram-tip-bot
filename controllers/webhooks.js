@@ -28,7 +28,7 @@ class Webhooks {
     // Handle the checkout.session.completed event
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-      const stripe_id = session.id;
+      const stripe_id = session.payment_intent;
       const stripe_amount = session.amount_total;
       const stripe_url = session.success_url;
       const query = qs.parse(stripe_url);
@@ -79,6 +79,7 @@ class Webhooks {
 
         await transaction_model.create({
           type: 'purchase',
+          user_id: user.id,
           amount: amount,
           processed: true,
           extra_data: stripe_id,
