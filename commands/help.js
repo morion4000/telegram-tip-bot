@@ -23,7 +23,7 @@ var Command = function(bot) {
     resp += '\t /scoreboard - Top 10 tippers (only public tips are counted) \n';
     resp += '\t /topup - Buy WEBD with your card or Apple/Google Pay \n';
     
-    resp += '🆘 You can contact @morion4000 for any issues you encounter with the bot.';
+    resp += '\n🆘 You can contact @morion4000 for any issues you encounter with the bot.';
 
     bot.sendMessage(msg.chat.id, resp, {
       parse_mode: 'Markdown',
