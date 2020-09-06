@@ -49,11 +49,13 @@ var Command = function(bot) {
                   user_id: found_user.id
                 }
               }).then(function (transactions) {
-                for (var i = 0; i < transactions.length; i++) {
+                transactions = transactions.reverse();
+
+                for (var i = 0; i < 10; i++) {
                   var t = transactions[i];
                   var status = t.processed ? 'Processed' : 'Processing';
 
-                  resp += '\t - (' + t.createdAt.toDateString() + ') ' + status + ' ' + t.type + ', amount ' + numeral(t.amount).format('0,0') + ' WEBD\n';
+                  resp += '\t ✅ (' + t.createdAt.toDateString() + ') ' + status + ' ' + t.type + ', amount ' + numeral(t.amount).format('0,0') + ' WEBD\n';
                 }
 
                 bot.sendMessage(msg.chat.id, resp, {
