@@ -36,15 +36,15 @@ class Webhooks {
       let amount = 10000;
 
       switch (stripe_amount) {
-        case 100:
+        case 200:
           amount = 10000;
           break;
 
-        case 1000:
+        case 1500:
           amount = 100000;
           break;
 
-        case 10000:
+        case 12000:
           amount = 1000000;
           break;
       }
