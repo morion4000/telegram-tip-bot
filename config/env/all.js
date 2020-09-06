@@ -5,8 +5,8 @@ module.exports = {
     max_concurent_queries: 200,
     pool: {
       maxConnections: 20,
-      maxIdleTime: 30
-    }
+      maxIdleTime: 30,
+    },
   },
   telegram: {
     token: process.env.TELEGRAM_TOKEN,
@@ -17,12 +17,12 @@ module.exports = {
   webdollar: {
     node: {
       url: process.env.WEBDOLLAR_NODE_URL,
-      key: process.env.WEBDOLLAR_NODE_KEY
-    }
+      key: process.env.WEBDOLLAR_NODE_KEY,
+    },
   },
   vault: 'WEBD$gDnTKoDgfy4k8f3ahDfCGG7yKQMxgdrDBr$',
   initial_balance: 0,
-  webd_price_usd: 0.00020,
+  webd_price_usd: 0.0002,
   fees: {
     tip: 0, // fixed
     withdraw: 10, // fixed
@@ -41,14 +41,18 @@ module.exports = {
   },
   mailgun: {
     key: process.env.MAILGUN_KEY,
-    domain: 'mg.hostero.eu'
+    domain: 'mg.hostero.eu',
   },
   admin: {
     email: 'hosteroeu@gmail.com',
     telegram_username: 'morion4000',
-    telegram_chat_id: 528354447
+    telegram_chat_id: 528354447,
   },
   messages: {
-    internal_error: 'Internal error. Please contact @morion4000 for support.'
-  }
+    internal_error: 'Internal error. Please contact @morion4000 for support.',
+  },
+  stripe: {
+    secret_key: process.env.STRIPE_SECRET_KEY,
+    signing_secret: process.env.STRIPE_SIGNING_SECRET,
+  },
 };
