@@ -18,7 +18,7 @@ var Command = function (bot) {
           'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
 
         return bot.sendMessage(msg.chat.id, resp, {
-          parse_mode: 'Markdown',
+          //parse_mode: 'Markdown',
           disable_web_page_preview: true,
           disable_notification: true,
         });
