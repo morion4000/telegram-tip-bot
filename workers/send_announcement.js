@@ -17,10 +17,14 @@ var bot = new TelegramBot(config.telegram.token, {
 //resp += ' \t - the withdraw fee and mininum amount was decreased to 10 WEBD\n';
 //resp += ' \t - you can withdraw a custom amount\n';
 
+//var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
+// resp += ' \t ✅ You are going to earn more by staking with the bot. Rewards have been increased from 6% to *18%* per year to celebrate POS90 🥳\n\n';
+// resp += ' \t ✅ You can start staking with less. The minimum /tipbalance required for staking has been lowered from 6000 to 2000 WEBD 🤯\n\n';
+// resp += '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
+
 var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
-resp += ' \t ✅ You are going to earn more by staking with the bot. Rewards have been increased from 6% to *18%* per year to celebrate POS90 🥳\n\n';
-resp += ' \t ✅ You can start staking with less. The minimum /tipbalance required for staking has been lowered from 6000 to 2000 WEBD 🤯\n\n';
-resp += '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
+resp += '💵 You are now able to purchase WEBD instantly from the bot with your card, Apple or Google Pay.\n\n';
+resp += '*Try it out*: run /topup to see the available packages.';
 
 user.model.findAll()
   .then(function(found_users) {
