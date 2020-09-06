@@ -41,19 +41,19 @@ var Command = function (bot) {
                   text: 'Buy 10,000 WEBD',
                   url:
                     url +
-                    '&amount=10000&price=1&stripe_price=price_1HNyvvAYZXIJrrBKpeOMlMOK',
+                    '&amount=10000&price=1&stripe_price=price_1HOIgvAYZXIJrrBKAER6j0KR',
                 },
                 {
                   text: 'Buy 100,000 WEBD',
                   url:
                     url +
-                    '&amount=100000&price=5&stripe_price=price_1HNzfUAYZXIJrrBKPIHzX0zo',
+                    '&amount=100000&price=5&stripe_price=price_1HOIgvAYZXIJrrBKGQyEmPki',
                 },
                 {
                   text: 'Buy 1,000,000 WEBD',
                   url:
                     url +
-                    '&amount=1000000&price=50&stripe_price=price_1HNzfmAYZXIJrrBKJnRQ1sQh',
+                    '&amount=1000000&price=50&stripe_price=price_1HOIgvAYZXIJrrBKZ1pHwyet',
                 },
               ],
             ],
