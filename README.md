@@ -22,7 +22,7 @@
 * __system__ - Private and hidden command. Only admin can call it
 * __stats__ - Bot statistics
 * __scoreboard__ - Top 10 tippers (only public tips are counted)
-* __topup__ - Buy WEBD with your credit card or Apple/Google Pays
+* __topup__ - Buy WEBD with your credit card or Apple/Google Pay
 
 ## Install
 
