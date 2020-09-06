@@ -23,7 +23,7 @@ var Command = function(bot) {
       }
 
       if (!msg.from.username) {
-        resp = 'Please set an username for your telegram account to use the bot.';
+        resp = 'Please set an username for your Telegram account to use the bot.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -41,7 +41,7 @@ var Command = function(bot) {
       })
           .then(function (found_user) {
             if (found_user) {
-              resp = 'Balance @' + found_user.telegram_username + ': ' + numeral(found_user.balance).format('0,0') + ' WEBD. Your funds are receiving /staking rewards.';
+              resp = 'Balance @' + found_user.telegram_username + ': ' + numeral(found_user.balance).format('0,0') + ' WEBD. You can add more funds using /topup';
             } else {
               resp = 'Your user can not be found. Create a new acount /start';
             }
