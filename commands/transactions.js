@@ -51,7 +51,11 @@ var Command = function(bot) {
               }).then(function (transactions) {
                 transactions = transactions.reverse();
 
-                for (var i = 0; i < 10; i++) {
+                for (var i = 0; i < transactions.length; i++) {
+                   if (i > 10) {
+                     break;
+                   }
+                  
                   var t = transactions[i];
                   var status = t.processed ? 'Processed' : 'Processing';
 
