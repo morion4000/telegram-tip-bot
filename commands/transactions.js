@@ -42,7 +42,7 @@ var Command = function(bot) {
       })
           .then(function (found_user) {
             if (found_user) {
-              resp = 'Transactions for @' + found_user.telegram_username + '\n\n';
+              resp = 'Transactions for @' + found_user.telegram_username + ' (last 10)\n\n';
 
               transaction.model.findAll({
                 where: {
