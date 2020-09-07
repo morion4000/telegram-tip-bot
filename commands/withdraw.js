@@ -12,6 +12,7 @@ var Command = function(bot) {
   return function(msg, match) {
     try {
       var amount_match = msg.text.match(/ [0-9]+/);
+      var wallet_match = msg.text.match(/WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/);
       var resp = '';
 
       console.log(msg.text);
@@ -53,6 +54,7 @@ var Command = function(bot) {
       }
 
       var amount = amount_match[0];
+      var wallet = wallet_match ? wallet_match[0] : null;
 
       if (_.isString(amount)) {
         amount = amount.trim();
@@ -67,8 +69,9 @@ var Command = function(bot) {
       })
           .then(function (found_user) {
             if (found_user) {
-              if (found_user.wallet) {
+              wallet = wallet || found_user.wallet;
 
+              if (wallet) {
                 if (amount < config.fees.withdraw) {
                   resp = 'You can only withdraw over ' + config.fees.withdraw + ' WEBD';
                 } else if ((found_user.balance - config.fees.withdraw) < amount) {
@@ -79,7 +82,7 @@ var Command = function(bot) {
                     user_id: found_user.id,
                     processed: false,
                     amount: amount,
-                    transaction_to: found_user.wallet
+                    transaction_to: wallet
                   });
 
                   user.model.update({
@@ -90,7 +93,7 @@ var Command = function(bot) {
                     }
                   });
 
-                  resp = 'The withdraw request has been made and the funds *' + numeral(amount).format('0,0') + ' WEBD* are going to be in your wallet `' + found_user.wallet + '` in up to an hour.\n\n*Withdraw fee:* ' + config.fees.withdraw + ' WEBD';
+                  resp = 'The withdraw request has been made and the funds *' + numeral(amount).format('0,0') + ' WEBD* are going to be in your wallet `' + wallet + '` in up to an hour.\n\n*Withdraw fee:* ' + config.fees.withdraw + ' WEBD';
 
                   mailgun.messages().send({
                     from: 'Hostero <no-reply@mg.hostero.eu>',
