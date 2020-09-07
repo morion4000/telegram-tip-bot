@@ -14,7 +14,7 @@
 * __wallet__ - Shows your WEBD wallet for deposits and withdrawals
 * __setwallet__ - Set the WEBD wallet that you are using for deposits and withdrawals
 * __deposit__ - Deposit funds to your account from the wallet you set
-* __withdraw__ - Withdraw funds from your account to the wallet you set
+* __withdraw__ - Withdraw funds from your account to the wallet you set or a WEBD adress
 * __transactions__ - Shows the transactions for your account
 * __fees__ - Shows the fees
 * __price__ - Shows the price and volume for WEBD
