@@ -38,6 +38,8 @@ module.exports = {
   */
   staking: {
     monthly_percentage: 1.5, // 18 yearly
+    monthly_percentage_tier1: 2, // 24 yearly
+    tier1_threshold: 1000000,
   },
   mailgun: {
     key: process.env.MAILGUN_KEY,
