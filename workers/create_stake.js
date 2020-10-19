@@ -1,10 +1,7 @@
 var user_model = require('./../models').user.model,
   log_model = require('./../models').log.model,
   config = require('./../config'),
-  _ = require('underscore'),
-  request = require('request'),
-  moment = require('moment'),
-  fs = require('fs');
+  moment = require('moment');
 
 setTimeout(function() {
   process.exit(1);
@@ -53,7 +50,17 @@ log_model.findAll({
           continue;
         }
 
-        var stake = Math.floor(user.balance * config.staking.monthly_percentage / 100 / 30);
+        var yearly_percentage = 0;
+
+        if (user.balance >= config.staking.tier3_threshold) {
+          yearly_percentage = config.staking.yearly_percentage_tier3;
+        } else if (user.balance >= config.staking.tier2_threshold) {
+          yearly_percentage = config.staking.yearly_percentage_tier2;
+        } else if (user.balance >= config.staking.tier1_threshold) {
+          yearly_percentage = config.staking.yearly_percentage_tier1;
+        }
+
+        var stake = Math.floor(user.balance * yearly_percentage / 100 / 360);
 
         total_stake += stake;
 
@@ -61,7 +68,7 @@ log_model.findAll({
           continue;
         }
 
-        console.log('staking', stake, user.telegram_username);
+        console.log('staking', stake, user.telegram_username, 'percentage', yearly_percentage);
 
         log_model.create({
           user_id: user.id,
@@ -71,7 +78,8 @@ log_model.findAll({
             old_balance: user.balance,
             new_balance: user.balance + stake,
             reward: stake,
-            monthly_percentage: config.staking.monthly_percentage
+            monthly_percentage: yearly_percentage / 12, // legacy
+            yearly_percentage: yearly_percentage, 
           }),
           source: 'workers.create_stake'
         });

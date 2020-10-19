@@ -37,9 +37,12 @@ module.exports = {
   staking APR: 30% (90% POS)
   */
   staking: {
-    monthly_percentage: 1.5, // 18 yearly
-    monthly_percentage_tier1: 2, // 24 yearly
-    tier1_threshold: 1000000,
+    yearly_percentage_tier1: 15,
+    yearly_percentage_tier2: 20,
+    yearly_percentage_tier3: 25,
+    tier1_threshold: 10000,
+    tier2_threshold: 1000000,
+    tier3_threshold: 10000000,
   },
   mailgun: {
     key: process.env.MAILGUN_KEY,

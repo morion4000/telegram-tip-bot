@@ -42,11 +42,12 @@ var Command = function(bot) {
       })
           .then(function (found_user) {
             if (found_user) {
-              var minimum_balance = parseInt(1 / (config.staking.monthly_percentage / 3000));
-
-              resp += 'The staking reward is ' + (config.staking.monthly_percentage * 12) + '% per year, compounded daily.\n\n';
-              resp += 'Your /tipbalance must be at least ' + numeral(minimum_balance).format('0,0') + ' WEBD to get staking rewards.\n\n';
-              resp += 'Latest rewards for @' + found_user.telegram_username + '\n\n';
+              resp += '📈 The staking reward is compounded daily, based on the WEBD amount in your /tipbalance:\n\n';
+              resp += '\t 💰 More than ' + numeral(config.staking.tier1_threshold).format('0,0') + ' WEBD \t\t\t\t\t\t\t\t ➡️ *' + config.staking.yearly_percentage_tier1 + '%* per year\n';
+              resp += '\t 💰 More than ' + numeral(config.staking.tier2_threshold).format('0,0') + ' WEBD \t\t\t ➡️ *' + config.staking.yearly_percentage_tier2 + '%* per year\n';
+              resp += '\t 💰 More than ' + numeral(config.staking.tier3_threshold).format('0,0') + ' WEBD \t ➡️ *' + config.staking.yearly_percentage_tier3 + '%* per year\n\n';
+              resp += 'Your must have at least ' + numeral(config.staking.tier1_threshold).format('0,0') + ' WEBD to get staking rewards.\n\n';
+              resp += 'ℹ️ Latest 10 staking rewards:\n\n';
 
               log.model.findAll({
                 where: {
@@ -64,12 +65,12 @@ var Command = function(bot) {
                   var l = reversed[i];
                   var extra = JSON.parse(l.extra_message);
 
-                  if (i >= 20) {
-                    resp += '\t ...\n';
+                  if (i >= 10) {
+                    //resp += '\t ...\n';
                     break;
                   }
 
-                  resp += '\t ✅ ' + l.message + ': *' + numeral(extra.reward).format('0,0') + '* WEBD (' + l.createdAt.toDateString() + ')\n';
+                  resp += '\t ➕ New reward: *' + numeral(extra.reward).format('0,0') + '* WEBD (' + l.createdAt.toDateString() + ')\n';
                 }
 
                 //resp += '\nFor bigger staking rewards we recommend: https://www.hostero.eu/docs/webdollar-pos-mining';
