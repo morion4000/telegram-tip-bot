@@ -68,7 +68,7 @@ log_model.findAll({
           continue;
         }
 
-        console.log('staking', stake, user.telegram_username, 'percentage', yearly_percentage);
+        console.log('staking', stake, user.telegram_username, 'percentage', yearly_percentage, 'balance', user.balance);
 
         log_model.create({
           user_id: user.id,

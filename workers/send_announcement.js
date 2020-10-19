@@ -22,9 +22,17 @@ var bot = new TelegramBot(config.telegram.token, {
 // resp += ' \t ✅ You can start staking with less. The minimum /tipbalance required for staking has been lowered from 6000 to 2000 WEBD 🤯\n\n';
 // resp += '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
 
+// var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
+// resp += '💵 You are now able to purchase WEBD instantly from the bot with your card, Apple or Google Pay.\n\n';
+// resp += '*Try it out*: run /topup to see the available packages.';
+
 var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
-resp += '💵 You are now able to purchase WEBD instantly from the bot with your card, Apple or Google Pay.\n\n';
-resp += '*Try it out*: run /topup to see the available packages.';
+resp += ' \t ✅ Staking rewards have been increased to up to *25%* per year 🥳. Based on your /tipbalance the following rates apply:\n\n';
+resp += ' \t\t 💰 More than 10,000 WEBD          ➡️ *15%* per year\n';
+resp += ' \t\t 💰 More than 1,000,000 WEBD     ➡️ *20%* per year\n';
+resp += ' \t\t 💰 More than 10,000,000 WEBD   ➡️ *25%* per year\n\n';
+resp += ' \t ✅ The minimum /tipbalance required for staking has been increased to 10,000 WEBD \n\n';
+resp += '*Try it out*: run /staking to see your earnings, and /deposit or /topup to add funds.';
 
 user.model.findAll()
   .then(function(found_users) {
@@ -39,7 +47,7 @@ user.model.findAll()
 
       // only me (@morion4000)
       if (found_user.telegram_id !== '528354447') {
-        //continue;
+        continue;
       }
 
       console.log(found_user.id);
