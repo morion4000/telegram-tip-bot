@@ -47,7 +47,7 @@ user.model.findAll()
 
       // only me (@morion4000)
       if (found_user.telegram_id !== '528354447') {
-        continue;
+        //continue;
       }
 
       console.log(found_user.id);
