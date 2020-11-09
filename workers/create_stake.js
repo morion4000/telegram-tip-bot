@@ -8,11 +8,12 @@ setTimeout(function() {
 }, 60 * 1000);
 
 var total_stake = 0;
-var hours = new Date().getHours();
+var hour = new Date().getUTCHours();
+var hour_to_run = process.env.HOUR_TO_RUN ? parseInt(process.env.HOUR_TO_RUN) : 10;
 
 // Allow to run only in a certain hour (to be able to do updates)
-if (hours !== 10) {
-  console.log('closing, not the right hour', hours);
+if (hour !== hour_to_run) {
+  console.log('closing, wrong hour. expected:', hour_to_run, 'current:', hour);
   return;
 }
 
@@ -32,8 +33,9 @@ log_model.findAll({
   var end = moment(last_log.createdAt);
   var delta = now.diff(end, 'hours');
 
+  // Avoid running multiple times in the same day
   if (delta <= 3) {
-    console.log('closing, ran recently', delta);
+    console.log('closing, ran recently. hours ago: ', delta);
     return;
   }
 
