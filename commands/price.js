@@ -31,8 +31,8 @@ var Command = function(bot) {
           return;
         }
 
-        resp = 'Price 1 WEBD: $' + data.market_data.current_price.usd + '\n';
-        resp += 'Price 1,000,000 WEBD: $' + parseInt(data.market_data.current_price.usd * 1000000) + '\n';
+        resp = '1,000,000 WEBD: $' + parseInt(data.market_data.current_price.usd * 1000000) + '\n\n';
+        resp += 'USD: ' + data.market_data.current_price.usd.toFixed(10) + '\n';
         resp += 'BTC: ' + data.market_data.current_price.btc.toFixed(10) + '\n';
         resp += 'ETH: ' + data.market_data.current_price.eth.toFixed(10) + '\n\n';
         resp += '24hr High: $' + data.market_data.high_24h.usd + '\n';
