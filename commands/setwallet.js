@@ -67,7 +67,19 @@ var Command = function (bot) {
           logging: false,
         })
         .then(function (result) {
-          var found_user = result[0];
+          var found_user = result;
+
+          if (!found_user) {
+            resp = 'No Account. Please use /start to set up one.';
+
+            bot.sendMessage(msg.chat.id, resp, {
+              //parse_mode: 'Markdown',
+              disable_web_page_preview: true,
+              disable_notification: true,
+            });
+
+            return;
+          }
 
           user.model
             .update(
