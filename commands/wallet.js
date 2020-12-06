@@ -35,7 +35,7 @@ var Command = function(bot) {
 
       user.model.findOne({
         where: {
-          telegram_username: msg.from.username
+          telegram_id: msg.from.id
         }
       })
           .then(function (found_user) {
