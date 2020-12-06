@@ -1,12 +1,13 @@
 var user = require('./../models').user,
   transaction = require('./../models').transaction,
   config = require('./../config'),
-  _ = require('underscore'),
   numeral = require('numeral'),
   mailgun = require('mailgun-js')({
     apiKey: config.mailgun.key,
     domain: config.mailgun.domain,
-  });
+  }),
+  _ = require('underscore'),
+  Sequelize = require('sequelize');
 
 var Command = function (bot) {
   return function (msg, match) {
@@ -67,7 +68,14 @@ var Command = function (bot) {
       user.model
         .findOne({
           where: {
-            telegram_id: msg.from.id,
+            [Sequelize.Op.or]: [
+              {
+                telegram_id: msg.from.id,
+              },
+              {
+                telegram_username: msg.from.username,
+              },
+            ],
           },
         })
         .then(function (found_user) {

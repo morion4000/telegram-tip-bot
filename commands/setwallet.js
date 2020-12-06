@@ -1,6 +1,7 @@
 var user = require('./../models').user,
   config = require('./../config'),
-  _ = require('underscore');
+  _ = require('underscore'),
+  Sequelize = require('sequelize');
 
 var Command = function (bot) {
   return function (msg, match) {
@@ -50,23 +51,18 @@ var Command = function (bot) {
       }
 
       var wallet = wallet_match[0];
-      var from_first_name = msg.from.first_name
-        ? msg.from.first_name.replace(/[\u0800-\uFFFF]/g, '')
-        : null;
-      var from_last_name = msg.from.last_name
-        ? msg.from.last_name.replace(/[\u0800-\uFFFF]/g, '')
-        : null;
 
       user.model
-        .findOrCreate({
+        .findOne({
           where: {
-            telegram_id: msg.from.id,
-          },
-          defaults: {
-            telegram_id: msg.from.id,
-            telegram_username: msg.from.username,
-            telegram_firstname: from_first_name,
-            telegram_lastname: from_last_name,
+            [Sequelize.Op.or]: [
+              {
+                telegram_id: msg.from.id,
+              },
+              {
+                telegram_username: msg.from.username,
+              },
+            ],
           },
           logging: false,
         })

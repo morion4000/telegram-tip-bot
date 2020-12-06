@@ -3,7 +3,8 @@ var user = require('./../models').user,
   config = require('./../config'),
   async = require('async'),
   numeral = require('numeral'),
-  _ = require('underscore');
+  _ = require('underscore'),
+  Sequelize = require('sequelize');
 
 var Command = function (bot) {
   return function (msg, match) {
@@ -38,12 +39,6 @@ var Command = function (bot) {
 
       var to_username = user_match[0];
       var amount = amount_match[0];
-      var from_first_name = msg.from.first_name
-        ? msg.from.first_name.replace(/[\u0800-\uFFFF]/g, '')
-        : null;
-      var from_last_name = msg.from.last_name
-        ? msg.from.last_name.replace(/[\u0800-\uFFFF]/g, '')
-        : null;
 
       if (to_username === '@webdollar_tip_bot') {
         to_username = user_match[1];
@@ -62,20 +57,21 @@ var Command = function (bot) {
         [
           function (callback) {
             user.model
-              .findOrCreate({
+              .findOne({
                 where: {
-                  telegram_id: msg.from.id,
-                },
-                defaults: {
-                  telegram_id: msg.from.id,
-                  telegram_username: msg.from.username,
-                  telegram_firstname: from_first_name,
-                  telegram_lastname: from_last_name,
+                  [Sequelize.Op.or]: [
+                    {
+                      telegram_id: msg.from.id,
+                    },
+                    {
+                      telegram_username: msg.from.username,
+                    },
+                  ],
                 },
                 logging: false,
               })
               .then(function (res) {
-                callback(null, res[0]);
+                callback(null, res);
               });
           },
           function (callback) {
@@ -99,6 +95,19 @@ var Command = function (bot) {
           if (err) {
             console.error(err);
             resp = error;
+          }
+
+          if (!users[0]) {
+            resp =
+              'No Account. Please DM the bot: @webdollar_tip_bot to set up an account.';
+
+            bot.sendMessage(msg.chat.id, resp, {
+              //parse_mode: 'Markdown',
+              disable_web_page_preview: true,
+              disable_notification: true,
+            });
+
+            return;
           }
 
           var from_user = users[0];

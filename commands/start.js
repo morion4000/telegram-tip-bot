@@ -1,6 +1,7 @@
 var user = require('./../models').user,
   config = require('./../config'),
-  _ = require('underscore');
+  _ = require('underscore'),
+  Sequelize = require('sequelize');
 
 var Command = function (bot) {
   return function (msg, match) {
@@ -45,7 +46,14 @@ var Command = function (bot) {
       user.model
         .findOrCreate({
           where: {
-            telegram_username: msg.from.username,
+            [Sequelize.Op.or]: [
+              {
+                telegram_id: msg.from.id,
+              },
+              {
+                telegram_username: msg.from.username,
+              },
+            ],
           },
           defaults: {
             telegram_id: msg.from.id,
@@ -58,18 +66,18 @@ var Command = function (bot) {
         })
         .then(function (result) {
           var found_user = result[0];
-          var found = result[1];
+          var created = result[1];
 
-          if (found) {
+          if (created) {
+            resp =
+              'Welcome! An account with ' +
+              config.initial_balance +
+              ' WEBD was created for you.\n\nType /help to learn more, but first /setwallet WALLET.';
+          } else {
             resp =
               'Welcome back ' +
               found_user.telegram_username +
               '. Type /help to learn more.';
-          } else {
-            resp =
-              'Welcome to WebDollar Telegram Bot, an account with ' +
-              config.initial_balance +
-              ' WEBD was created for you.\n\nType /help to learn more, but first /setwallet WALLET.';
           }
 
           user.model.update(
