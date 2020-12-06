@@ -1,16 +1,18 @@
 var user = require('./../models').user,
   config = require('./../config'),
-  _ = require('underscore');
+  _ = require('underscore'),
+  Sequelize = require('sequelize');
 
-var Command = function(bot) {
-  return function(msg, match) {
+var Command = function (bot) {
+  return function (msg, match) {
     try {
       var resp = '';
 
       console.log(msg.text);
 
       if (msg.chat.type !== 'private') {
-        resp = 'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
+        resp =
+          'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -22,7 +24,8 @@ var Command = function(bot) {
       }
 
       if (!msg.from.username) {
-        resp = 'Please set an username for your telegram account to use the bot.';
+        resp =
+          'Please set an username for your telegram account to use the bot.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -33,34 +36,45 @@ var Command = function(bot) {
         return;
       }
 
-      user.model.findOne({
-        where: {
-          telegram_id: msg.from.id
-        }
-      })
-          .then(function (found_user) {
-            if (found_user) {
-              if (found_user.wallet) {
-                //var link = 'https://webdollar.io/payment/' + config.vault;
-                //resp = 'Go to ' + link + ' and complete the transfer, or deposit WEBD to the following address: *' + config.vault + '*';
-                resp = 'Send WEBD to the following address: `' + config.vault + '`\n\nMake sure you make the transfer from the /wallet you set.';
-              } else {
-                resp = 'Configure your wallet first /setwallet';
-              }
+      user.model
+        .findOne({
+          where: {
+            [Sequelize.Op.or]: [
+              {
+                telegram_id: msg.from.id,
+              },
+              {
+                telegram_username: msg.from.username,
+              },
+            ],
+          },
+        })
+        .then(function (found_user) {
+          if (found_user) {
+            if (found_user.wallet) {
+              //var link = 'https://webdollar.io/payment/' + config.vault;
+              //resp = 'Go to ' + link + ' and complete the transfer, or deposit WEBD to the following address: *' + config.vault + '*';
+              resp =
+                'Send WEBD to the following address: `' +
+                config.vault +
+                '`\n\nMake sure you make the transfer from the /wallet you set.';
             } else {
-              resp = 'Your user can not be found. Create a new acount /start';
+              resp = 'Configure your wallet first /setwallet';
             }
+          } else {
+            resp = 'Your user can not be found. Create a new acount /start';
+          }
 
-            bot.sendMessage(msg.chat.id, resp, {
-              parse_mode: 'Markdown',
-              disable_web_page_preview: true,
-              disable_notification: true,
-            });
-          })
-          .catch(console.error);
-    } catch(e) {
+          bot.sendMessage(msg.chat.id, resp, {
+            parse_mode: 'Markdown',
+            disable_web_page_preview: true,
+            disable_notification: true,
+          });
+        })
+        .catch(console.error);
+    } catch (e) {
       console.error('/deposit', e);
-      
+
       bot.sendMessage(msg.chat.id, config.messages.internal_error, {
         //parse_mode: 'Markdown',
         disable_web_page_preview: true,

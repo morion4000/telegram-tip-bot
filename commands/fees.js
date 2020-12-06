@@ -2,8 +2,8 @@ var user = require('./../models').user,
   config = require('./../config'),
   _ = require('underscore');
 
-var Command = function(bot) {
-  return function(msg, match) {
+var Command = function (bot) {
+  return function (msg, match) {
     var resp = '⚙️ The fees are the following: \n\n';
 
     console.log(msg.text);

@@ -4,15 +4,16 @@ var user = require('./../models').user,
   numeral = require('numeral'),
   _ = require('underscore');
 
-var Command = function(bot) {
-  return function(msg, match) {
+var Command = function (bot) {
+  return function (msg, match) {
     try {
       var resp = '';
 
       console.log(msg.text);
 
       if (msg.chat.type !== 'private') {
-        resp = 'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
+        resp =
+          'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -24,7 +25,8 @@ var Command = function(bot) {
       }
 
       if (!msg.from.username) {
-        resp = 'Please set an username for your telegram account to use the bot.';
+        resp =
+          'Please set an username for your telegram account to use the bot.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -35,31 +37,46 @@ var Command = function(bot) {
         return;
       }
 
-      user.model.findOne({
-        where: {
-          telegram_id: msg.from.id
-        }
-      })
-          .then(function (found_user) {
-            if (found_user) {
-              resp = 'Transactions for @' + found_user.telegram_username + ' (last 10)\n\n';
+      user.model
+        .findOne({
+          where: {
+            telegram_id: msg.from.id,
+          },
+        })
+        .then(function (found_user) {
+          if (found_user) {
+            resp =
+              'Transactions for @' +
+              found_user.telegram_username +
+              ' (last 10)\n\n';
 
-              transaction.model.findAll({
+            transaction.model
+              .findAll({
                 where: {
-                  user_id: found_user.id
-                }
-              }).then(function (transactions) {
+                  user_id: found_user.id,
+                },
+              })
+              .then(function (transactions) {
                 transactions = transactions.reverse();
 
                 for (var i = 0; i < transactions.length; i++) {
-                   if (i > 10) {
-                     break;
-                   }
-                  
+                  if (i > 10) {
+                    break;
+                  }
+
                   var t = transactions[i];
                   var status = t.processed ? 'Processed' : 'Processing';
 
-                  resp += '\t ✅ (' + t.createdAt.toDateString() + ') ' + status + ' ' + t.type + ', amount ' + numeral(t.amount).format('0,0') + ' WEBD\n';
+                  resp +=
+                    '\t ✅ (' +
+                    t.createdAt.toDateString() +
+                    ') ' +
+                    status +
+                    ' ' +
+                    t.type +
+                    ', amount ' +
+                    numeral(t.amount).format('0,0') +
+                    ' WEBD\n';
                 }
 
                 bot.sendMessage(msg.chat.id, resp, {
@@ -68,18 +85,18 @@ var Command = function(bot) {
                   disable_notification: true,
                 });
               });
-            } else {
-              resp = 'Your user can not be found. Create a new acount /start';
+          } else {
+            resp = 'Your user can not be found. Create a new acount /start';
 
-              bot.sendMessage(msg.chat.id, resp, {
-                parse_mode: 'Markdown',
-                disable_web_page_preview: true,
-                disable_notification: true,
-              });
-            }
-          })
-          .catch(console.error);
-    } catch(e) {
+            bot.sendMessage(msg.chat.id, resp, {
+              parse_mode: 'Markdown',
+              disable_web_page_preview: true,
+              disable_notification: true,
+            });
+          }
+        })
+        .catch(console.error);
+    } catch (e) {
       console.error('/transactions', e);
     }
   };

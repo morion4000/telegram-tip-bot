@@ -5,11 +5,11 @@ var user = require('./../models').user,
   numeral = require('numeral'),
   mailgun = require('mailgun-js')({
     apiKey: config.mailgun.key,
-    domain: config.mailgun.domain
+    domain: config.mailgun.domain,
   });
 
-var Command = function(bot) {
-  return function(msg, match) {
+var Command = function (bot) {
+  return function (msg, match) {
     try {
       var amount_match = msg.text.match(/ [0-9]+/);
       var wallet_match = msg.text.match(/WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/);
@@ -18,7 +18,8 @@ var Command = function(bot) {
       console.log(msg.text);
 
       if (msg.chat.type !== 'private') {
-        resp = 'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
+        resp =
+          'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -30,7 +31,8 @@ var Command = function(bot) {
       }
 
       if (!msg.from.username) {
-        resp = 'Please set an username for your telegram account to use the bot.';
+        resp =
+          'Please set an username for your telegram account to use the bot.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -62,40 +64,59 @@ var Command = function(bot) {
 
       amount = parseInt(amount);
 
-      user.model.findOne({
-        where: {
-          telegram_id: msg.from.id
-        }
-      })
-          .then(function (found_user) {
-            if (found_user) {
-              wallet = wallet || found_user.wallet;
+      user.model
+        .findOne({
+          where: {
+            telegram_id: msg.from.id,
+          },
+        })
+        .then(function (found_user) {
+          if (found_user) {
+            wallet = wallet || found_user.wallet;
 
-              if (wallet) {
-                if (amount < config.fees.withdraw) {
-                  resp = 'You can only withdraw over ' + config.fees.withdraw + ' WEBD';
-                } else if ((found_user.balance - config.fees.withdraw) < amount) {
-                  resp = 'Not enough balance (' + amount + ' + ' + config.fees.withdraw + ' WEBD fee). Check your /tipbalance';
-                } else {
-                  transaction.model.create({
-                    type: 'withdraw',
-                    user_id: found_user.id,
-                    processed: false,
-                    amount: amount,
-                    transaction_to: wallet
-                  });
+            if (wallet) {
+              if (amount < config.fees.withdraw) {
+                resp =
+                  'You can only withdraw over ' +
+                  config.fees.withdraw +
+                  ' WEBD';
+              } else if (found_user.balance - config.fees.withdraw < amount) {
+                resp =
+                  'Not enough balance (' +
+                  amount +
+                  ' + ' +
+                  config.fees.withdraw +
+                  ' WEBD fee). Check your /tipbalance';
+              } else {
+                transaction.model.create({
+                  type: 'withdraw',
+                  user_id: found_user.id,
+                  processed: false,
+                  amount: amount,
+                  transaction_to: wallet,
+                });
 
-                  user.model.update({
-                    balance: (found_user.balance - amount - config.fees.withdraw)
-                  }, {
+                user.model.update(
+                  {
+                    balance: found_user.balance - amount - config.fees.withdraw,
+                  },
+                  {
                     where: {
-                      id: found_user.id
-                    }
-                  });
+                      id: found_user.id,
+                    },
+                  }
+                );
 
-                  resp = 'The withdraw request has been made and the funds *' + numeral(amount).format('0,0') + ' WEBD* are going to be in your wallet `' + wallet + '` in up to an hour.\n\n*Withdraw fee:* ' + config.fees.withdraw + ' WEBD';
+                resp =
+                  'The withdraw request has been made and the funds *' +
+                  numeral(amount).format('0,0') +
+                  ' WEBD* are going to be in your wallet `' +
+                  wallet +
+                  '` in up to an hour.\n\n*Withdraw fee:* ' +
+                  config.fees.withdraw +
+                  ' WEBD';
 
-                  /*
+                /*
                   mailgun.messages().send({
                     from: 'Hostero <no-reply@mg.hostero.eu>',
                     to: config.admin.email,
@@ -103,22 +124,22 @@ var Command = function(bot) {
                     text: resp
                   });
                   */
-                }
-              } else {
-                resp = 'Configure your wallet first /setwallet';
               }
             } else {
-              resp = 'Your user can not be found. Create a new acount /start';
+              resp = 'Configure your wallet first /setwallet';
             }
+          } else {
+            resp = 'Your user can not be found. Create a new acount /start';
+          }
 
-            bot.sendMessage(msg.chat.id, resp, {
-              parse_mode: 'Markdown',
-              disable_web_page_preview: true,
-              disable_notification: true,
-            });
-          })
-          .catch(console.error);
-    } catch(e) {
+          bot.sendMessage(msg.chat.id, resp, {
+            parse_mode: 'Markdown',
+            disable_web_page_preview: true,
+            disable_notification: true,
+          });
+        })
+        .catch(console.error);
+    } catch (e) {
       console.error('/withdraw', e);
 
       bot.sendMessage(msg.chat.id, config.messages.internal_error, {

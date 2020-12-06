@@ -4,15 +4,17 @@ var config = require('./config');
 var commands = require('./commands');
 var sequelize = require('./models').sequelize;
 
-sequelize.sync({
-  //force: true
-}).then(function() {
-  console.log('Db synced');
-});
+sequelize
+  .sync({
+    //force: true
+  })
+  .then(function () {
+    console.log('Db synced');
+  });
 
 // Create a bot that uses 'polling' to fetch new updates
 var bot = new TelegramBot(config.telegram.token, {
-  polling: true
+  polling: true,
 });
 
 var start_command = commands.start(bot);
@@ -69,7 +71,10 @@ bot.onText(/\/tipbalance$/, balance_command);
 bot.onText(/\/deposit$/, deposit_command);
 bot.onText(/\/withdraw$/, withdraw_empty_command);
 bot.onText(/\/withdraw [0-9]+$/, withdraw_command);
-bot.onText(/\/withdraw [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/, withdraw_command);
+bot.onText(
+  /\/withdraw [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/,
+  withdraw_command
+);
 bot.onText(/\/transactions$/, transactions_command);
 bot.onText(/\/wallet$/, wallet_command);
 bot.onText(/\/setwallet$/, setwallet_empty_command);
@@ -90,11 +95,17 @@ bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
 bot.onText(/\/deposit@webdollar_tip_bot$/, deposit_command);
 bot.onText(/\/withdraw@webdollar_tip_bot$/, withdraw_empty_command);
 bot.onText(/\/withdraw@webdollar_tip_bot [0-9]+$/, withdraw_command);
-bot.onText(/\/withdraw@webdollar_tip_bot [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/, withdraw_command);
+bot.onText(
+  /\/withdraw@webdollar_tip_bot [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/,
+  withdraw_command
+);
 bot.onText(/\/transactions@webdollar_tip_bot$/, transactions_command);
 bot.onText(/\/wallet@webdollar_tip_bot$/, wallet_command);
 bot.onText(/\/setwallet@webdollar_tip_bot$/, setwallet_empty_command);
-bot.onText(/\/setwallet@webdollar_tip_bot WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/, setwallet_command);
+bot.onText(
+  /\/setwallet@webdollar_tip_bot WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/,
+  setwallet_command
+);
 bot.onText(/\/filantropica@webdollar_tip_bot$/, filantropica_command);
 bot.onText(/\/nam@webdollar_tip_bot$/, nam_command);
 bot.onText(/\/help@webdollar_tip_bot$/, help_command);
