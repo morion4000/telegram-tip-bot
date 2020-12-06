@@ -38,11 +38,11 @@ var Command = function (bot) {
 
       user.model.findOrCreate({
           where: {
-            telegram_username: msg.chat.username,
+            telegram_username: msg.from.username,
           },
           defaults: {
             telegram_id: msg.from.id,
-            telegram_username: msg.chat.username,
+            telegram_username: msg.from.username,
             telegram_firstname: from_first_name,
             telegram_lastname: from_last_name,
             balance: config.initial_balance
