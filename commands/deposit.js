@@ -21,6 +21,7 @@ var Command = function(bot) {
         return;
       }
 
+      /*
       if (!msg.from.username) {
         resp = 'Please set an username for your telegram account to use the bot.';
 
@@ -32,10 +33,11 @@ var Command = function(bot) {
 
         return;
       }
+      */
 
       user.model.findOne({
         where: {
-          telegram_username: msg.from.username
+          telegram_id: msg.from.id
         }
       })
           .then(function (found_user) {
