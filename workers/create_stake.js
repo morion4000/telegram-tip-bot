@@ -31,6 +31,8 @@ exports.handler = async function (event) {
   // Avoid running multiple times in the same day
   if (await has_ran_recently()) {
     console.log('closing, ran recently');
+    
+    return;
   }
 
   const users = await user_model.findAll({
