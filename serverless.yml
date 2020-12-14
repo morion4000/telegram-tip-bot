@@ -1,0 +1,63 @@
+service: workers
+
+frameworkVersion: '2'
+useDotenv: true
+
+provider:
+  name: aws
+  profile: hostero
+  runtime: nodejs12.x
+  region: eu-central-1
+  stage: ${opt:stage, 'prod'}
+  memorySize: 512
+  timeout: 10
+  environment:
+    MYSQL_CONNECTION_STRING: ${env:MYSQL_CONNECTION_STRING}
+    TELEGRAM_TOKEN: ${env:TELEGRAM_TOKEN}
+    WEBDSCAN_TOKEN: ${env:WEBDSCAN_TOKEN}
+    MAILGUN_KEY: ${env:MAILGUN_KEY}
+    WEBDOLLAR_NODE_URL: ${env:WEBDOLLAR_NODE_URL}
+    WEBDOLLAR_NODE_KEY: ${env:WEBDOLLAR_NODE_KEY}
+    STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY}
+    STRIPE_SIGNING_SECRET: ${env:STRIPE_SIGNING_SECRET}
+
+functions:
+  process_inbound_transactions:
+    memorySize: 128
+    handler: workers/process_inbound_transactions.handler
+    events:
+      - schedule: rate(1 minute)
+    environment:
+      NODE_ENV: production
+
+  process_outbound_transactions:
+    memorySize: 128
+    handler: workers/process_outbound_transactions.handler
+    events:
+      - schedule: rate(1 minute)
+    environment:
+      NODE_ENV: production
+
+  credit_accounts:
+    memorySize: 128
+    handler: workers/credit_accounts.handler
+    events:
+      - schedule: rate(1 minute)
+    environment:
+      NODE_ENV: production
+
+  process_withdraws:
+    memorySize: 256
+    handler: workers/process_withdraws.handler
+    events:
+      - schedule: rate(10 minutes)
+    environment:
+      NODE_ENV: production
+
+  create_stake:
+    memorySize: 256
+    handler: workers/create_stake.handler
+    events:
+      - schedule: cron(0 12 * * ? *)
+    environment:
+      NODE_ENV: production

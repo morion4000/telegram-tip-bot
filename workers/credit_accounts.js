@@ -1,79 +1,87 @@
-var transaction_model = require('./../models').transaction.model,
-  user_model = require('./../models').user.model,
-  config = require('./../config'),
-  TelegramBot = require('node-telegram-bot-api'),
-  numeral = require('numeral'),
-  _ = require('underscore');
+const transaction_model = require('./../models').transaction.model;
+const user_model = require('./../models').user.model;
+const config = require('./../config');
+const TelegramBot = require('node-telegram-bot-api');
+const numeral = require('numeral');
 
-console.log('started worker');
+exports.handler = async function (event) {
+  const bot = new TelegramBot(config.telegram.token, {
+    polling: false,
+  });
 
-setTimeout(function() {
-  process.exit(1);
-}, 60 * 1000);
-
-var bot = new TelegramBot(config.telegram.token, {
-  polling: false
-});
-
-transaction_model.findAll({
+  const transactions = await transaction_model.findAll({
     where: {
       type: 'deposit',
-      processed: false
+      processed: false,
     },
-    logging: false
-  })
-  .then(function(transactions) {
-    console.log('found transactions', transactions.length);
+    logging: false,
+  });
 
-    for (var i = 0; i < transactions.length; i++) {
-      var transaction = transactions[i];
+  console.log('found transactions', transactions.length);
 
-      (function(_transaction) {
-        console.log('processing transaction', _transaction.id);
+  for (var i = 0; i < transactions.length; i++) {
+    const transaction = transactions[i];
 
-        user_model.findOne({
-            where: {
-              wallet: _transaction.transaction_from
-            }
-          })
-          .then(function(user) {
-            if (!user) {
-              console.log('user not found with wallet', _transaction.transaction_from);
-              return;
-            }
+    console.log('processing transaction', transaction.id);
 
-            var new_balance = user.balance + _transaction.amount;
+    const user = await user_model.findOne({
+      where: {
+        wallet: transaction.transaction_from,
+      },
+      logging: false,
+    });
 
-            console.log('crediting', user.id, 'with', _transaction.amount);
+    if (!user) {
+      console.log('user not found with wallet', transaction.transaction_from);
 
-            user_model.update({
-              balance: new_balance
-            }, {
-              where: {
-                id: user.id
-              }
-            });
-
-            transaction_model.update({
-              user_id: user.id,
-              processed: true
-            }, {
-              where: {
-                id: _transaction.id
-              }
-            });
-
-            if (user.telegram_id) {
-              var resp = '🆕 *Update*: Your account was credited with ' + numeral(_transaction.amount).format('0,0') + ' WEBD. Funds in your /tipbalance are receiving /staking rewards.';
-
-              bot.sendMessage(user.telegram_id, resp, {
-                parse_mode: 'Markdown',
-                disable_web_page_preview: true,
-                disable_notification: true,
-              });
-            }
-          });
-      })(transaction);
+      continue;
     }
-  })
-  .catch(console.error);
+
+    const new_balance = user.balance + transaction.amount;
+
+    console.log('crediting', user.id, 'with', transaction.amount);
+
+    await user_model.update(
+      {
+        balance: new_balance,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+        logging: false,
+      }
+    );
+
+    await transaction_model.update(
+      {
+        user_id: user.id,
+        processed: true,
+      },
+      {
+        where: {
+          id: transaction.id,
+        },
+        logging: false,
+      }
+    );
+
+    if (user.telegram_id) {
+      const resp =
+        '🆕 *Update*: Your account was credited with ' +
+        numeral(transaction.amount).format('0,0') +
+        ' WEBD. Funds in your /tipbalance are receiving /staking rewards.';
+
+      await bot.sendMessage(user.telegram_id, resp, {
+        parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      });
+    }
+  }
+
+  return {
+    message: `Found ${transactions.length} transactions`,
+    event,
+  };
+};

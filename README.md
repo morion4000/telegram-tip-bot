@@ -43,3 +43,7 @@
 ## Docker image
 
 https://hub.docker.com/repository/docker/morion4000/telegram-tip-bot
+
+## Deploy
+
+`sls deploy`

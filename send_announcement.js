@@ -1,10 +1,10 @@
-var user = require('./../models').user,
-  config = require('./../config'),
+var user = require('./models').user,
+  config = require('./config'),
   TelegramBot = require('node-telegram-bot-api'),
   _ = require('underscore');
 
 var bot = new TelegramBot(config.telegram.token, {
-  polling: false
+  polling: false,
 });
 
 //var resp = '🆕 *Announcement*: The bot has been updated to include fees for tipping and withdrawal of funds. A new command /fees has been implemented to see what the fees are.';
@@ -27,37 +27,39 @@ var bot = new TelegramBot(config.telegram.token, {
 // resp += '*Try it out*: run /topup to see the available packages.';
 
 var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
-resp += ' \t ✅ Staking rewards have been increased to up to *25%* per year 🥳. Based on your /tipbalance the following rates apply:\n\n';
+resp +=
+  ' \t ✅ Staking rewards have been increased to up to *25%* per year 🥳. Based on your /tipbalance the following rates apply:\n\n';
 resp += ' \t\t 💰 More than 10,000 WEBD          ➡️ *15%* per year\n';
 resp += ' \t\t 💰 More than 1,000,000 WEBD     ➡️ *20%* per year\n';
 resp += ' \t\t 💰 More than 10,000,000 WEBD   ➡️ *25%* per year\n\n';
-resp += ' \t ✅ The minimum /tipbalance required for staking has been increased to 10,000 WEBD \n\n';
-resp += '*Try it out*: run /staking to see your earnings, and /deposit or /topup to add funds.';
+resp +=
+  ' \t ✅ The minimum /tipbalance required for staking has been increased to 10,000 WEBD \n\n';
+resp +=
+  '*Try it out*: run /staking to see your earnings, and /deposit or /topup to add funds.';
 
-user.model.findAll()
-  .then(function(found_users) {
-    console.log('found users', found_users.length);
+user.model.findAll().then(function (found_users) {
+  console.log('found users', found_users.length);
 
-    for (var i = 0; i < found_users.length; i++) {
-      var found_user = found_users[i];
+  for (var i = 0; i < found_users.length; i++) {
+    var found_user = found_users[i];
 
-      if (!found_user.telegram_id) {
-        continue;
-      }
-
-      // only me (@morion4000)
-      if (found_user.telegram_id !== '528354447') {
-        //continue;
-      }
-
-      console.log(found_user.id);
-
-      //continue;
-
-      bot.sendMessage(found_user.telegram_id, resp, {
-        parse_mode: 'Markdown',
-        disable_web_page_preview: true,
-        disable_notification: true,
-      });
+    if (!found_user.telegram_id) {
+      continue;
     }
-  });
+
+    // only me (@morion4000)
+    if (found_user.telegram_id !== '528354447') {
+      //continue;
+    }
+
+    console.log(found_user.id);
+
+    //continue;
+
+    bot.sendMessage(found_user.telegram_id, resp, {
+      parse_mode: 'Markdown',
+      disable_web_page_preview: true,
+      disable_notification: true,
+    });
+  }
+});

@@ -1,29 +1,25 @@
-var transaction_model = require('./../models').transaction.model,
-  config = require('./../config'),
-  _ = require('underscore'),
-  request = require('request');
+const transaction_model = require('./../models').transaction.model;
+const config = require('./../config');
+const axios = require('axios');
 
-var url = 'https://www.webdscan.io/api/transactions?address=' + encodeURIComponent(config.vault);
+const url = `https://www.webdscan.io/api/transactions?address=${encodeURIComponent(
+  config.vault
+)}`;
 
-setTimeout(function() {
-  process.exit(1);
-}, 60 * 1000);
+exports.handler = async function (event) {
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${config.webdscan.token}`,
+      Accept: 'application/json',
+    },
+  });
 
-request({
-  url: url,
-  auth: {
-    bearer: config.webdscan.token
-  },
-  headers: {
-    accept: 'application/json'
-  }
-}, function(error, response, body) {
-  var transactions = JSON.parse(body);
+  const transactions = response.data;
 
   console.log('found transactions', transactions.length);
 
-  for (var i = 0; i < transactions.length; i++) {
-    var transaction = transactions[i];
+  for (let i = 0; i < transactions.length; i++) {
+    const transaction = transactions[i];
 
     if (transaction.toAddresses.length > 1) {
       continue;
@@ -47,19 +43,31 @@ request({
 
     amount = parseInt(amount);
 
-    console.log('found transaction', transaction.hash, 'amount', amount, 'from', wallet);
+    console.log(
+      'found transaction',
+      transaction.hash,
+      'amount',
+      amount,
+      'from',
+      wallet
+    );
 
-    transaction_model.findOrCreate({
+    await transaction_model.findOrCreate({
       where: {
-        transaction_hash: transaction.hash
+        transaction_hash: transaction.hash,
       },
       defaults: {
         type: 'deposit',
         amount: amount,
         transaction_from: wallet,
-        transaction_hash: transaction.hash
+        transaction_hash: transaction.hash,
       },
-      logging: true
+      logging: false,
     });
   }
-});
+
+  return {
+    message: `Found ${transactions.length} transactions`,
+    event,
+  };
+};

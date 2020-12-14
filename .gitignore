@@ -63,3 +63,4 @@ typings/
 tmp/
 
 .idea
+.serverless

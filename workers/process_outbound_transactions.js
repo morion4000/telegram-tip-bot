@@ -1,29 +1,25 @@
-var transaction_model = require('./../models').transaction.model,
-  config = require('./../config'),
-  _ = require('underscore'),
-  request = require('request');
+const transaction_model = require('./../models').transaction.model;
+const config = require('./../config');
+const axios = require('axios');
 
-var url = 'https://www.webdscan.io/api/transactions?address=' + encodeURIComponent(config.vault);
+const url = `https://www.webdscan.io/api/transactions?address=${encodeURIComponent(
+  config.vault
+)}`;
 
-setTimeout(function() {
-  process.exit(1);
-}, 60 * 1000);
+exports.handler = async function (event) {
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${config.webdscan.token}`,
+      Accept: 'application/json',
+    },
+  });
 
-request({
-  url: url,
-  auth: {
-    bearer: config.webdscan.token
-  },
-  headers: {
-    accept: 'application/json'
-  }
-}, function(error, response, body) {
-  var transactions = JSON.parse(body);
+  const transactions = response.data;
 
   console.log('found transactions', transactions.length);
 
-  for (var i = 0; i < transactions.length; i++) {
-    var transaction = transactions[i];
+  for (let i = 0; i < transactions.length; i++) {
+    const transaction = transactions[i];
 
     if (transaction.toAddresses.length > 1) {
       continue;
@@ -42,24 +38,40 @@ request({
       continue;
     }
 
-    var amount = transaction.amount.amount / 10000;
-    var wallet = transaction.toAddresses[0].address.address;
-    var nonce = transaction.nonce;
+    const amount = parseInt(transaction.amount.amount / 10000);
+    const wallet = transaction.toAddresses[0].address.address;
+    const nonce = transaction.nonce;
 
-    amount = parseInt(amount);
+    console.log(
+      'found transaction',
+      transaction.hash,
+      'amount',
+      amount,
+      'to',
+      wallet,
+      'nonce',
+      nonce
+    );
 
-    console.log('found transaction', transaction.hash, 'amount', amount, 'to', wallet, 'nonce', nonce);
-
-    transaction_model.update({
-      processed: true,
-      transaction_hash: transaction.hash
-    }, {
-      where: {
-        type: 'withdraw',
-        amount: amount,
-        transaction_to: wallet,
-        extra_data: nonce
+    await transaction_model.update(
+      {
+        processed: true,
+        transaction_hash: transaction.hash,
+      },
+      {
+        where: {
+          type: 'withdraw',
+          amount: amount,
+          transaction_to: wallet,
+          extra_data: nonce,
+        },
+        logging: false,
       }
-    });
+    );
   }
-});
+
+  return {
+    message: `Found ${transactions.length} transactions`,
+    event,
+  };
+};

@@ -3,23 +3,23 @@ var config = require('../config');
 var commands = require('../commands');
 
 var bot = new TelegramBot(config.telegram.token, {
-  polling: false
+  polling: false,
 });
 
 var system_command = commands.system(bot);
 
 console.log('started worker');
 
-setTimeout(function() {
+setTimeout(function () {
   process.exit(1);
 }, 60 * 1000); // 1 minutes
 
 system_command({
   text: '/system auto',
   chat: {
-    id: config.admin.telegram_chat_id
+    id: config.admin.telegram_chat_id,
   },
   from: {
-    username: config.admin.telegram_username
-  }
+    username: config.admin.telegram_username,
+  },
 });
