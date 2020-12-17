@@ -1,3 +1,3 @@
-const worker = require('./workers/process_withdraws');
+const worker = require('./workers/check_node_fork');
 
 worker.handler();
