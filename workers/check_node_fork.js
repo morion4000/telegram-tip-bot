@@ -14,11 +14,12 @@ const FALLBACK_URL =
 const DELTA = process.env.DELTA || 2;
 const SUBJECT = `[ALERT][${NODE_URL}] Node in fork or down`;
 const FROM = 'Hostero <no-reply@mg.hostero.eu>';
+const AXIOS_TIMEOUT = 3000;
 
 exports.handler = async function (event) {
   try {
-    const request_node = await axios.get(NODE_URL);
-    const request_fallback = await axios.get(FALLBACK_URL);
+    const request_node = await axios.get(NODE_URL, {timeout: AXIOS_TIMEOUT});
+    const request_fallback = await axios.get(FALLBACK_URL, {timeout: AXIOS_TIMEOUT});
     const response_node = request_node.data;
     const response_fallback = request_fallback.data;
 
