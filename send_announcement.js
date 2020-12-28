@@ -26,19 +26,29 @@ var bot = new TelegramBot(config.telegram.token, {
 // resp += '💵 You are now able to purchase WEBD instantly from the bot with your card, Apple or Google Pay.\n\n';
 // resp += '*Try it out*: run /topup to see the available packages.';
 
+// var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
+// resp +=
+//   ' \t ✅ Staking rewards have been increased to up to *25%* per year 🥳. Based on your /tipbalance the following rates apply:\n\n';
+// resp += ' \t\t 💰 More than 10,000 WEBD          ➡️ *15%* per year\n';
+// resp += ' \t\t 💰 More than 1,000,000 WEBD     ➡️ *20%* per year\n';
+// resp += ' \t\t 💰 More than 10,000,000 WEBD   ➡️ *25%* per year\n\n';
+// resp +=
+//   ' \t ✅ The minimum /tipbalance required for staking has been increased to 10,000 WEBD \n\n';
+// resp +=
+//   '*Try it out*: run /staking to see your earnings, and /deposit or /topup to add funds.';
+
 var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
 resp +=
-  ' \t ✅ Staking rewards have been increased to up to *25%* per year 🥳. Based on your /tipbalance the following rates apply:\n\n';
-resp += ' \t\t 💰 More than 10,000 WEBD          ➡️ *15%* per year\n';
-resp += ' \t\t 💰 More than 1,000,000 WEBD     ➡️ *20%* per year\n';
-resp += ' \t\t 💰 More than 10,000,000 WEBD   ➡️ *25%* per year\n\n';
+  ' \t ✅ Staking rewards have been increased to *25%* per year for all users 🎅 \n\n';
 resp +=
-  ' \t ✅ The minimum /tipbalance required for staking has been increased to 10,000 WEBD \n\n';
+  ' \t ✅ The minimum /tipbalance required for staking has been lowered to 1500 WEBD 🥳 \n\n';
 resp +=
-  '*Try it out*: run /staking to see your earnings, and /deposit or /topup to add funds.';
+  ' \t ✅ Users are going to receive daily notifications when staking rewards are sent \n\n';
+resp +=
+  '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
 
-user.model.findAll().then(function (found_users) {
-  console.log('found users', found_users.length);
+user.model.findAll().then(async function (found_users) {
+  var sent_to_users = 0;
 
   for (var i = 0; i < found_users.length; i++) {
     var found_user = found_users[i];
@@ -52,14 +62,23 @@ user.model.findAll().then(function (found_users) {
       //continue;
     }
 
-    console.log(found_user.id);
+    console.log(found_user.id, found_user.telegram_username);
 
     //continue;
 
-    bot.sendMessage(found_user.telegram_id, resp, {
-      parse_mode: 'Markdown',
-      disable_web_page_preview: true,
-      disable_notification: true,
-    });
+    try {
+      await bot.sendMessage(found_user.telegram_id, resp, {
+        parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      });
+
+      sent_to_users++;
+    } catch (error) {
+      console.error(error.message || error);
+    }
+
+    console.log('found users', found_users.length);
+    console.log('sent to users', sent_to_users);
   }
 });
