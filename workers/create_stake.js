@@ -31,13 +31,13 @@ exports.handler = async function (event) {
   const bot = new TelegramBot(config.telegram.token, {
     polling: false,
   });
-  
+
   let total_stake = 0;
 
   // Avoid running multiple times in the same day
   if (await has_ran_recently()) {
     console.log('closing, ran recently');
-    
+
     return;
   }
 
@@ -54,17 +54,13 @@ exports.handler = async function (event) {
       continue;
     }
 
-    let yearly_percentage = 0;
-
-    if (user.balance >= config.staking.tier3_threshold) {
-      yearly_percentage = config.staking.yearly_percentage_tier3;
-    } else if (user.balance >= config.staking.tier2_threshold) {
-      yearly_percentage = config.staking.yearly_percentage_tier2;
-    } else if (user.balance >= config.staking.tier1_threshold) {
-      yearly_percentage = config.staking.yearly_percentage_tier1;
+    if (user.balance < config.staking.threshold) {
+      continue;
     }
 
-    const stake = Math.floor((user.balance * yearly_percentage) / 100 / 360);
+    const stake = Math.floor(
+      (user.balance * config.staking.yearly_percentage) / 100 / 360
+    );
 
     total_stake += stake;
 
@@ -77,7 +73,7 @@ exports.handler = async function (event) {
       stake,
       user.telegram_username,
       'percentage',
-      yearly_percentage,
+      config.staking.yearly_percentage,
       'balance',
       user.balance
     );
@@ -91,8 +87,8 @@ exports.handler = async function (event) {
           old_balance: user.balance,
           new_balance: user.balance + stake,
           reward: stake,
-          monthly_percentage: yearly_percentage / 12, // legacy
-          yearly_percentage: yearly_percentage,
+          monthly_percentage: config.staking.yearly_percentage / 12, // legacy
+          yearly_percentage: config.staking.yearly_percentage,
         }),
         source: 'workers.create_stake',
       },
@@ -112,7 +108,7 @@ exports.handler = async function (event) {
         logging: false,
       }
     );
-    
+
     const resp =
       '🆕 *Update*: New staking reward. Your account was credited *' +
       numeral(stake).format('0,0') +

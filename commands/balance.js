@@ -52,21 +52,11 @@ var Command = function (bot) {
         })
         .then(function (found_user) {
           if (found_user) {
-            var yearly_percentage = 0;
-
-            if (found_user.balance >= config.staking.tier3_threshold) {
-              yearly_percentage = config.staking.yearly_percentage_tier3;
-            } else if (found_user.balance >= config.staking.tier2_threshold) {
-              yearly_percentage = config.staking.yearly_percentage_tier2;
-            } else if (found_user.balance >= config.staking.tier1_threshold) {
-              yearly_percentage = config.staking.yearly_percentage_tier1;
-            }
-
             resp =
               '💰 Balance: *' +
               numeral(found_user.balance).format('0,0') +
               '* WEBD. Receiving /staking rewards @ *' +
-              yearly_percentage +
+              config.staking.yearly_percentage +
               '%* per year.\n\n';
             resp += '💵 You can add more funds using /topup.';
           } else {
