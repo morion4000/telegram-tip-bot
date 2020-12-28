@@ -50,6 +50,10 @@ exports.handler = async function (event) {
   for (let i = 0; i < users.length; i++) {
     const user = users[i];
 
+    // if (user.telegram_id !== '528354447') {
+    //   continue;
+    // }
+
     if (!user.telegram_id) {
       continue;
     }
@@ -110,7 +114,7 @@ exports.handler = async function (event) {
     );
 
     const resp =
-      '🆕 *Update*: New staking reward. Your account was credited *' +
+      '💰 New /staking reward. Your /tipbalance was credited *' +
       numeral(stake).format('0,0') +
       ' WEBD*.';
 
