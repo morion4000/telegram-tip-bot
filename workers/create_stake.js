@@ -2,6 +2,8 @@ const user_model = require('./../models').user.model;
 const log_model = require('./../models').log.model;
 const config = require('./../config');
 const moment = require('moment');
+const numeral = require('numeral');
+const TelegramBot = require('node-telegram-bot-api');
 
 async function has_ran_recently() {
   const logs = await log_model.findAll({
@@ -26,6 +28,10 @@ async function has_ran_recently() {
 }
 
 exports.handler = async function (event) {
+  const bot = new TelegramBot(config.telegram.token, {
+    polling: false,
+  });
+  
   let total_stake = 0;
 
   // Avoid running multiple times in the same day
@@ -106,6 +112,17 @@ exports.handler = async function (event) {
         logging: false,
       }
     );
+    
+    const resp =
+      '🆕 *Update*: New staking reward. Your account was credited *' +
+      numeral(stake).format('0,0') +
+      ' WEBD*.';
+
+    await bot.sendMessage(user.telegram_id, resp, {
+      parse_mode: 'Markdown',
+      disable_web_page_preview: true,
+      disable_notification: true,
+    });
   }
 
   console.log('total stake', total_stake);
