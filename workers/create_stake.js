@@ -118,11 +118,15 @@ exports.handler = async function (event) {
       numeral(stake).format('0,0') +
       ' WEBD*.';
 
-    bot.sendMessage(user.telegram_id, resp, {
-      parse_mode: 'Markdown',
-      disable_web_page_preview: true,
-      disable_notification: true,
-    });
+    bot
+      .sendMessage(user.telegram_id, resp, {
+        parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   }
 
   console.log('total stake', total_stake);
