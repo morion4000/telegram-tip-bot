@@ -58,7 +58,7 @@ functions:
     memorySize: 256
     handler: workers/create_stake.handler
     events:
-      - schedule: cron(0 12 * * ? *)
+      - schedule: cron(0 10 * * ? *)
     environment:
       NODE_ENV: production
 
