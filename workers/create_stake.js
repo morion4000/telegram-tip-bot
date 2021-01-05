@@ -65,6 +65,7 @@ exports.handler = async function (event) {
     const stake = Math.floor(
       (user.balance * config.staking.yearly_percentage) / 100 / 360
     );
+    const new_balance = user.balance + stake;
 
     total_stake += stake;
 
@@ -89,7 +90,7 @@ exports.handler = async function (event) {
         message: 'New staking reward',
         extra_message: JSON.stringify({
           old_balance: user.balance,
-          new_balance: user.balance + stake,
+          new_balance: new_balance,
           reward: stake,
           monthly_percentage: config.staking.yearly_percentage / 12, // legacy
           yearly_percentage: config.staking.yearly_percentage,
@@ -103,7 +104,7 @@ exports.handler = async function (event) {
 
     await user_model.update(
       {
-        balance: user.balance + stake,
+        balance: new_balance,
       },
       {
         where: {
@@ -113,10 +114,11 @@ exports.handler = async function (event) {
       }
     );
 
-    const resp =
-      '💰 New /staking reward. Your /tipbalance was credited *' +
-      numeral(stake).format('0,0') +
-      ' WEBD*.';
+    const resp = `💰 New /staking reward: *${numeral(stake).format(
+      '0,0'
+    )} WEBD*. Your /tipbalance is *${numeral(new_balance).format(
+      '0,0'
+    )} WEBD*.`;
 
     bot
       .sendMessage(user.telegram_id, resp, {
