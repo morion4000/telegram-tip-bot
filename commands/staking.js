@@ -58,7 +58,7 @@ var Command = function (bot) {
               config.staking.yearly_percentage +
               '%* per year, received daily.\n\n';
             resp +=
-              'Your must have at least ' +
+              'You must have at least ' +
               numeral(config.staking.threshold).format('0,0') +
               ' WEBD to get staking rewards.\n\n';
             resp += 'ℹ️ Latest 10 staking rewards:\n\n';
