@@ -1,5 +1,6 @@
 const user_model = require('./../models').user.model;
 const log_model = require('./../models').log.model;
+const coin = require('./../models').coin.model;
 const config = require('./../config');
 const moment = require('moment');
 const numeral = require('numeral');
@@ -41,6 +42,16 @@ exports.handler = async function (event) {
     return;
   }
 
+  const webdollar = await coin.findOne({
+    where: {
+      ticker: 'WEBD',
+    },
+  });
+
+  if (!webdollar) {
+    throw new Error('Coin not found');
+  }
+
   const users = await user_model.findAll({
     logging: false,
   });
@@ -66,6 +77,7 @@ exports.handler = async function (event) {
       (user.balance * config.staking.yearly_percentage) / 100 / 360
     );
     const new_balance = user.balance + stake;
+    const stake_usd = parseFloat(stake * webdollar.price_usd);
 
     total_stake += stake;
 
@@ -116,9 +128,9 @@ exports.handler = async function (event) {
 
     const resp = `💰 New /staking reward: *${numeral(stake).format(
       '0,0'
-    )}* WEBD. Your /tipbalance is: *${numeral(new_balance).format(
+    )}* WEBD ($${numeral(stake_usd).format(
       '0,0'
-    )}* WEBD.`;
+    )}). Your /tipbalance is: *${numeral(new_balance).format('0,0')}* WEBD.`;
 
     bot
       .sendMessage(user.telegram_id, resp, {
