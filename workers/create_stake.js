@@ -104,6 +104,7 @@ exports.handler = async function (event) {
           old_balance: user.balance,
           new_balance: new_balance,
           reward: stake,
+          reward_usd: stake_usd,
           monthly_percentage: config.staking.yearly_percentage / 12, // legacy
           yearly_percentage: config.staking.yearly_percentage,
         }),
