@@ -62,6 +62,14 @@ functions:
     environment:
       NODE_ENV: production
 
+  update_webdollar_price:
+    memorySize: 128
+    handler: workers/update_webdollar_price.handler
+    events:
+      - schedule: rate(5 minutes)
+    environment:
+      NODE_ENV: production
+
   check_node_fork_tip_bot:
     memorySize: 128
     handler: workers/check_node_fork.handler

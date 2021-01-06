@@ -20,4 +20,5 @@ module.exports.tip = require('./tip')(sequelize);
 module.exports.transaction = require('./transaction')(sequelize);
 module.exports.log = require('./log')(sequelize);
 module.exports.user = require('./user')(sequelize);
+module.exports.coin = require('./coin')(sequelize);
 module.exports.sequelize = sequelize;
