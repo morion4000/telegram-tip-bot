@@ -23,7 +23,7 @@ provider:
 
 functions:
   process_inbound_transactions:
-    memorySize: 128
+    memorySize: 256
     handler: workers/process_inbound_transactions.handler
     events:
       - schedule: rate(1 minute)
@@ -31,7 +31,7 @@ functions:
       NODE_ENV: production
 
   process_outbound_transactions:
-    memorySize: 128
+    memorySize: 256
     handler: workers/process_outbound_transactions.handler
     events:
       - schedule: rate(1 minute)
@@ -63,7 +63,7 @@ functions:
       NODE_ENV: production
 
   update_webdollar_price:
-    memorySize: 128
+    memorySize: 256
     handler: workers/update_webdollar_price.handler
     events:
       - schedule: rate(5 minutes)
@@ -71,7 +71,7 @@ functions:
       NODE_ENV: production
 
   check_node_fork_tip_bot:
-    memorySize: 128
+    memorySize: 256
     handler: workers/check_node_fork.handler
     events:
       - schedule: rate(20 minutes)
@@ -81,7 +81,7 @@ functions:
       DELTA: 10
 
   check_node_fork_wmp_europe:
-    memorySize: 128
+    memorySize: 256
     handler: workers/check_node_fork.handler
     events:
       - schedule: rate(60 minutes)

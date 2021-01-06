@@ -86,15 +86,15 @@ exports.handler = async function (event) {
         numeral(amount_usd).format('0,0.00') +
         '). Funds in your /tipbalance are receiving /staking rewards.';
 
-      bot
-        .sendMessage(user.telegram_id, resp, {
+      try {
+        await bot.sendMessage(user.telegram_id, resp, {
           parse_mode: 'Markdown',
           disable_web_page_preview: true,
           disable_notification: true,
-        })
-        .catch((error) => {
-          console.log(error.message);
         });
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 

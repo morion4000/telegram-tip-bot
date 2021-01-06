@@ -113,15 +113,15 @@ exports.handler = async function (event) {
           numeral(amount_usd).format('0,0.00') +
           ').';
 
-        bot
-          .sendMessage(user.telegram_id, resp, {
+        try {
+          await bot.sendMessage(user.telegram_id, resp, {
             parse_mode: 'Markdown',
             disable_web_page_preview: true,
             disable_notification: true,
-          })
-          .catch((error) => {
-            console.log(error.message);
           });
+        } catch (error) {
+          console.error(error);
+        }
       }
     } else {
       console.error('error sending transaction', error, body);
