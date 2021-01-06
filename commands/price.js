@@ -1,64 +1,43 @@
-var config = require('./../config'),
-  _ = require('underscore'),
-  request = require('request'),
-  crequest = require('cached-request')(request),
-  coingecko_api_url = 'https://api.coingecko.com/api/v3/coins/',
-  api_url_postfix =
-    '?market_data=true&community_data=false&developer_data=false';
+var coin = require('./../models').coin.model,
+  config = require('./../config');
 
 var Command = function (bot) {
-  crequest.setCacheDirectory('tmp');
-
-  return function (msg, match) {
+  return async function (msg, match) {
     try {
-      var resp = '';
-      var url = coingecko_api_url + 'webdollar' + api_url_postfix;
+      let resp = '';
 
       console.log(msg.text);
 
-      crequest(
-        {
-          url: url,
-          ttl: 3600 * 1000, // 1h
+      const webdollar = await coin.findOne({
+        where: {
+          ticker: 'WEBD',
         },
-        function (err, response, body) {
-          if (err) {
-            console.error(err);
-            return;
-          }
+      });
 
-          var data = JSON.parse(body);
+      if (!webdollar) {
+        throw new Error('Coin not found');
+      }
 
-          if (data.error) {
-            console.error(data.error);
-            return;
-          }
+      resp =
+        '1,000,000 WEBD ➡️ $' +
+        parseInt(webdollar.price_usd * 1000000) +
+        '\n\n';
+      resp += 'USD: ' + webdollar.price_usd.toFixed(10) + '\n';
+      resp += 'BTC: ' + webdollar.price_btc.toFixed(10) + '\n';
+      resp += 'ETH: ' + webdollar.price_eth.toFixed(10) + '\n\n';
+      resp += '24hr High: $' + webdollar.volume_daily_high_usd + '\n';
+      resp += '24hr Low: $' + webdollar.volume_daily_low_usd + '\n';
+      resp += '24hr Volume: $' + webdollar.volume_daily_total_usd + '\n';
 
-          resp =
-            '1,000,000 WEBD ➡️ $' +
-            parseInt(data.market_data.current_price.usd * 1000000) +
-            '\n\n';
-          resp +=
-            'USD: ' + data.market_data.current_price.usd.toFixed(10) + '\n';
-          resp +=
-            'BTC: ' + data.market_data.current_price.btc.toFixed(10) + '\n';
-          resp +=
-            'ETH: ' + data.market_data.current_price.eth.toFixed(10) + '\n\n';
-          resp += '24hr High: $' + data.market_data.high_24h.usd + '\n';
-          resp += '24hr Low: $' + data.market_data.low_24h.usd + '\n';
-          resp += '24hr Volume: $' + data.market_data.total_volume.usd + '\n';
-
-          bot.sendMessage(msg.chat.id, resp, {
-            parse_mode: 'Markdown',
-            disable_web_page_preview: true,
-            disable_notification: true,
-          });
-        }
-      );
+      await bot.sendMessage(msg.chat.id, resp, {
+        parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      });
     } catch (e) {
       console.error('/price', e);
 
-      bot.sendMessage(msg.chat.id, config.messages.internal_error, {
+      await bot.sendMessage(msg.chat.id, config.messages.internal_error, {
         //parse_mode: 'Markdown',
         disable_web_page_preview: true,
         disable_notification: true,
