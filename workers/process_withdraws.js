@@ -107,11 +107,11 @@ exports.handler = async function (event) {
       if (user.telegram_id) {
         const amount_usd = parseFloat(transaction.amount * webdollar.price_usd);
         const resp =
-          '🆕 *Update*: Withdraw transaction is being processed. Your wallet `' +
-          transaction.transaction_to +
-          '` will receive *' +
+          '🆕 *Update*: Withdraw transaction is being processed. Your /wallet will receive *' +
           numeral(transaction.amount).format('0,0') +
-          '* WEBD ($' + numeral(amount_usd).format('0,0.00') + ').';
+          '* WEBD ($' +
+          numeral(amount_usd).format('0,0.00') +
+          ').';
 
         bot
           .sendMessage(user.telegram_id, resp, {
