@@ -83,7 +83,7 @@ exports.handler = async function (event) {
         '🆕 *Update*: Your account was credited with *' +
         numeral(transaction.amount).format('0,0') +
         '* WEBD ($' +
-        numeral(amount_usd).format('0,0') +
+        numeral(amount_usd).format('0,0.00') +
         '). Funds in your /tipbalance are receiving /staking rewards.';
 
       bot

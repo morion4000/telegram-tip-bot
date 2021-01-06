@@ -111,7 +111,7 @@ exports.handler = async function (event) {
           transaction.transaction_to +
           '` will receive *' +
           numeral(transaction.amount).format('0,0') +
-          '* WEBD ($' + numeral(amount_usd).format('0,0') + ').';
+          '* WEBD ($' + numeral(amount_usd).format('0,0.00') + ').';
 
         bot
           .sendMessage(user.telegram_id, resp, {

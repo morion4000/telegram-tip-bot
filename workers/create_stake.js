@@ -130,7 +130,7 @@ exports.handler = async function (event) {
     const resp = `💰 New /staking reward: *${numeral(stake).format(
       '0,0'
     )}* WEBD ($${numeral(stake_usd).format(
-      '0,0'
+      '0,0.00'
     )}). Your /tipbalance is: *${numeral(new_balance).format('0,0')}* WEBD.`;
 
     bot
