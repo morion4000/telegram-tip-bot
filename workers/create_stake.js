@@ -1,6 +1,6 @@
 const user_model = require('./../models').user.model;
 const log_model = require('./../models').log.model;
-const coin = require('./../models').coin.model;
+const coin_model = require('./../models').coin.model;
 const config = require('./../config');
 const moment = require('moment');
 const numeral = require('numeral');
@@ -42,7 +42,7 @@ exports.handler = async function (event) {
     return;
   }
 
-  const webdollar = await coin.findOne({
+  const webdollar = await coin_model.findOne({
     where: {
       ticker: 'WEBD',
     },
