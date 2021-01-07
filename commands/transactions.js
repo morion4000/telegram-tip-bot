@@ -1,8 +1,7 @@
 var user = require('./../models').user,
   transaction = require('./../models').transaction,
-  config = require('./../config'),
   numeral = require('numeral'),
-  _ = require('underscore'),
+  moment = require('moment'),
   Sequelize = require('sequelize');
 
 var Command = function (bot) {
@@ -77,7 +76,7 @@ var Command = function (bot) {
 
                   resp +=
                     '\t ✅ (' +
-                    t.createdAt.toDateString() +
+                    moment(t.createdAt).format('L') +
                     ') ' +
                     status +
                     ' ' +
