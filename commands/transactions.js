@@ -81,9 +81,9 @@ var Command = function (bot) {
                     status +
                     ' ' +
                     t.type +
-                    ', amount ' +
+                    ': *' +
                     numeral(t.amount).format('0,0') +
-                    ' WEBD\n';
+                    '* WEBD\n';
                 }
 
                 bot.sendMessage(msg.chat.id, resp, {
