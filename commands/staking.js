@@ -86,7 +86,7 @@ var Command = function (bot) {
                     break;
                   }
 
-                  const reward_usd = extra.reward_usd || '-';
+                  const reward_usd = extra.reward_usd || 0;
 
                   resp +=
                     '\t ✅  (' +
@@ -94,7 +94,7 @@ var Command = function (bot) {
                     ') New reward: *' +
                     numeral(extra.reward).format('0,0') +
                     '* WEBD ($' +
-                    reward_usd +
+                    numeral(reward_usd).format('0,0.00') +
                     ')\n';
                 }
 

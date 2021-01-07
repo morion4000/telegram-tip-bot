@@ -68,7 +68,7 @@ var Command = function (bot) {
           '💰 Balance: *' +
           numeral(found_user.balance).format('0,0') +
           '* WEBD ($' +
-          numeral(balance_usd).format('0,0') +
+          numeral(balance_usd).format('0,0.00') +
           '). Receiving /staking rewards @ *' +
           config.staking.yearly_percentage +
           '%* per year.\n\n';

@@ -1,5 +1,6 @@
-var user = require('./../models').user,
-  tip = require('./../models').tip,
+var user_model = require('./../models').user.model,
+  coin_model = require('./../models').coin.model,
+  tip_model = require('./../models').tip.model,
   config = require('./../config'),
   async = require('async'),
   numeral = require('numeral'),
@@ -56,7 +57,7 @@ var Command = function (bot) {
       async.parallel(
         [
           function (callback) {
-            user.model
+            user_model
               .findOne({
                 where: {
                   [Sequelize.Op.or]: [
@@ -72,10 +73,11 @@ var Command = function (bot) {
               })
               .then(function (res) {
                 callback(null, res);
-              });
+              })
+              .catch(callback);
           },
           function (callback) {
-            user.model
+            user_model
               .findOrCreate({
                 where: {
                   telegram_username: to_username,
@@ -88,7 +90,20 @@ var Command = function (bot) {
               })
               .then(function (res) {
                 callback(null, res[0]);
-              });
+              })
+              .catch(callback);
+          },
+          function (callback) {
+            coin_model
+              .findOne({
+                where: {
+                  ticker: 'WEBD',
+                },
+              })
+              .then(function (res) {
+                callback(null, res);
+              })
+              .catch(callback);
           },
         ],
         function (err, users) {
@@ -112,6 +127,10 @@ var Command = function (bot) {
 
           var from_user = users[0];
           var to_user = users[1];
+          var webdollar = users[2];
+          var amount_usd = webdollar
+            ? parseFloat(webdollar.price_usd * amount)
+            : 0;
           var to_user_balance =
             to_user.balance === null ? config.initial_balance : to_user.balance;
           var from_user_balance =
@@ -133,7 +152,7 @@ var Command = function (bot) {
           } else if (amount < 10 || amount > 10000000) {
             resp = 'Please send between 10 and 10,000,000 WEBD.';
           } else {
-            tip.model.create({
+            tip_model.create({
               amount: amount,
               private: msg.chat.type === 'private' ? true : false,
               telegram_id: msg.chat.id,
@@ -144,7 +163,7 @@ var Command = function (bot) {
               to_user: to_user.id,
             });
 
-            user.model.update(
+            user_model.update(
               {
                 balance: to_user_balance + amount,
               },
@@ -155,7 +174,7 @@ var Command = function (bot) {
               }
             );
 
-            user.model.update(
+            user_model.update(
               {
                 balance: from_user_balance - amount - config.fees.tip,
               },
@@ -170,7 +189,9 @@ var Command = function (bot) {
               var tip_msg =
                 '💰 You were tipped ' +
                 numeral(amount).format('0,0') +
-                ' WEBD by @' +
+                ' WEBD ($' +
+                numeral(amount_usd).format('0,0.00') +
+                ') by @' +
                 from_user.telegram_username +
                 '. Funds in your /tipbalance are receiving /staking rewards.';
 
@@ -186,7 +207,9 @@ var Command = function (bot) {
               to_user.telegram_username +
               ' was tipped ' +
               numeral(amount).format('0,0') +
-              ' WEBD by @' +
+              ' WEBD ($' +
+              numeral(amount_usd).format('0,0.00') +
+              ') by @' +
               from_user.telegram_username;
           }
 
