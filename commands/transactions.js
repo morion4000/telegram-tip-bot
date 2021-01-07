@@ -72,7 +72,7 @@ var Command = function (bot) {
                   }
 
                   var t = transactions[i];
-                  var status = t.processed ? 'Processed' : 'Processing';
+                  var status = t.processed ? 'Processed' : 'Pending';
 
                   resp +=
                     '\t ✅ (' +
