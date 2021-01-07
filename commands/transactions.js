@@ -52,10 +52,7 @@ var Command = function (bot) {
         })
         .then(function (found_user) {
           if (found_user) {
-            resp =
-              'Transactions for @' +
-              found_user.telegram_username +
-              ' (last 10)\n\n';
+            resp = 'ℹ️ Latest 10 transactions:\n\n';
 
             transaction.model
               .findAll({
@@ -87,7 +84,7 @@ var Command = function (bot) {
                 }
 
                 bot.sendMessage(msg.chat.id, resp, {
-                  //parse_mode: 'Markdown',
+                  parse_mode: 'Markdown',
                   disable_web_page_preview: true,
                   disable_notification: true,
                 });
