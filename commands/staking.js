@@ -2,7 +2,7 @@ var user = require('./../models').user,
   log = require('./../models').log,
   config = require('./../config'),
   numeral = require('numeral'),
-  _ = require('underscore'),
+  moment = require('moment'),
   Sequelize = require('sequelize');
 
 var Command = function (bot) {
@@ -86,11 +86,15 @@ var Command = function (bot) {
                     break;
                   }
 
+                  const reward_usd = extra.reward_usd || '-';
+
                   resp +=
-                    '\t ✅ New reward: *' +
+                    '\t ✅  (' +
+                    moment(l.createdAt).format('L') +
+                    ') New reward: *' +
                     numeral(extra.reward).format('0,0') +
-                    '* WEBD (' +
-                    l.createdAt.toDateString() +
+                    '* WEBD ($' +
+                    reward_usd +
                     ')\n';
                 }
 
