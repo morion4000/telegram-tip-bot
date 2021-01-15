@@ -105,7 +105,7 @@ exports.handler = async function (event) {
           old_balance: user.balance,
           new_balance: new_balance,
           new_balance_usd: new_balance_usd,
-          price_usd: webdollar.price_usd, 
+          price_usd: webdollar.price_usd,
           reward: stake,
           reward_usd: stake_usd,
           monthly_percentage: config.staking.yearly_percentage / 12, // legacy
@@ -134,9 +134,9 @@ exports.handler = async function (event) {
       '0,0'
     )}* WEBD ($${numeral(stake_usd).format(
       '0,0.00'
-    )}). Your /tipbalance is: *${numeral(new_balance).format('0,0')}* WEBD. ($${numeral(new_balance_usd).format(
-      '0,0.00'
-    )})`;
+    )}). Your /tipbalance is: *${numeral(new_balance).format(
+      '0,0'
+    )}* WEBD. ($${numeral(new_balance_usd).format('0,0.00')})`;
 
     bot
       .sendMessage(user.telegram_id, resp, {
