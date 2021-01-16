@@ -136,7 +136,7 @@ exports.handler = async function (event) {
       '0,0.00'
     )}). Your /tipbalance is: *${numeral(new_balance).format(
       '0,0'
-    )}* WEBD. ($${numeral(new_balance_usd).format('0,0.00')})`;
+    )}* WEBD ($${numeral(new_balance_usd).format('0,0.00')}).`;
 
     bot
       .sendMessage(user.telegram_id, resp, {
