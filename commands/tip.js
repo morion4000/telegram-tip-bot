@@ -187,7 +187,7 @@ var Command = function (bot) {
 
             if (to_user.telegram_id) {
               var tip_msg =
-                '💰 You were tipped ' +
+                'You were tipped ' +
                 numeral(amount).format('0,0') +
                 ' WEBD ($' +
                 numeral(amount_usd).format('0,0.00') +
@@ -203,7 +203,7 @@ var Command = function (bot) {
             }
 
             resp =
-              '💰 @' +
+              '@' +
               to_user.telegram_username +
               ' was tipped ' +
               numeral(amount).format('0,0') +
