@@ -65,7 +65,7 @@ var Command = function (bot) {
 
       if (found_user) {
         resp =
-          '💰 Balance: *' +
+          'Balance: *' +
           numeral(found_user.balance).format('0,0') +
           '* WEBD ($' +
           numeral(balance_usd).format('0,0.00') +
