@@ -124,13 +124,13 @@ exports.handler = async function (event) {
         }
       }
     } else {
-      console.error('error sending transaction', error, body);
+      console.error('error sending transaction', response);
 
       await mailgun.messages().send({
         from: 'Hostero <no-reply@mg.hostero.eu>',
         to: config.admin.email,
         subject: '[SYSTEM] WITHDRAWAL ERROR - Telegram Tip Bot',
-        text: body,
+        text: response,
       });
     }
   }
