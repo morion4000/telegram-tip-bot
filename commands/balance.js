@@ -61,9 +61,9 @@ var Command = function (bot) {
         throw new Error('Coin not found');
       }
 
-      const balance_usd = parseFloat(found_user.balance * webdollar.price_usd);
-
       if (found_user) {
+        const balance_usd = parseFloat(found_user.balance * webdollar.price_usd);
+
         resp =
           'Balance: *' +
           numeral(found_user.balance).format('0,0') +
