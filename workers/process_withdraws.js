@@ -71,7 +71,7 @@ exports.handler = async function (event) {
       '/' +
       TRANSACTION_FEE;
 
-    console.log('calling', url);
+    console.log('calling transaction create endpoint');
 
     const response = await axios.get(url, {
       headers: {
