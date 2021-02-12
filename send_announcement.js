@@ -37,13 +37,19 @@ var bot = new TelegramBot(config.telegram.token, {
 // resp +=
 //   '*Try it out*: run /staking to see your earnings, and /deposit or /topup to add funds.';
 
+// var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
+// resp +=
+//   ' \t ✅ Staking rewards have been increased to *25%* per year for all users 🎅 \n\n';
+// resp +=
+//   ' \t ✅ The minimum /tipbalance required for staking has been lowered to 1500 WEBD 🥳 \n\n';
+// resp +=
+//   ' \t ✅ Users are going to receive daily notifications when staking rewards are sent \n\n';
+// resp +=
+//   '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
+
 var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
 resp +=
-  ' \t ✅ Staking rewards have been increased to *25%* per year for all users 🎅 \n\n';
-resp +=
-  ' \t ✅ The minimum /tipbalance required for staking has been lowered to 1500 WEBD 🥳 \n\n';
-resp +=
-  ' \t ✅ Users are going to receive daily notifications when staking rewards are sent \n\n';
+  ' \t ✅ The minimum staking amount has been lowered. Users can now stake with *1 WEBD* \n\n';
 resp +=
   '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
 
@@ -59,7 +65,7 @@ user.model.findAll().then(async function (found_users) {
 
     // only me (@morion4000)
     if (found_user.telegram_id !== '528354447') {
-      //continue;
+      continue;
     }
 
     console.log(found_user.id, found_user.telegram_username);
