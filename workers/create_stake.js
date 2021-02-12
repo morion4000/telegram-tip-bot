@@ -76,15 +76,17 @@ exports.handler = async function (event) {
     const stake = Math.floor(
       (user.balance * config.staking.yearly_percentage) / 100 / 360
     );
+    
+    // Allow staking with low amounts
+    if (stake < 1) {
+      stake = 1;
+    }
+    
     const new_balance = user.balance + stake;
     const stake_usd = parseFloat(stake * webdollar.price_usd);
     const new_balance_usd = parseFloat(new_balance * webdollar.price_usd);
-
+    
     total_stake += stake;
-
-    if (stake === 0) {
-      continue;
-    }
 
     console.log(
       'staking',
