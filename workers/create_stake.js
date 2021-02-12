@@ -73,7 +73,7 @@ exports.handler = async function (event) {
       continue;
     }
 
-    const stake = Math.floor(
+    let stake = Math.floor(
       (user.balance * config.staking.yearly_percentage) / 100 / 360
     );
     
