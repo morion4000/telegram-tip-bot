@@ -41,7 +41,7 @@ module.exports = {
     yearly_percentage_tier1: 15,
     yearly_percentage_tier2: 20,
     yearly_percentage_tier3: 25,
-    threshold: 1500,
+    threshold: 1,
     tier1_threshold: 10000,
     tier2_threshold: 1000000,
     tier3_threshold: 10000000,
