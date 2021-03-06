@@ -137,6 +137,9 @@ class Webhooks {
     try {
       await verify(headers, body, config.paypal.webhook_id);
 
+      // Possibly use body.resource.status === APPROVED
+      // and body.event_type === CHECKOUT.ORDER.APPROVED
+      // to process payments faster (it's riskier)
       if (
         body &&
         body.resource &&
