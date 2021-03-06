@@ -47,11 +47,17 @@ var bot = new TelegramBot(config.telegram.token, {
 // resp +=
 //   '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
 
+// var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
+// resp +=
+//   ' \t ✅ The minimum staking amount has been lowered. Users can now stake with *1 WEBD* \n\n';
+// resp +=
+//   '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
+
 var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
 resp +=
-  ' \t ✅ The minimum staking amount has been lowered. Users can now stake with *1 WEBD* \n\n';
-resp +=
-  '*Try it out*: run /staking to see your earnings, and /deposit to add funds.';
+  '\t ✅ You are now able to purchase WEBD instantly from the bot with your card or PayPal 💵💵💵 \n\n';
+resp += '\t ✅ The bot is now in the top 10 daily miners 🚀🚀🚀 \n\n';
+resp += '*Try it out*: run /topup to see the available packages.';
 
 user.model.findAll().then(async function (found_users) {
   var sent_to_users = 0;
@@ -78,6 +84,22 @@ user.model.findAll().then(async function (found_users) {
         disable_web_page_preview: true,
         disable_notification: true,
       });
+
+      await bot.sendPhoto(
+        found_user.telegram_id,
+        'https://pay.hostero.eu/top-10-miners.png',
+        {
+          caption: 'Buy WEBD with card or PayPal via /topup',
+        }
+      );
+
+      await bot.sendPhoto(
+        found_user.telegram_id,
+        'https://pay.hostero.eu/hostero-pay.png',
+        {
+          caption: 'Top 10 daily miners',
+        }
+      );
 
       sent_to_users++;
     } catch (error) {
