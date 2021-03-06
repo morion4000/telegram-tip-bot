@@ -76,7 +76,7 @@ class Webhooks {
       });
 
       const resp =
-        '🆕 Your account was credited with *' +
+        '💰 Your account was credited with *' +
         numeral(amount).format('0,0') +
         '* WEBD from your purchase. Funds in your /tipbalance are receiving /staking rewards.';
 
