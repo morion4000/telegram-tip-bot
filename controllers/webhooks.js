@@ -144,7 +144,7 @@ class Webhooks {
       // To process payments faster use body.resource.status === APPROVED
       // and body.event_type === CHECKOUT.ORDER.APPROVED
       // however it's riskier.
-      
+
       // For full confirmation use body.resource.status === COMPLETED
       // and body.event_type === CHECKOUT.ORDER.COMPLETED
 
@@ -164,7 +164,7 @@ class Webhooks {
         if (unit) {
           const username = unit.custom_id || 'morion4000';
           const price = parseInt(unit.amount.value);
-          const paypal_id = unit.reference_id;
+          const paypal_id = body.resource.id || '';
           const amount = this.get_amount_for_price(price);
 
           console.log('New purchase', username, price, amount, paypal_id);
