@@ -130,14 +130,21 @@ class Webhooks {
     const body = req.body;
     const verify = util.promisify(paypal.notification.webhookEvent.verify);
 
+    console.log(body);
+
     try {
       await verify(headers, body, config.paypal.webhook_id);
 
-      if (body.event_type === 'CHECKOUT.ORDER.APPROVED') {
+      if (
+        body &&
+        body.resource &&
+        body.resource.status &&
+        body.resource.status === 'COMPLETED' &&
+        body.event_type &&
+        body.event_type === 'CHECKOUT.ORDER.COMPLETED'
+      ) {
         const unit =
-          body.resource &&
-          body.resource.purchase_units &&
-          body.resource.purchase_units.length
+          body.resource.purchase_units && body.resource.purchase_units.length
             ? body.resource.purchase_units[0]
             : null;
 
