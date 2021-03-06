@@ -2,7 +2,8 @@ const Stripe = require('stripe');
 const TelegramBot = require('node-telegram-bot-api');
 const numeral = require('numeral');
 const qs = require('qs');
-let paypal = require('paypal-rest-sdk');
+const paypal = require('paypal-rest-sdk');
+const util = require('util');
 
 const transaction_model = require('./../models').transaction.model;
 const user_model = require('./../models').user.model;
@@ -17,7 +18,27 @@ paypal.configure({
 });
 
 class Webhooks {
-  async transfer_funds(username, amount, stripe_id) {
+  get_amount_for_price(price) {
+    let amount = 10000;
+
+    switch (price) {
+      case 2:
+        amount = 10000;
+        break;
+
+      case 15:
+        amount = 100000;
+        break;
+
+      case 120:
+        amount = 1000000;
+        break;
+    }
+
+    return amount;
+  }
+
+  async transfer_funds(username, amount, gateway_id) {
     const bot = new TelegramBot(config.telegram.token, {
       polling: false,
     });
@@ -51,7 +72,7 @@ class Webhooks {
         user_id: user.id,
         amount: amount,
         processed: true,
-        extra_data: stripe_id,
+        extra_data: gateway_id,
       });
 
       const resp =
@@ -70,6 +91,8 @@ class Webhooks {
   }
 
   async stripe(req, res, next) {
+    console.log(`POST /webhooks/stripe`);
+
     const sig = req.headers['stripe-signature'];
 
     let event;
@@ -92,21 +115,7 @@ class Webhooks {
       const stripe_url = session.success_url;
       const query = qs.parse(stripe_url);
       let username = query.username || config.admin.telegram_username;
-      let amount = 10000;
-
-      switch (stripe_amount) {
-        case 200:
-          amount = 10000;
-          break;
-
-        case 1500:
-          amount = 100000;
-          break;
-
-        case 12000:
-          amount = 1000000;
-          break;
-      }
+      const amount = this.get_amount_for_price(stripe_amount / 100);
 
       await this.transfer_funds(username, amount, stripe_id);
     }
@@ -115,30 +124,43 @@ class Webhooks {
   }
 
   async paypal(req, res, next) {
+    console.log(`POST /webhooks/paypal`);
+
     const headers = req.headers;
     const body = req.body;
+    const verify = util.promisify(paypal.notification.webhookEvent.verify);
 
-    paypal.notification.webhookEvent.verify(
-      headers,
-      body,
-      config.paypal.webhook_id,
-      function (error, response) {
-        if (error) {
-          console.error(JSON.stringify(error));
+    try {
+      await verify(headers, body, config.paypal.webhook_id);
 
-          next(error);
-        } else {
-          console.log(response);
+      if (body.event_type === 'CHECKOUT.ORDER.APPROVED') {
+        const unit =
+          body.resource &&
+          body.resource.purchase_units &&
+          body.resource.purchase_units.length
+            ? body.resource.purchase_units[0]
+            : null;
 
-          // Verification status must be SUCCESS
-          if (response.verification_status === 'SUCCESS') {
-            res.json({ received: true });
-          } else {
-            next(new Error('It was a failed verification'));
+        if (unit) {
+          const username = unit.custom_id || 'morion4000';
+          const price = parseInt(unit.amount.value);
+          const paypal_id = unit.reference_id;
+          const amount = this.get_amount_for_price(price);
+
+          console.log('New purchase', username, price, amount, paypal_id);
+
+          if (username) {
+            await this.transfer_funds(username, amount, paypal_id);
           }
         }
       }
-    );
+
+      return res.json({ received: true });
+    } catch (err) {
+      console.error(err);
+
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
   }
 }
 

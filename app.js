@@ -9,13 +9,13 @@ const port = process.env.PORT || 4000;
 app.post(
   '/webhooks/stripe',
   bodyParser.raw({ type: 'application/json' }),
-  webhooks.stripe
+  webhooks.stripe.bind(webhooks)
 );
 
 app.post(
   '/webhooks/paypal',
   bodyParser.json(),
-  webhooks.paypal
+  webhooks.paypal.bind(webhooks)
 );
 
 app.listen(port, () => {
