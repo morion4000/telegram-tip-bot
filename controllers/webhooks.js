@@ -132,7 +132,7 @@ class Webhooks {
 
           // Verification status must be SUCCESS
           if (response.verification_status === 'SUCCESS') {
-            res.end('It was a success.');
+            res.json({ received: true });
           } else {
             next(new Error('It was a failed verification'));
           }
