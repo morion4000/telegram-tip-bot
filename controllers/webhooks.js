@@ -76,9 +76,9 @@ class Webhooks {
       });
 
       const resp =
-        '🆕 *Update*: Your account was credited with ' +
+        '🆕 Your account was credited with *' +
         numeral(amount).format('0,0') +
-        ' WEBD. Funds in your /tipbalance are receiving /staking rewards.';
+        '* WEBD from your purchase. Funds in your /tipbalance are receiving /staking rewards.';
 
       bot.sendMessage(user.telegram_id, resp, {
         parse_mode: 'Markdown',
