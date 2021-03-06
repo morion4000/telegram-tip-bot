@@ -43,7 +43,7 @@ var Command = function (bot) {
         var url = 'https://pay.hostero.eu/tipbot?username=' + msg.from.username;
 
         resp =
-          'When you complete the payment, the WEBD amount you purchased is going to be credited to your /tipbalance instantly.\n\n' +
+          'The WEBD amount you purchased is going to be credited to your /tipbalance after you complete the payment.\n\n' +
           'Available packages:\n\n' +
           '\t 💰 10,000 WEBD - 💵 2 USD\n' +
           '\t 💰 100,000 WEBD - 💵 15 USD\n' +
