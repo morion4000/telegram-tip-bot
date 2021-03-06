@@ -12,6 +12,12 @@ app.post(
   webhooks.stripe
 );
 
+app.post(
+  '/webhooks/paypal',
+  bodyParser.json(),
+  webhooks.paypal
+);
+
 app.listen(port, () => {
   console.log(`App listening on ${port}`);
 

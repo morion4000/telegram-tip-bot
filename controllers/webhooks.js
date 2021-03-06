@@ -2,6 +2,7 @@ const Stripe = require('stripe');
 const TelegramBot = require('node-telegram-bot-api');
 const numeral = require('numeral');
 const qs = require('qs');
+let paypal = require('paypal-rest-sdk');
 
 const transaction_model = require('./../models').transaction.model;
 const user_model = require('./../models').user.model;
@@ -9,7 +10,65 @@ const config = require('./../config');
 
 const stripe = Stripe(config.stripe.secret_key);
 
+paypal.configure({
+  mode: config.paypal.mode,
+  client_id: config.paypal.client_id,
+  client_secret: config.paypal.client_secret,
+});
+
 class Webhooks {
+  async transfer_funds(username, amount, stripe_id) {
+    const bot = new TelegramBot(config.telegram.token, {
+      polling: false,
+    });
+
+    try {
+      const user = await user_model.findOne({
+        where: {
+          telegram_username: username,
+        },
+      });
+
+      if (!user) {
+        throw new Error(`username not found: ${username}`);
+      }
+
+      const new_balance = user.balance + amount;
+
+      await user_model.update(
+        {
+          balance: new_balance,
+        },
+        {
+          where: {
+            id: user.id,
+          },
+        }
+      );
+
+      await transaction_model.create({
+        type: 'purchase',
+        user_id: user.id,
+        amount: amount,
+        processed: true,
+        extra_data: stripe_id,
+      });
+
+      const resp =
+        '🆕 *Update*: Your account was credited with ' +
+        numeral(amount).format('0,0') +
+        ' WEBD. Funds in your /tipbalance are receiving /staking rewards.';
+
+      bot.sendMessage(user.telegram_id, resp, {
+        parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async stripe(req, res, next) {
     const sig = req.headers['stripe-signature'];
 
@@ -49,58 +108,37 @@ class Webhooks {
           break;
       }
 
-      const bot = new TelegramBot(config.telegram.token, {
-        polling: false,
-      });
-
-      try {
-        const user = await user_model.findOne({
-          where: {
-            telegram_username: username,
-          },
-        });
-
-        if (!user) {
-          throw new Error(`username not found: ${username}`);
-        }
-
-        const new_balance = user.balance + amount;
-
-        await user_model.update(
-          {
-            balance: new_balance,
-          },
-          {
-            where: {
-              id: user.id,
-            },
-          }
-        );
-
-        await transaction_model.create({
-          type: 'purchase',
-          user_id: user.id,
-          amount: amount,
-          processed: true,
-          extra_data: stripe_id,
-        });
-
-        const resp =
-          '🆕 *Update*: Your account was credited with ' +
-          numeral(amount).format('0,0') +
-          ' WEBD. Funds in your /tipbalance are receiving /staking rewards.';
-
-        bot.sendMessage(user.telegram_id, resp, {
-          parse_mode: 'Markdown',
-          disable_web_page_preview: true,
-          disable_notification: true,
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      await this.transfer_funds(username, amount, stripe_id);
     }
 
     res.json({ received: true });
+  }
+
+  async paypal(req, res, next) {
+    const headers = req.headers;
+    const body = req.body;
+
+    paypal.notification.webhookEvent.verify(
+      headers,
+      body,
+      config.paypal.webhook_id,
+      function (error, response) {
+        if (error) {
+          console.error(JSON.stringify(error));
+
+          next(error);
+        } else {
+          console.log(response);
+
+          // Verification status must be SUCCESS
+          if (response.verification_status === 'SUCCESS') {
+            res.end('It was a success.');
+          } else {
+            next(new Error('It was a failed verification'));
+          }
+        }
+      }
+    );
   }
 }
 
