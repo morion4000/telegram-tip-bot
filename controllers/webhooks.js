@@ -11,6 +11,7 @@ const config = require('./../config');
 
 const stripe = Stripe(config.stripe.secret_key);
 
+// https://github.com/paypal/PayPal-node-SDK
 paypal.configure({
   mode: config.paypal.mode,
   client_id: config.paypal.client_id,
@@ -128,6 +129,7 @@ class Webhooks {
 
     const headers = req.headers;
     const body = req.body;
+    // https://github.com/paypal/PayPal-node-SDK/blob/master/samples/notifications/webhook-events/webhook_payload_verify.js
     const verify = util.promisify(paypal.notification.webhookEvent.verify);
 
     console.log(body);
