@@ -30,6 +30,7 @@ var Command = function (bot) {
           disable_notification: true,
         });
       } else {
+        /*
         resp = 'Purchasing WEBD using the bot has been disabled.';
 
         return bot.sendMessage(msg.chat.id, resp, {
@@ -37,6 +38,7 @@ var Command = function (bot) {
           disable_web_page_preview: true,
           disable_notification: true,
         });
+        */
 
         var url = 'https://pay.hostero.eu/tipbot?username=' + msg.from.username;
 
@@ -54,21 +56,15 @@ var Command = function (bot) {
               [
                 {
                   text: 'Buy 10,000 WEBD',
-                  url:
-                    url +
-                    '&amount=10000&price=2&stripe_price=price_1HOMGjAYZXIJrrBK1uukJQte',
+                  url: url + '&amount=10000&price=2',
                 },
                 {
                   text: 'Buy 100,000 WEBD',
-                  url:
-                    url +
-                    '&amount=100000&price=15&stripe_price=price_1HOMHdAYZXIJrrBKgbmDPH0I',
+                  url: url + '&amount=100000&price=15',
                 },
                 {
                   text: 'Buy 1,000,000 WEBD',
-                  url:
-                    url +
-                    '&amount=1000000&price=120&stripe_price=price_1HOMIAAYZXIJrrBKIAYJjcpI',
+                  url: url + '&amount=1000000&price=120',
                 },
               ],
             ],
