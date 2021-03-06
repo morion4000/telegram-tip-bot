@@ -137,9 +137,14 @@ class Webhooks {
     try {
       await verify(headers, body, config.paypal.webhook_id);
 
+      // According to PayPal, credit card payments can take up to three days to process.
+      // This is standard for most credit cards. Some transactions will process faster, 
+      // but PayPal does not guarantee that transactions will be complete in fewer than three business days.
+
       // Possibly use body.resource.status === APPROVED
       // and body.event_type === CHECKOUT.ORDER.APPROVED
       // to process payments faster (it's riskier)
+
       if (
         body &&
         body.resource &&
