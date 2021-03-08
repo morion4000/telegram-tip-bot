@@ -20,7 +20,7 @@ paypal.configure({
 
 class Webhooks {
   get_amount_for_price(price) {
-    let amount = 10000;
+    let amount = 0;
 
     switch (price) {
       case 2:
