@@ -15,6 +15,7 @@ exports.handler = async function (event) {
     where: {
       type: 'purchase',
       processed: false,
+      deleted: false,
     },
     logging: false,
   });
