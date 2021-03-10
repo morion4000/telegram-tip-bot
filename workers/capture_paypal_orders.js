@@ -64,6 +64,18 @@ exports.handler = async function (event) {
       );
     } catch (error) {
       console.error(error.message || error);
+
+      await transaction_model.update(
+        {
+          tries: transaction.tries++,
+        },
+        {
+          where: {
+            id: transaction.id,
+          },
+          logging: false,
+        }
+      );
     }
   }
 
