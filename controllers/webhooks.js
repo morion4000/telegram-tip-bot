@@ -3,6 +3,7 @@ const paypal = require('paypal-rest-sdk');
 const util = require('util');
 
 const transaction_model = require('./../models').transaction.model;
+const user_model = require('./../models').user.model;
 const config = require('./../config');
 const { get_amount_for_price } = require('./../utils');
 
@@ -97,6 +98,17 @@ class Webhooks {
           console.log('New purchase', username, price, amount, paypal_id);
 
           if (username) {
+            const user = await user_model.findOne({
+              where: {
+                telegram_username: username,
+              },
+              logging: false,
+            });
+
+            if (!user) {
+              throw new Error(`username not found ${username}`);
+            }
+
             await transaction_model.create({
               type: 'purchase',
               user_id: user.id,
