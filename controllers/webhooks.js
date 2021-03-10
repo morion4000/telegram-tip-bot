@@ -1,15 +1,12 @@
-const Stripe = require('stripe');
-const TelegramBot = require('node-telegram-bot-api');
-const numeral = require('numeral');
-const qs = require('qs');
+//const Stripe = require('stripe');
 const paypal = require('paypal-rest-sdk');
 const util = require('util');
 
 const transaction_model = require('./../models').transaction.model;
-const user_model = require('./../models').user.model;
 const config = require('./../config');
+const { get_amount_for_price } = require('./../utils');
 
-const stripe = Stripe(config.stripe.secret_key);
+//const stripe = Stripe(config.stripe.secret_key);
 
 // https://github.com/paypal/PayPal-node-SDK
 paypal.configure({
@@ -19,78 +16,7 @@ paypal.configure({
 });
 
 class Webhooks {
-  get_amount_for_price(price) {
-    let amount = 0;
-
-    switch (price) {
-      case 2:
-        amount = 10000;
-        break;
-
-      case 15:
-        amount = 100000;
-        break;
-
-      case 120:
-        amount = 1000000;
-        break;
-    }
-
-    return amount;
-  }
-
-  async transfer_funds(username, amount, gateway_id) {
-    const bot = new TelegramBot(config.telegram.token, {
-      polling: false,
-    });
-
-    try {
-      const user = await user_model.findOne({
-        where: {
-          telegram_username: username,
-        },
-      });
-
-      if (!user) {
-        throw new Error(`username not found: ${username}`);
-      }
-
-      const new_balance = user.balance + amount;
-
-      await user_model.update(
-        {
-          balance: new_balance,
-        },
-        {
-          where: {
-            id: user.id,
-          },
-        }
-      );
-
-      await transaction_model.create({
-        type: 'purchase',
-        user_id: user.id,
-        amount: amount,
-        processed: true,
-        extra_data: gateway_id,
-      });
-
-      const resp =
-        '💰 Your account was credited with *' +
-        numeral(amount).format('0,0') +
-        '* WEBD from your purchase. Funds in your /tipbalance are receiving /staking rewards.';
-
-      bot.sendMessage(user.telegram_id, resp, {
-        parse_mode: 'Markdown',
-        disable_web_page_preview: true,
-        disable_notification: true,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
+  /*
   async stripe(req, res, next) {
     console.log(`POST /webhooks/stripe`);
 
@@ -123,6 +49,7 @@ class Webhooks {
 
     res.json({ received: true });
   }
+  */
 
   async paypal(req, res, next) {
     console.log(`POST /webhooks/paypal`);
@@ -162,15 +89,21 @@ class Webhooks {
             : null;
 
         if (unit) {
-          const username = unit.custom_id || 'morion4000';
+          const username = unit.custom_id;
           const price = parseInt(unit.amount.value);
           const paypal_id = body.resource.id || '';
-          const amount = this.get_amount_for_price(price);
+          const amount = get_amount_for_price(price);
 
           console.log('New purchase', username, price, amount, paypal_id);
 
           if (username) {
-            await this.transfer_funds(username, amount, paypal_id);
+            await transaction_model.create({
+              type: 'purchase',
+              user_id: user.id,
+              amount: amount,
+              processed: false,
+              extra_data: paypal_id,
+            });
           }
         }
       }

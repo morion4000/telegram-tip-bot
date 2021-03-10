@@ -20,6 +20,7 @@ provider:
     WEBDOLLAR_NODE_KEY: ${env:WEBDOLLAR_NODE_KEY}
     STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY}
     STRIPE_SIGNING_SECRET: ${env:STRIPE_SIGNING_SECRET}
+    PAYPAL_CLIENT_SECRET: ${env:PAYPAL_CLIENT_SECRET}
 
 functions:
   process_inbound_transactions:
@@ -90,3 +91,10 @@ functions:
       NODE_URL: https://server.webdollarminingpool.com
       DELTA: 40
 
+  capture_paypal_orders:
+    memorySize: 256
+    handler: workers/capture_paypal_orders.handler
+    events:
+      - schedule: rate(2 minutes)
+    environment:
+      NODE_ENV: production
