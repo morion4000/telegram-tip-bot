@@ -41,9 +41,9 @@ var Command = function (bot) {
         */
 
         var url = `https://pay.hostero.eu/tipbot?username=${msg.from.username}`;
-        var package1_webd = numeral(config.topup.package1.webd, '0,0');
-        var package2_webd = numeral(config.topup.package2.webd, '0,0');
-        var package3_webd = numeral(config.topup.package3.webd, '0,0');
+        var package1_webd = numeral(config.topup.package1.webd).format('0,0');
+        var package2_webd = numeral(config.topup.package2.webd).format('0,0');
+        var package3_webd = numeral(config.topup.package3.webd).format('0,0');
 
         resp =
           'The amount you purchase is going to be credited instantly to your /tipbalance after you complete the payment.\n\n' +
