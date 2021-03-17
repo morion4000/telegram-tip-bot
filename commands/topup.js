@@ -40,14 +40,17 @@ var Command = function (bot) {
         });
         */
 
-        var url = 'https://pay.hostero.eu/tipbot?username=' + msg.from.username;
+        var url = `https://pay.hostero.eu/tipbot?username=${msg.from.username}`;
+        var package1_webd = numeral(config.topup.package1.webd, '0,0');
+        var package2_webd = numeral(config.topup.package2.webd, '0,0');
+        var package3_webd = numeral(config.topup.package3.webd, '0,0');
 
         resp =
           'The amount you purchase is going to be credited instantly to your /tipbalance after you complete the payment.\n\n' +
           'Available packages:\n\n' +
-          '\t 💰 10,000 WEBD - 💵 2 USD\n' +
-          '\t 💰 100,000 WEBD - 💵 15 USD\n' +
-          '\t 💰 1,000,000 WEBD - 💵 120 USD\n\n' +
+          `\t 💰 ${package1_webd} WEBD - 💵 ${config.topup.package1.usd} USD\n` +
+          `\t 💰 ${package2_webd} WEBD - 💵 ${config.topup.package2.usd} USD\n` +
+          `\t 💰 ${package3_webd} WEBD - 💵 ${config.topup.package3.usd} USD\n\n` +
           'By clicking on the button, you will be redirected to a web page where you can complete the payment.\n';
 
         bot.sendMessage(msg.chat.id, resp, {
@@ -55,16 +58,16 @@ var Command = function (bot) {
             inline_keyboard: [
               [
                 {
-                  text: 'Buy 10,000 WEBD',
-                  url: url + '&amount=10000&price=2',
+                  text: `Buy ${package1_webd} WEBD`,
+                  url: `${url}&amount=${config.topup.package1.webd}&price=${config.topup.package1.usd}`,
                 },
                 {
-                  text: 'Buy 100,000 WEBD',
-                  url: url + '&amount=100000&price=15',
+                  text: `Buy ${package2_webd} WEBD`,
+                  url: `${url}&amount=${config.topup.package2.webd}&price=${config.topup.package2.usd}`,
                 },
                 {
-                  text: 'Buy 1,000,000 WEBD',
-                  url: url + '&amount=1000000&price=120',
+                  text: `Buy ${package3_webd} WEBD`,
+                  url: `${url}&amount=${config.topup.package3.webd}&price=${config.topup.package3.usd}`,
                 },
               ],
             ],
