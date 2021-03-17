@@ -62,4 +62,18 @@ module.exports = {
     secret_key: process.env.STRIPE_SECRET_KEY,
     signing_secret: process.env.STRIPE_SIGNING_SECRET,
   },
+  topup: {
+    package1: {
+      webd: 10000,
+      usd: 3,
+    },
+    package2: {
+      webd: 100000,
+      usd: 25,
+    },
+    package3: {
+      webd: 1000000,
+      usd: 200,
+    },
+  },
 };
