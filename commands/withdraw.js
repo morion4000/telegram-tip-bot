@@ -64,6 +64,18 @@ var Command = function (bot) {
       }
 
       amount = parseInt(amount);
+      
+      if (wallet && wallet === config.vault) {
+        resp = 'You can not withdraw to vault. Please use another address.';
+
+        bot.sendMessage(msg.chat.id, resp, {
+          //parse_mode: 'Markdown',
+          disable_web_page_preview: true,
+          disable_notification: true,
+        });
+
+        return;
+      }
 
       user.model
         .findOne({
