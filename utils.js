@@ -8,16 +8,16 @@ function get_amount_for_price(price) {
   let amount = 0;
 
   switch (price) {
-    case 2:
-      amount = 10000;
+    case config.topup.package1.usd:
+      amount = config.topup.package1.webd;
       break;
 
-    case 15:
-      amount = 100000;
+    case config.topup.package2.usd:
+      amount = config.topup.package2.webd;
       break;
 
-    case 120:
-      amount = 1000000;
+    case config.topup.package3.usd:
+      amount = config.topup.package3.webd;
       break;
   }
 
