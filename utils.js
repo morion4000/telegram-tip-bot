@@ -58,7 +58,7 @@ async function transfer_funds(username, amount) {
       numeral(amount).format('0,0') +
       '* WEBD from your purchase. Funds in your /tipbalance are receiving /staking rewards.';
 
-    bot.sendMessage(user.telegram_id, resp, {
+    await bot.sendMessage(user.telegram_id, resp, {
       parse_mode: 'Markdown',
       disable_web_page_preview: true,
       disable_notification: true,
