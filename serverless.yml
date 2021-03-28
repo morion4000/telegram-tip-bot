@@ -10,7 +10,7 @@ provider:
   region: eu-central-1
   stage: ${opt:stage, 'prod'}
   memorySize: 512
-  timeout: 120
+  timeout: 600
   environment:
     MYSQL_CONNECTION_STRING: ${env:MYSQL_CONNECTION_STRING}
     TELEGRAM_TOKEN: ${env:TELEGRAM_TOKEN}
