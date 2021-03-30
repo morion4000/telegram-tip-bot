@@ -46,14 +46,19 @@ var Command = function (bot) {
         var package3_webd = numeral(config.topup.package3.webd).format('0,0');
 
         resp =
-          'The amount you purchase is going to be credited instantly to your /tipbalance after you complete the payment.\n\n' +
-          'Available packages:\n\n' +
+          '<u><b>Available packages</b></u>\n\n' +
           `\t 💰 ${package1_webd} WEBD - 💵 ${config.topup.package1.usd} USD\n` +
           `\t 💰 ${package2_webd} WEBD - 💵 ${config.topup.package2.usd} USD\n` +
           `\t 💰 ${package3_webd} WEBD - 💵 ${config.topup.package3.usd} USD\n\n` +
-          'By clicking on the button, you will be redirected to a web page where you can complete the payment.\n';
+          '▫️ <i>The amount is going to be credited to your /tipbalance after you complete the payment</i>\n' +
+          '▫️ <i>Prices displayed include a comission and are subjected to change without notice</i>\n' +
+          '▫️ <i>Links are related to your account. If someone else uses them, your account is going to be credited</i>\n\n' +
+          '📌 By clicking on a button, you will be redirected to a web page where you can make the payment\n';
 
         bot.sendMessage(msg.chat.id, resp, {
+          parse_mode: 'HTML',
+          disable_web_page_preview: true,
+          disable_notification: true,
           reply_markup: {
             inline_keyboard: [
               [
