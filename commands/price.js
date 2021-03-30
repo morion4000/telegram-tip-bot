@@ -31,6 +31,7 @@ var Command = function (bot) {
         resp += '24hr High: $' + webdollar.volume_daily_high_usd + '\n';
         resp += '24hr Low: $' + webdollar.volume_daily_low_usd + '\n';
         resp += '24hr Volume: $' + webdollar.volume_daily_total_usd + '\n';
+        resp += '[source](https://www.coingecko.com/en/coins/webdollar)\n';
       } else {
         const amount = parseInt(amount_match[0]) || 0;
         const amount_usd = parseFloat(amount * webdollar.price_usd);
