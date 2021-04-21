@@ -25,6 +25,7 @@ var Command = function (bot) {
     resp += '\t /stats - Bot statistics \n';
     resp += '\t /scoreboard - Top 10 tippers (only public tips are counted) \n';
     resp += '\t /topup - Buy WEBD with your card or PayPal \n';
+    resp += '\t /tutorial - How to use WebDollar in the browser \n';
 
     resp +=
       '\n🆘 You can write on @hosteroeu for any issues you encounter with the bot.';
