@@ -1,6 +1,24 @@
 var Command = function (bot) {
-  return function (msg, match) {
+  return async function (msg, match) {
+    var resp = '';
+
     console.log(msg.text);
+
+    if (msg.chat.type !== 'private') {
+      resp =
+        'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
+
+      await bot.sendMessage(msg.chat.id, resp, {
+        //parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      });
+
+      return;
+    }
+
+    // TODO: Look into bot.sendMediaGroup(msg.chat.id);
+    // SEE: https://github.com/yagop/node-telegram-bot-api/blob/master/src/telegram.js#L2160
 
     bot.sendPhoto(
       msg.chat.id,
