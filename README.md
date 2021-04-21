@@ -23,6 +23,7 @@
 * __stats__ - Bot statistics
 * __scoreboard__ - Top 10 tippers (only public tips are counted)
 * __topup__ - Buy WEBD with your card or PayPal
+* __tutorial__ - How to use WebDollar in the browser
 
 ## Install
 

@@ -38,6 +38,7 @@ var system_command = commands.system(bot);
 var stats_command = commands.stats(bot);
 var scoreboard_command = commands.scoreboard(bot);
 var topup_command = commands.topup(bot);
+var tutorial_command = commands.tutorial(bot);
 
 // For debugging
 /*
@@ -90,6 +91,7 @@ bot.onText(/\/system$/, system_command);
 bot.onText(/\/stats$/, stats_command);
 bot.onText(/\/scoreboard$/, scoreboard_command);
 bot.onText(/\/topup$/, topup_command);
+bot.onText(/\/tutorial$/, tutorial_command);
 
 bot.onText(/\/start@webdollar_tip_bot$/, start_command);
 bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
@@ -118,3 +120,4 @@ bot.onText(/\/system@webdollar_tip_bot$/, system_command);
 bot.onText(/\/stats@webdollar_tip_bot$/, stats_command);
 bot.onText(/\/scoreboard@webdollar_tip_bot$/, scoreboard_command);
 bot.onText(/\/toptup@webdollar_tip_bot$/, topup_command);
+bot.onText(/\/tutorial@webdollar_tip_bot$/, tutorial_command);
