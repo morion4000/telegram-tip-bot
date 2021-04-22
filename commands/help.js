@@ -6,7 +6,7 @@ var Command = function (bot) {
   return function (msg, match) {
     var resp = '⚙️ You can run the following commands: \n\n';
 
-    console.log(msg.text);
+    console.log(msg.text, msg.chat.id);
 
     resp += '\t /help - Shows the help message \n';
     resp += '\t /tip @user 1000 - Tip the user with the specified amount \n';

@@ -10,7 +10,7 @@ var Command = function (bot) {
     try {
       var resp = '';
 
-      console.log(msg.text);
+      console.log(msg.text, msg.chat.id);
 
       if (msg.chat.type !== 'private') {
         resp =

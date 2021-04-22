@@ -2,7 +2,7 @@ var Command = function (bot) {
   return async function (msg, match) {
     var resp = '';
 
-    console.log(msg.text);
+    console.log(msg.text, msg.chat.id);
 
     if (msg.chat.type !== 'private') {
       resp =

@@ -6,7 +6,7 @@ var Command = function (bot) {
   return function (msg, match) {
     var resp = 'You need to specify the user and amount: /tip @user 1000';
 
-    console.log(msg.text);
+    console.log(msg.text, msg.chat.id);
 
     bot.sendMessage(msg.chat.id, resp, {
       //parse_mode: 'Markdown',

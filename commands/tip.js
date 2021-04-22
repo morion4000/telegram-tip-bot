@@ -14,7 +14,7 @@ var Command = function (bot) {
       var amount_match = msg.text.match(/ [0-9]+/);
       var resp = '';
 
-      console.log(msg.text);
+      console.log(msg.text, msg.chat.id);
 
       if (msg.text.indexOf('beer') !== -1) {
         var beer_price = parseInt(1 / config.webd_price_usd);

@@ -16,7 +16,7 @@ var Command = function (bot) {
       var wallet_match = msg.text.match(/WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/);
       var resp = '';
 
-      console.log(msg.text);
+      console.log(msg.text, msg.chat.id);
 
       if (msg.chat.type !== 'private') {
         resp =

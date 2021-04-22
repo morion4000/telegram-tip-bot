@@ -4,7 +4,7 @@ var user = require('./../models').user,
 
 var Command = function (bot) {
   return function (msg, match) {
-    console.log(msg.text);
+    console.log(msg.text, msg.chat.id);
 
     bot.sendPhoto(
       msg.chat.id,

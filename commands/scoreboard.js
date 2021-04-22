@@ -6,7 +6,7 @@ var Command = function (bot) {
   return function (msg, match) {
     var resp = '';
 
-    console.log(msg.text);
+    console.log(msg.text, msg.chat.id);
 
     resp = 'Top 10 tippers (only public tips are counted)\n\n';
 

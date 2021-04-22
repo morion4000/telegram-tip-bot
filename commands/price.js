@@ -8,7 +8,7 @@ var Command = function (bot) {
       const amount_match = msg.text.match(/ [0-9]+/);
       let resp = '';
 
-      console.log(msg.text);
+      console.log(msg.text, msg.chat.id);
 
       const webdollar = await coin_model.findOne({
         where: {

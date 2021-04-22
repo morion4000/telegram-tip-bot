@@ -6,7 +6,7 @@ var Command = function (bot) {
   return function (msg, match) {
     var resp = '⚙️ The fees are the following: \n\n';
 
-    console.log(msg.text);
+    console.log(msg.text, msg.chat.id);
 
     resp += '\t - Tipping: ' + config.fees.tip + ' WEBD \n';
     resp += '\t - Deposit: ' + config.fees.deposit + ' WEBD \n';

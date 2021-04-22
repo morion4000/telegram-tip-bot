@@ -15,7 +15,7 @@ var Command = function (bot) {
         encodeURIComponent(config.vault);
       var resp = '';
 
-      console.log(msg.text);
+      console.log(msg.text, msg.chat.id);
 
       if (!msg.from.username) {
         return;
