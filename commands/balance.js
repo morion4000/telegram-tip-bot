@@ -12,7 +12,10 @@ var Command = function (bot) {
 
       console.log(msg.text, msg.chat.id);
 
-      if (msg.chat.type !== 'private') {
+      if (
+        msg.chat.type !== 'private' &&
+        !config.public_channels.includes(msg.chat.id)
+      ) {
         resp =
           'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
 
@@ -62,7 +65,9 @@ var Command = function (bot) {
       }
 
       if (found_user) {
-        const balance_usd = parseFloat(found_user.balance * webdollar.price_usd);
+        const balance_usd = parseFloat(
+          found_user.balance * webdollar.price_usd
+        );
 
         resp =
           'Balance: *' +

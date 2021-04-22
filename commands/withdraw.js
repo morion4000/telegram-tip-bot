@@ -18,7 +18,10 @@ var Command = function (bot) {
 
       console.log(msg.text, msg.chat.id);
 
-      if (msg.chat.type !== 'private') {
+      if (
+        msg.chat.type !== 'private' &&
+        !config.public_channels.includes(msg.chat.id)
+      ) {
         resp =
           'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
 
