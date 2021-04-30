@@ -18,10 +18,12 @@ var Command = function (bot) {
       disable_notification: true,
     });
 
-    bot.sendPhoto(
-      msg.chat.id,
-      'https://www.hostero.eu/assets/img/tipbot/fees_command.jpg'
-    );
+    if (msg.chat.type === 'private') {
+      bot.sendPhoto(
+        msg.chat.id,
+        'https://www.hostero.eu/assets/img/tipbot/fees_command.jpg'
+      );
+    }
   };
 };
 

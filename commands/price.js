@@ -30,7 +30,8 @@ var Command = function (bot) {
         resp += '▫️ ETH: ' + webdollar.price_eth.toFixed(10) + '\n\n';
         //resp += '24hr High: $' + webdollar.volume_daily_high_usd + '\n';
         //resp += '24hr Low: $' + webdollar.volume_daily_low_usd + '\n';
-        resp += '24hr Volume: $' + parseInt(webdollar.volume_daily_total_usd) + ' ';
+        resp +=
+          '24hr Volume: $' + parseInt(webdollar.volume_daily_total_usd) + ' ';
         resp += '([source](https://www.coingecko.com/en/coins/webdollar))\n';
       } else {
         const amount = parseInt(amount_match[0]) || 0;
@@ -47,10 +48,12 @@ var Command = function (bot) {
         disable_notification: true,
       });
 
-      await bot.sendPhoto(
-        msg.chat.id,
-        'https://www.hostero.eu/assets/img/tipbot/price_command.jpg'
-      );
+      if (msg.chat.type === 'private') {
+        await bot.sendPhoto(
+          msg.chat.id,
+          'https://www.hostero.eu/assets/img/tipbot/price_command.jpg'
+        );
+      }
     } catch (e) {
       console.error('/price', e);
 
