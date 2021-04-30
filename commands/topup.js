@@ -78,6 +78,11 @@ var Command = function (bot) {
             ],
           },
         });
+
+        bot.sendPhoto(
+          msg.chat.id,
+          'https://www.hostero.eu/assets/img/tipbot/topup_command.jpg'
+        );
       }
     } catch (e) {
       console.error('/toptup', e);

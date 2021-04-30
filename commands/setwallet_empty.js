@@ -31,6 +31,11 @@ var Command = function (bot) {
       disable_web_page_preview: true,
       disable_notification: true,
     });
+
+    bot.sendPhoto(
+      msg.chat.id,
+      'https://www.hostero.eu/assets/img/tipbot/setwallet_command.jpg'
+    );
   };
 };
 

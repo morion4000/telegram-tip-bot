@@ -87,6 +87,11 @@ var Command = function (bot) {
         disable_web_page_preview: true,
         disable_notification: true,
       });
+
+      await bot.sendPhoto(
+        msg.chat.id,
+        'https://www.hostero.eu/assets/img/tipbot/tipbalance_command.jpg'
+      );
     } catch (e) {
       console.error('/balance', e);
 
