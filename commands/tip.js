@@ -17,7 +17,7 @@ var Command = function (bot) {
       console.log(msg.text, msg.chat.id);
       
       if (msg.forward_from) {
-        console.log('ignoring forwaded message');
+        console.log(`ignoring forwaded message: ${msg.text}`);
         
         return;
       }
