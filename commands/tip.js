@@ -14,7 +14,13 @@ var Command = function (bot) {
       var amount_match = msg.text.match(/ [0-9]+/);
       var resp = '';
 
-      console.log(msg.text, msg.chat.id, msg.forward_from);
+      console.log(msg.text, msg.chat.id);
+      
+      if (msg.forward_from) {
+        console.log('ignoring forwaded message');
+        
+        return;
+      }
 
       if (msg.text.indexOf('beer') !== -1) {
         var beer_price = parseInt(1 / config.webd_price_usd);
