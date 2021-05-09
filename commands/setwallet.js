@@ -39,7 +39,7 @@ var Command = function (bot) {
         return;
       }
 
-      var wallet_match = msg.text.match(/WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$/);
+      var wallet_match = msg.text.match(/WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$/);
 
       if (wallet_match === null) {
         resp = 'Wallet is invalid. Could not set it.';
