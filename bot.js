@@ -73,13 +73,13 @@ bot.onText(/\/deposit$/, deposit_command);
 bot.onText(/\/withdraw$/, withdraw_empty_command);
 bot.onText(/\/withdraw [0-9]+$/, withdraw_command);
 bot.onText(
-  /\/withdraw [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/,
+  /\/withdraw [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/,
   withdraw_command
 );
 bot.onText(/\/transactions$/, transactions_command);
 bot.onText(/\/wallet$/, wallet_command);
 bot.onText(/\/setwallet$/, setwallet_empty_command);
-bot.onText(/\/setwallet WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/, setwallet_command);
+bot.onText(/\/setwallet WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/, setwallet_command);
 bot.onText(/\/filantropica$/, filantropica_command);
 bot.onText(/\/nam$/, nam_command);
 bot.onText(/\/help$/, help_command);
@@ -99,14 +99,14 @@ bot.onText(/\/deposit@webdollar_tip_bot$/, deposit_command);
 bot.onText(/\/withdraw@webdollar_tip_bot$/, withdraw_empty_command);
 bot.onText(/\/withdraw@webdollar_tip_bot [0-9]+$/, withdraw_command);
 bot.onText(
-  /\/withdraw@webdollar_tip_bot [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/,
+  /\/withdraw@webdollar_tip_bot [0-9]+ WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/,
   withdraw_command
 );
 bot.onText(/\/transactions@webdollar_tip_bot$/, transactions_command);
 bot.onText(/\/wallet@webdollar_tip_bot$/, wallet_command);
 bot.onText(/\/setwallet@webdollar_tip_bot$/, setwallet_empty_command);
 bot.onText(
-  /\/setwallet@webdollar_tip_bot WEBD\$[a-km-zA-NP-Z0-9+@#$]{34}\$$/,
+  /\/setwallet@webdollar_tip_bot WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/,
   setwallet_command
 );
 bot.onText(/\/filantropica@webdollar_tip_bot$/, filantropica_command);
