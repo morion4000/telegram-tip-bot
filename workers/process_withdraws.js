@@ -130,7 +130,7 @@ exports.handler = async function (event) {
         from: 'Hostero <no-reply@mg.hostero.eu>',
         to: config.admin.email,
         subject: '[SYSTEM] WITHDRAWAL ERROR - Telegram Tip Bot',
-        text: response,
+        text: `Failed processing transaction ${transaction.id}`,
       });
     }
   }
