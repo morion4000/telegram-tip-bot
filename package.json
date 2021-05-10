@@ -11,6 +11,7 @@
     "cached-request": "^2.0.3",
     "cheerio": "^0.22.0",
     "cli": "^1.0.1",
+    "dotenv": "^9.0.1",
     "events": "^2.0.0",
     "express": "^4.17.1",
     "influxdb-nodejs": "^2.7.6",

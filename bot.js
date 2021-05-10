@@ -1,8 +1,10 @@
-var _ = require('underscore');
-var TelegramBot = require('node-telegram-bot-api');
-var config = require('./config');
-var commands = require('./commands');
-var sequelize = require('./models').sequelize;
+require('dotenv').config();
+
+const _ = require('underscore');
+const TelegramBot = require('node-telegram-bot-api');
+const config = require('./config');
+const commands = require('./commands');
+const sequelize = require('./models').sequelize;
 
 sequelize
   .sync({
@@ -79,7 +81,10 @@ bot.onText(
 bot.onText(/\/transactions$/, transactions_command);
 bot.onText(/\/wallet$/, wallet_command);
 bot.onText(/\/setwallet$/, setwallet_empty_command);
-bot.onText(/\/setwallet WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/, setwallet_command);
+bot.onText(
+  /\/setwallet WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/,
+  setwallet_command
+);
 bot.onText(/\/filantropica$/, filantropica_command);
 bot.onText(/\/nam$/, nam_command);
 bot.onText(/\/help$/, help_command);
