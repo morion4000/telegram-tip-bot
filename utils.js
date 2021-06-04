@@ -68,7 +68,26 @@ async function transfer_funds(username, amount) {
   }
 }
 
+// Telegram users can change username
+// Make sure we keep it up to date, otherwise accounts can get split
+async function update_username(from) {
+  if (from && from.username) {
+    await user_model.update(
+      {
+        telegram_username: from.username,
+      },
+      {
+        where: {
+          telegram_id: from.id,
+        },
+        logging: false,
+      }
+    );
+  }
+}
+
 module.exports = {
   get_amount_for_price,
   transfer_funds,
+  update_username,
 };

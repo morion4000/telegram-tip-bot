@@ -5,6 +5,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const config = require('./config');
 const commands = require('./commands');
 const sequelize = require('./models').sequelize;
+const { update_username } = require('./utils');
 
 sequelize
   .sync({
@@ -42,12 +43,20 @@ var scoreboard_command = commands.scoreboard(bot);
 var topup_command = commands.topup(bot);
 var tutorial_command = commands.tutorial(bot);
 
-// For debugging
-/*
-bot.on('message', function(msg) {
-  console.log(msg);
+// Middleware
+bot.on('message', async (msg) => {
+  // FIXME: Possibly only run update_username for msg.chat.type === private (less events)
+  try {
+    await update_username(msg.from);
+
+    console.log(`Updated username: ${msg.from.username}`);
+  } catch (error) {
+    console.error(error);
+  }
+
+  // For debugging
+  // console.log(msg);
 });
-*/
 
 bot.onText(/\/tip$/, tip_empty_command);
 bot.onText(/\/tip \w+$/, tip_empty_command);
