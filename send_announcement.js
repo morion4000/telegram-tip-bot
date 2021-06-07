@@ -59,6 +59,12 @@ resp +=
 resp += '\t ✅ The bot is now in the top 10 daily miners 🚀🚀🚀 \n\n';
 resp += '*Try it out*: run /topup to see the available packages.';
 
+var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
+resp +=
+  '\t ✅ Bug fix for users that change the Telegram username \n\n';
+resp += '\t ✅ Prices reported by the /price command are sourced from CoinMarketCap \n\n';
+resp += '\t ✅ Discounted prices for purchasing WEBD using 💳  or PayPal account via /topup 💰💰💰 \n\n';
+
 user.model.findAll().then(async function (found_users) {
   var sent_to_users = 0;
 
@@ -85,21 +91,21 @@ user.model.findAll().then(async function (found_users) {
         disable_notification: true,
       });
 
-      await bot.sendPhoto(
-        found_user.telegram_id,
-        'https://pay.hostero.eu/top-10-miners.png',
-        {
-          caption: 'Buy WEBD with card or PayPal via /topup',
-        }
-      );
+      // await bot.sendPhoto(
+      //   found_user.telegram_id,
+      //   'https://pay.hostero.eu/top-10-miners.png',
+      //   {
+      //     caption: 'Buy WEBD with card or PayPal via /topup',
+      //   }
+      // );
 
-      await bot.sendPhoto(
-        found_user.telegram_id,
-        'https://pay.hostero.eu/hostero-pay.png',
-        {
-          caption: 'Top 10 daily miners',
-        }
-      );
+      // await bot.sendPhoto(
+      //   found_user.telegram_id,
+      //   'https://pay.hostero.eu/hostero-pay.png',
+      //   {
+      //     caption: 'Top 10 daily miners',
+      //   }
+      // );
 
       sent_to_users++;
     } catch (error) {
