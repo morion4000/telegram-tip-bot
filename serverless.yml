@@ -21,6 +21,7 @@ provider:
     STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY}
     STRIPE_SIGNING_SECRET: ${env:STRIPE_SIGNING_SECRET}
     PAYPAL_CLIENT_SECRET: ${env:PAYPAL_CLIENT_SECRET}
+    COINMARKETCAP_KEY: ${env:COINMARKETCAP_KEY}
 
 functions:
   process_inbound_transactions:
@@ -67,7 +68,7 @@ functions:
     memorySize: 256
     handler: workers/update_webdollar_price.handler
     events:
-      - schedule: rate(5 minutes)
+      - schedule: rate(30 minutes)
     environment:
       NODE_ENV: production
 

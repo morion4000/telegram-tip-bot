@@ -1,51 +1,64 @@
-const coin_model = require('./../models').coin.model;
+const coin_model = require('../models').coin.model;
 const axios = require('axios');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
-const WEBD_TICKER = 'WEBD';
-const CG_URL =
-  'https://api.coingecko.com/api/v3/coins/webdollar?market_data=true&community_data=false&developer_data=false';
-const AXIOS_TIMEOUT = 3000;
+const KEY = process.env.COINMARKETCAP_KEY || '';
+const CM_URL =
+  'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=webd';
+const AXIOS_TIMEOUT = 10000;
 
+// https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyQuotesLatest
 exports.handler = async function (event) {
   try {
-    const { data } = await axios.get(CG_URL, { timeout: AXIOS_TIMEOUT });
+    const options = {
+      timeout: AXIOS_TIMEOUT,
+      headers: {
+        'X-CMC_PRO_API_KEY': KEY,
+      },
+    };
+    const coin_properties = {};
 
-    console.log(data.market_data);
+    // FIXME: API doesn't allow multiple convert values in one call
+    const responses = await Promise.all([
+      axios.get(`${CM_URL}&convert=usd`, options),
+      axios.get(`${CM_URL}&convert=eur`, options),
+      axios.get(`${CM_URL}&convert=btc`, options),
+      axios.get(`${CM_URL}&convert=eth`, options),
+    ]);
 
-    if (!data || !data.market_data) {
-      throw new Error(`Couldn't get data`);
+    for (const { data } of responses) {
+      const { quote } = data.data.WEBD;
+
+      if ('USD' in quote) {
+        coin_properties.price_usd = quote.USD.price;
+        coin_properties.volume_daily_total_usd = quote.USD.volume_24h;
+        coin_properties.market_cap_usd = quote.USD.market_cap;
+      }
+
+      if ('EUR' in quote) {
+        coin_properties.price_eur = quote.EUR.price;
+      }
+
+      if ('BTC' in quote) {
+        coin_properties.price_btc = quote.BTC.price;
+      }
+
+      if ('ETH' in quote) {
+        coin_properties.price_eth = quote.ETH.price;
+      }
     }
 
-    const {
-      current_price,
-      high_24h,
-      low_24h,
-      total_volume,
-      market_cap,
-    } = data.market_data;
+    console.log(coin_properties);
 
-    await coin_model.update(
-      {
-        price_usd: current_price.usd,
-        price_eur: current_price.eur,
-        price_btc: current_price.btc,
-        price_eth: current_price.eth,
-        volume_daily_high_usd: high_24h.usd,
-        volume_daily_low_usd: low_24h.usd,
-        volume_daily_total_usd: total_volume.usd,
-        market_cap_usd: market_cap.usd,
+    await coin_model.update(coin_properties, {
+      where: {
+        ticker: 'WEBD',
       },
-      {
-        where: {
-          ticker: WEBD_TICKER,
-        },
-        logging: false,
-      }
-    );
+      logging: false,
+    });
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
   }
 
   return {
