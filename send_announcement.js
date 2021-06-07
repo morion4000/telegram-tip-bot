@@ -63,7 +63,7 @@ var resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
 resp +=
   '\t ✅ Bug fix for users that change the Telegram username \n\n';
 resp += '\t ✅ Prices reported by the /price command are sourced from CoinMarketCap \n\n';
-resp += '\t ✅ Discounted prices for purchasing WEBD using 💳  or PayPal account via /topup 💰💰💰 \n\n';
+resp += '\t ✅ Discounted prices for buying WEBD using 💳  or PayPal account via /topup 💰💰💰 \n\n';
 
 user.model.findAll().then(async function (found_users) {
   var sent_to_users = 0;
@@ -77,7 +77,7 @@ user.model.findAll().then(async function (found_users) {
 
     // only me (@morion4000)
     if (found_user.telegram_id !== '528354447') {
-      continue;
+      //continue;
     }
 
     console.log(found_user.id, found_user.telegram_username);
