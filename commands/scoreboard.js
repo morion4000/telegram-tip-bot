@@ -21,7 +21,7 @@ var Command = function (bot) {
           resp +=
             '\t 💰 ' +
             numeral(tips[i].amount).format('0,0') +
-            ' WEBD: @' +
+            ' WEBD: ' +
             tips[i].username +
             '\n';
         }
