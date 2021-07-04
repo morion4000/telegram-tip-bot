@@ -39,6 +39,14 @@ var Command = function (bot) {
         return;
       }
 
+      resp = 'Depositing WEBD using the bot has been disabled.';
+
+      return bot.sendMessage(msg.chat.id, resp, {
+        //parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      });
+
       user.model
         .findOne({
           where: {

@@ -30,7 +30,6 @@ var Command = function (bot) {
           disable_notification: true,
         });
       } else {
-        /*
         resp = 'Purchasing WEBD using the bot has been disabled.';
 
         return bot.sendMessage(msg.chat.id, resp, {
@@ -38,7 +37,6 @@ var Command = function (bot) {
           disable_web_page_preview: true,
           disable_notification: true,
         });
-        */
 
         var url = `https://pay.hostero.eu/tipbot?username=${msg.from.username}`;
         var package1_webd = numeral(config.topup.package1.webd).format('0,0');
