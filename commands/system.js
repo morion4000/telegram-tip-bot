@@ -77,8 +77,12 @@ var Command = function (bot) {
                 },
               },
               function (error, response, body) {
-                var account = JSON.parse(body);
-                var balance = parseInt(account.balance.amount) / 10000;
+                try {
+                  var account = JSON.parse(body);
+                  var balance = parseInt(account.balance.amount) / 10000;
+                } catch (err) {
+                  return callback(err);
+                }
 
                 callback(error, balance);
               }
@@ -103,7 +107,9 @@ var Command = function (bot) {
         ],
         function (err, results) {
           if (err) {
-            throw err;
+            console.log(err);
+
+            return;
           }
 
           var vault_delta = results[6] - results[1];
