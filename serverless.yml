@@ -26,7 +26,7 @@ provider:
 functions:
   process_inbound_transactions:
     memorySize: 256
-    handler: workers/process_inbound_transactions.handler
+    handler: workers/process_inbound_transactions2.handler
     events:
       - schedule: rate(1 minute)
     environment:
@@ -34,7 +34,7 @@ functions:
 
   process_outbound_transactions:
     memorySize: 256
-    handler: workers/process_outbound_transactions.handler
+    handler: workers/process_outbound_transactions2.handler
     events:
       - schedule: rate(1 minute)
     environment:

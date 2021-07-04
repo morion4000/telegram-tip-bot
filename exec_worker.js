@@ -1,3 +1,3 @@
-const worker = require('./workers/check_node_fork');
+const worker = require('./workers/process_outbound_transactions2');
 
 worker.handler();

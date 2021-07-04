@@ -9,6 +9,12 @@ var user = require('./../models').user,
 
 var Command = function (bot) {
   return function (msg, match) {
+    return bot.sendMessage(msg.chat.id, 'Command has been disabled.', {
+      //parse_mode: 'Markdown',
+      disable_web_page_preview: true,
+      disable_notification: true,
+    });
+
     try {
       var url =
         'https://www.webdscan.io/api/addresses/' +
