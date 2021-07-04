@@ -32,6 +32,7 @@ exports.handler = async function (event) {
 
     var amount = transaction.to_amount / 10000;
     var wallet = transaction.from.address[0];
+    var nonce = transaction.nonce;
 
     console.log(
       'found transaction',
@@ -39,7 +40,9 @@ exports.handler = async function (event) {
       'amount',
       amount,
       'to',
-      wallet
+      wallet,
+      'nonce',
+      nonce
     );
 
     await transaction_model.update(
@@ -51,8 +54,7 @@ exports.handler = async function (event) {
           type: 'withdraw',
           amount: amount,
           transaction_to: wallet,
-          // FIXME: Need to narrow down the search more...
-          //extra_data: nonce,
+          extra_data: nonce,
         },
         logging: console.logs,
       }
