@@ -26,7 +26,7 @@ exports.handler = async function (event) {
       continue;
     }
 
-    if (transaction.to.address[0] !== config.vault) {
+    if (transaction.to.address[0] === config.vault) {
       continue;
     }
 
