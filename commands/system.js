@@ -11,7 +11,7 @@ var Command = function (bot) {
   return function (msg, match) {
     try {
       var url =
-        'https://www.webdscan.io/api/addresses/' +
+        'https://webdollar.network:5001/address/' +
         encodeURIComponent(config.vault);
       var resp = '';
 
@@ -69,9 +69,6 @@ var Command = function (bot) {
             request(
               {
                 url: url,
-                auth: {
-                  bearer: config.webdscan.token,
-                },
                 headers: {
                   accept: 'application/json',
                 },
@@ -79,7 +76,7 @@ var Command = function (bot) {
               function (error, response, body) {
                 try {
                   var account = JSON.parse(body);
-                  var balance = parseInt(account.balance.amount) / 10000;
+                  var balance = parseInt(account.balance);
                 } catch (err) {
                   return callback(err);
                 }
