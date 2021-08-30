@@ -82,15 +82,15 @@ functions:
       NODE_URL: ${env:WEBDOLLAR_NODE_URL}
       DELTA: 10
 
-  check_node_fork_wmp_europe:
-    memorySize: 256
-    handler: workers/check_node_fork.handler
-    events:
-      - schedule: rate(60 minutes)
-    environment:
-      NODE_ENV: production
-      NODE_URL: https://server.webdollarminingpool.com
-      DELTA: 40
+  # check_node_fork_wmp_europe:
+  #   memorySize: 256
+  #   handler: workers/check_node_fork.handler
+  #   events:
+  #     - schedule: rate(60 minutes)
+  #   environment:
+  #     NODE_ENV: production
+  #     NODE_URL: https://server.webdollarminingpool.com
+  #     DELTA: 40
 
   capture_paypal_orders:
     memorySize: 256

@@ -31,7 +31,7 @@ exports.handler = async function (event) {
     }
 
     var amount = transaction.to_amount / 10000;
-    var wallet = transaction.from.address[0];
+    var wallet = transaction.to.address[0];
     var nonce = transaction.nonce;
 
     console.log(
