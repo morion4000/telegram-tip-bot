@@ -46,7 +46,8 @@ var Command = function (bot) {
           '<u><b>Available packages</b></u>\n\n' +
           `\t 💰 ${package1_webd} WEBD - 💵 ${config.topup.package1.usd} USD\n` +
           //`\t 💰 ${package2_webd} WEBD - 💵 ${config.topup.package2.usd} USD\n` +
-          //`\t 💰 ${package3_webd} WEBD - 💵 ${config.topup.package3.usd} USD\n\n` +
+          //`\t 💰 ${package3_webd} WEBD - 💵 ${config.topup.package3.usd} USD\n` +
+          '\n' +
           '▫️ <i>The amount is going to be credited to your /tipbalance after you complete the payment</i>\n' +
           '▫️ <i>Prices displayed include a comission and are subjected to change without notice</i>\n' +
           '▫️ <i>Links are related to your account. If someone else uses them, your account is going to be credited</i>\n\n' +
