@@ -3,6 +3,7 @@ const user_model = require('./../models').user.model;
 const config = require('./../config');
 const { transfer_funds } = require('./../utils');
 const paypal = require('@paypal/checkout-server-sdk');
+const TelegramBot = require('node-telegram-bot-api');
 
 exports.handler = async function (event) {
   const environment = new paypal.core.LiveEnvironment(
@@ -10,6 +11,9 @@ exports.handler = async function (event) {
     config.paypal.client_secret
   );
   const client = new paypal.core.PayPalHttpClient(environment);
+  const bot = new TelegramBot(config.telegram.token, {
+    polling: false,
+  });
 
   const transactions = await transaction_model.findAll({
     where: {
@@ -61,6 +65,15 @@ exports.handler = async function (event) {
             id: transaction.id,
           },
           logging: false,
+        }
+      );
+
+      await bot.sendMessage(
+        config.admin.telegram_chat_id,
+        `New purchase: ${user.telegram_username} bought for $${transaction.amount}`,
+        {
+          parse_mode: 'Markdown',
+          disable_web_page_preview: true,
         }
       );
     } catch (error) {
