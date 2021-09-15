@@ -2,6 +2,7 @@ const transaction_model = require('./../models').transaction.model;
 const user_model = require('./../models').user.model;
 const config = require('./../config');
 const { transfer_funds } = require('./../utils');
+const numeral = require('numeral');
 const paypal = require('@paypal/checkout-server-sdk');
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -70,7 +71,9 @@ exports.handler = async function (event) {
 
       await bot.sendMessage(
         config.admin.telegram_chat_id,
-        `New purchase: ${user.telegram_username} bought for $${transaction.amount}`,
+        `💵 New purchase: @${user.telegram_username} purchased *${numeral(
+          transaction.amount
+        ).format('0,0')}* WEBD`,
         {
           parse_mode: 'Markdown',
           disable_web_page_preview: true,
