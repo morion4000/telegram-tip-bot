@@ -73,10 +73,14 @@ bot.onText(/\/tip@webdollar_tip_bot \w+ [0-9]+$/, tip_empty_command);
 bot.onText(/\/tip @\w+ \w+$/, tip_command);
 bot.onText(/\/tip @\w+ \w+ webd$/, tip_command);
 bot.onText(/\/tip @\w+  \w+$/, tip_command);
+bot.onText(/\/tip @\w+ \$\w+$/, tip_command);
+bot.onText(/\/tip @\w+  \$\w+$/, tip_command);
 
 bot.onText(/\/tip@webdollar_tip_bot @\w+ \w+$/, tip_command);
 bot.onText(/\/tip@webdollar_tip_bot @\w+ \w+ webd$/, tip_command);
 bot.onText(/\/tip@webdollar_tip_bot @\w+  \w+$/, tip_command);
+bot.onText(/\/tip@webdollar_tip_bot @\w+ \$\w+$/, tip_command);
+bot.onText(/\/tip@webdollar_tip_bot @\w+  \$\w+$/, tip_command);
 
 bot.onText(/\/start$/, start_command);
 bot.onText(/\/tipbalance$/, balance_command);

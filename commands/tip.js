@@ -8,17 +8,17 @@ var user_model = require('./../models').user.model,
   Sequelize = require('sequelize');
 
 var Command = function (bot) {
-  return function (msg, match) {
+  return async function (msg, match) {
     try {
       var user_match = msg.text.match(/ @\w+ /);
-      var amount_match = msg.text.match(/ [0-9]+/);
+      var amount_match = msg.text.match(/ \$?[0-9]+/);
       var resp = '';
 
       console.log(msg.text, msg.chat.id);
-      
+
       if (msg.forward_from) {
         console.log(`ignoring forwaded message: ${msg.text}`);
-        
+
         return;
       }
 
@@ -56,6 +56,21 @@ var Command = function (bot) {
 
       if (_.isString(amount)) {
         amount = amount.trim();
+      }
+
+      if (amount[0] === '$') {
+        const dollar_amount = amount.substr(1);
+        const webdollar_coin = await coin_model.findOne({
+          where: {
+            ticker: 'WEBD',
+          },
+        });
+
+        if (!webdollar_coin) {
+          throw new Error('Coin not found');
+        }
+
+        amount = dollar_amount / webdollar_coin.price_usd;
       }
 
       amount = parseInt(amount);
