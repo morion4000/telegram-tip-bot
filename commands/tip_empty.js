@@ -4,7 +4,8 @@ var user = require('./../models').user,
 
 var Command = function (bot) {
   return function (msg, match) {
-    var resp = 'You need to specify the user and amount in WEBD or USD: /tip @user 1000 or /tip @user $1';
+    var resp =
+      'You need to specify the user and amount in WEBD or USD: `/tip @morion4000 1000` or `/tip @morion4000 $1`';
 
     console.log(msg.text, msg.chat.id);
 
