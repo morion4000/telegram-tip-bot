@@ -33,7 +33,7 @@ var Command = function (bot) {
       }
 
       if (user_match === null || amount_match === null) {
-        resp = 'Please specify a user and an amount: /tip @user 1000';
+        resp = 'You need to specify the user and amount in WEBD or USD: /tip @user 1000 or /tip @user $1';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
