@@ -10,7 +10,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 const NODE_URL =
   process.env.NODE_URL || 'https://server.webdollarminingpool.com';
 const FALLBACK_URL =
-  process.env.FALLBACK_URL || 'https://cryptocoingb.ddns.net:8080';
+  process.env.FALLBACK_URL || 'https://cryptocoingb.ddns.net:8081';
 const DELTA = process.env.DELTA || 2;
 const SUBJECT = `[ALERT][${NODE_URL}] Node in fork or down`;
 const FROM = 'Hostero <no-reply@mg.hostero.eu>';
