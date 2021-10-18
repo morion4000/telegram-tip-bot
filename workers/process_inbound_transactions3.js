@@ -36,8 +36,8 @@ exports.handler = async function (event) {
     var amount = tx.data.to.addresses.length
       ? parseInt(tx.data.to.addresses[0].amount) / 10000
       : 0;
-    var wallet = tx.data.to.addresses.length
-      ? tx.data.to.addresses[0].address
+    var wallet = tx.data.from.addresses.length
+      ? tx.data.from.addresses[0].address
       : null;
 
     console.log('found transaction', txId, 'amount', amount, 'from', wallet);
