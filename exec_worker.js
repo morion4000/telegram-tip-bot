@@ -1,3 +1,3 @@
-const worker = require('./workers/process_outbound_transactions2');
+const worker = require('./workers/process_inbound_transactions3');
 
 worker.handler();
