@@ -110,7 +110,6 @@ var Command = function (bot) {
           }
 
           var vault_delta = results[6] - results[1];
-          var vault_percentage = (vault_delta / results[6]) * 100;
 
           resp =
             'System statistics:\n\n' +
@@ -137,10 +136,7 @@ var Command = function (bot) {
             '\n' +
             '- vault (delta): ' +
             numeral(vault_delta).format('0,0') +
-            '\n' +
-            '- vault (delta %): ' +
-            parseInt(vault_percentage) +
-            '%\n';
+            '\n';
 
           bot.sendMessage(msg.chat.id, resp, {
             //parse_mode: 'Markdown',
