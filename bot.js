@@ -48,8 +48,6 @@ bot.on('message', async (msg) => {
   // FIXME: Possibly only run update_username for msg.chat.type === private (less events)
   try {
     await update_username(msg.from);
-
-    console.log(`Updated username: ${msg.from.username}`);
   } catch (error) {
     console.error(error);
   }

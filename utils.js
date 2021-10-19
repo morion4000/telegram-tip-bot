@@ -83,6 +83,8 @@ async function update_username(from) {
         logging: false,
       }
     );
+
+    console.log(`Updated username: ${from.username}`);
   }
 }
 
