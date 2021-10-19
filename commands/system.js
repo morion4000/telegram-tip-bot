@@ -10,9 +10,9 @@ var user = require('./../models').user,
 var Command = function (bot) {
   return function (msg, match) {
     try {
-      var url =
-        'https://webdollar.network:5001/address/' +
-        encodeURIComponent(config.vault);
+      const url = `https://webdchain.io:2053/address?address=${encodeURIComponent(
+        config.vault
+      )}`;
       var resp = '';
 
       console.log(msg.text, msg.chat.id);
@@ -76,7 +76,7 @@ var Command = function (bot) {
               function (error, response, body) {
                 try {
                   var account = JSON.parse(body);
-                  var balance = parseInt(account.balance);
+                  var balance = parseInt(account.balance) / 10000;
                 } catch (err) {
                   return callback(err);
                 }
