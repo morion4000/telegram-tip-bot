@@ -47,7 +47,8 @@ exports.handler = async function (event) {
 
   // TODO: Check if the block was mined
   // TODO: Get the block info
-  // TODO: Select the winner
+  // TODO: Select the winner number
+  // TODO: Select the winner user
   // TODO: Distribute the prize
   // TODO: Close the current round
   // TODO: Add new round

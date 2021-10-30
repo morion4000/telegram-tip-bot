@@ -5,8 +5,6 @@ var user = require('./../models').user.model,
   _ = require('underscore'),
   Sequelize = require('sequelize');
 
-// TODO: Show balance of the lottery
-
 var Command = function (bot) {
   return async function (msg, match) {
     try {

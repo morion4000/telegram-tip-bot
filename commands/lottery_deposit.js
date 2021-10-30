@@ -92,9 +92,10 @@ const Command = function (bot) {
           }
         );
 
-        const tickets = await lottery.buy_tickets(found_user, amount);
+        const { tickets, price, range_min, range_max } =
+          await lottery.buy_tickets(found_user, amount);
 
-        resp = `Deposited ${amount} to lottery. Bought ${tickets} tickets.`;
+        resp = `Bought ${tickets} tickets at ${price} WEBD / ticket. Numbers: ${range_min} - ${range_max}`;
       } else {
         resp = `You don't have enough balance to deposit ${amount}. Your /tipbalance ${found_user.balance}`;
       }

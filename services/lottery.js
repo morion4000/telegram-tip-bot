@@ -1,5 +1,6 @@
 const lottery_ticket = require('./../models').lottery_ticket;
 const lottery_round = require('./../models').lottery_round;
+const config = require('./../config');
 
 module.exports = class Lottery {
   constructor() {}
@@ -13,7 +14,7 @@ module.exports = class Lottery {
   }
 
   get_last_ticket_for_round(round) {
-    return lottery_ticket.findOne({
+    return lottery_ticket.model.findOne({
       where: {
         round_id: round.id,
       },
@@ -21,9 +22,9 @@ module.exports = class Lottery {
     });
   }
 
-  get_last_ticket_number() {
-    const round = this.get_last_round();
-    const ticket = this.get_last_ticket_for_round(round);
+  async get_last_ticket_number() {
+    const round = await this.get_last_round();
+    const ticket = await this.get_last_ticket_for_round(round);
 
     return ticket ? ticket.range_max : 0;
   }
@@ -35,7 +36,16 @@ module.exports = class Lottery {
   }
 
   calculate_ticket_price() {
-    return 0;
+    // TODO: calculate price dynamically based on time left until next round starts
+    // price gets more expensive as time goes on
+
+    return 1;
+  }
+
+  calculate_days_until_next_round() {
+    // TODO: calculate dynamically based on time left until next round starts
+
+    return 7;
   }
 
   get_tickets_for_user(user) {
@@ -73,11 +83,14 @@ module.exports = class Lottery {
     });
   }
 
-  add_ticket(user, round, number) {
+  add_ticket(user, round, range_min, range_max, price, staking_rewards) {
     return lottery_ticket.model.create({
       user_id: user.id,
       round_id: round.id,
-      number: number,
+      range_min,
+      range_max,
+      price,
+      staking_rewards,
     });
   }
 
@@ -87,15 +100,45 @@ module.exports = class Lottery {
     });
   }
 
+  update_round(round, updates) {
+    return lottery_round.model.update(updates, {
+      where: {
+        id: round.id,
+      },
+    });
+  }
+
   async buy_tickets(user, amount) {
-    const tickets = 0;
+    const round = await this.get_last_round();
+    const last_ticket_number = await this.get_last_ticket_number();
+    const price = await this.calculate_ticket_price();
+    const tickets = parseInt(amount / price);
+    const range_min = last_ticket_number + 1;
+    const range_max = range_min + tickets;
+    const daily_staking_rewards =
+      (amount * config.staking.yearly_percentage) / 100 / 365;
+    const days_until_next_round = await this.calculate_days_until_next_round();
+    const staking_rewards = daily_staking_rewards * days_until_next_round; // TODO: Rename to interest?
 
-    // TODO: Get curent found
-    // TODO: Calculate price based on the current round and amount
-    // TODO: Calculate the amount of tickets
-    // TODO: Calculate range of tickets
-    // TODO: Add tickets to the user
+    await this.add_ticket(
+      user,
+      round,
+      range_min,
+      range_max,
+      price,
+      staking_rewards
+    );
 
-    return tickets;
+    await this.update_round(round, {
+      tickets: round.tickets + tickets,
+      prize: round.prize + staking_rewards,
+    });
+
+    return {
+      tickets,
+      price,
+      range_min,
+      range_max,
+    };
   }
 };
