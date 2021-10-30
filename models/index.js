@@ -10,15 +10,18 @@ var sequelize = new Sequelize(config.mysql.connection_string, {
     charset: 'utf8',
     collate: 'utf8_general_ci',
     dialectOptions: {
-      collate: 'utf8_general_ci'
+      collate: 'utf8_general_ci',
     },
-    timestamps: true
-  }
+    timestamps: true,
+  },
 });
 
 module.exports.tip = require('./tip')(sequelize);
 module.exports.transaction = require('./transaction')(sequelize);
 module.exports.log = require('./log')(sequelize);
+module.exports.lottery_round = require('./lottery_round')(sequelize);
+module.exports.lottery_ticket = require('./lottery_ticket')(sequelize);
 module.exports.user = require('./user')(sequelize);
 module.exports.coin = require('./coin')(sequelize);
+
 module.exports.sequelize = sequelize;

@@ -42,6 +42,11 @@ var stats_command = commands.stats(bot);
 var scoreboard_command = commands.scoreboard(bot);
 var topup_command = commands.topup(bot);
 var tutorial_command = commands.tutorial(bot);
+var lottery_command = commands.lottery(bot);
+var lottery_deposit_command = commands.lottery_deposit(bot);
+var lottery_withdraw_command = commands.lottery_withdraw(bot);
+var lottery_faq_command = commands.lottery_faq(bot);
+var lottery_history_command = commands.lottery_history(bot);
 
 // Middleware
 bot.on('message', async (msg) => {
@@ -108,6 +113,13 @@ bot.onText(/\/stats$/, stats_command);
 bot.onText(/\/scoreboard$/, scoreboard_command);
 bot.onText(/\/topup$/, topup_command);
 bot.onText(/\/tutorial$/, tutorial_command);
+bot.onText(/\/lottery$/, lottery_command);
+bot.onText(/\/lottery_deposit$/, lottery_deposit_command);
+bot.onText(/\/lottery_deposit [0-9]+$/, lottery_deposit_command);
+bot.onText(/\/lottery_withdraw$/, lottery_withdraw_command);
+bot.onText(/\/lottery_withdraw [0-9]+$/, lottery_withdraw_command);
+bot.onText(/\/lottery_faq$/, lottery_faq_command);
+bot.onText(/\/lottery_history$/, lottery_history_command);
 
 bot.onText(/\/start@webdollar_tip_bot$/, start_command);
 bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
@@ -137,3 +149,10 @@ bot.onText(/\/stats@webdollar_tip_bot$/, stats_command);
 bot.onText(/\/scoreboard@webdollar_tip_bot$/, scoreboard_command);
 bot.onText(/\/toptup@webdollar_tip_bot$/, topup_command);
 bot.onText(/\/tutorial@webdollar_tip_bot$/, tutorial_command);
+bot.onText(/\/lottery@webdollar_tip_bot$/, lottery_command);
+bot.onText(/\/lottery_deposit@webdollar_tip_bot$/, lottery_deposit_command);
+bot.onText(/\/lottery_deposit@webdollar_tip_bot [0-9]+$/, lottery_deposit_command);
+bot.onText(/\/lottery_withdraw@webdollar_tip_bot$/, lottery_withdraw_command);
+bot.onText(/\/lottery_withdraw@webdollar_tip_bot [0-9]+$/, lottery_withdraw_command);
+bot.onText(/\/lottery_faq@webdollar_tip_bot$/, lottery_faq_command);
+bot.onText(/\/lottery_history@webdollar_tip_bot$/, lottery_history_command);

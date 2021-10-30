@@ -13,7 +13,9 @@ var Command = function (bot) {
   return function (msg, match) {
     try {
       var amount_match = msg.text.match(/ [0-9]+/);
-      var wallet_match = msg.text.match(/WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/);
+      var wallet_match = msg.text.match(
+        /WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/
+      );
       var resp = '';
 
       console.log(msg.text, msg.chat.id);
@@ -67,7 +69,7 @@ var Command = function (bot) {
       }
 
       amount = parseInt(amount);
-      
+
       if (wallet && wallet === config.vault) {
         resp = 'You can not withdraw to vault. Please use another address.';
 

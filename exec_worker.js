@@ -1,3 +1,3 @@
-const worker = require('./workers/process_inbound_transactions3');
+const worker = require('./workers/distribute_lottery_rewards');
 
 worker.handler();

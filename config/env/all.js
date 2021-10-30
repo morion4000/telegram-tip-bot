@@ -8,9 +8,6 @@ module.exports = {
       maxIdleTime: 30,
     },
   },
-  telegram: {
-    token: process.env.TELEGRAM_TOKEN,
-  },
   webdscan: {
     token: process.env.WEBDSCAN_TOKEN,
   },
@@ -27,6 +24,7 @@ module.exports = {
     tip: 0, // fixed
     withdraw: 10, // fixed
     deposit: 0, // fixed
+    lottery: 10, // percentage
   },
   /*
   reward per day: 12,960,000
@@ -76,5 +74,9 @@ module.exports = {
       webd: 10000,
       usd: 10,
     },
+  },
+  lottery: {
+    blocks_start: 2543110, // start lottery after 200k blocks
+    duration_blocks: 253, // ~7 days (1 block = ~40 seconds)
   },
 };

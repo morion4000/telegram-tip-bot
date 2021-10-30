@@ -1,37 +1,33 @@
 var Sequelize = require('sequelize'),
   _ = require('underscore');
 
-var Tip = function (sequelize) {
+var LotteryTicket = function (sequelize) {
   var fields = [
     'id',
-    'amount',
-    'private',
-    'from_user',
-    'to_user',
-    'telegram_message_id',
-    'telegram_chat_id',
-    'telegram_text',
+    'round_id',
+    'user_id',
+    'range_min',
+    'range_max',
     'created_at',
     'updated_at',
   ];
 
-  var tip = sequelize.define(
-    'Tip',
+  var lottery_ticket = sequelize.define(
+    'LotteryTicket',
     {
-      amount: Sequelize.INTEGER,
-      private: Sequelize.BOOLEAN,
-      telegram_message_id: Sequelize.STRING,
-      telegram_chat_id: Sequelize.STRING,
-      telegram_text: Sequelize.STRING,
+      round_id: Sequelize.INTEGER,
+      user_id: Sequelize.INTEGER,
+      range_min: Sequelize.INTEGER,
+      range_max: Sequelize.INTEGER,
     },
     {
       underscored: true,
-      tableName: 'tips',
+      tableName: 'lottery_tickets',
     }
   );
 
   var create = function (params, callback) {
-    tip
+    lottery_ticket
       .create(params)
       .then(function (result) {
         callback(null, result);
@@ -42,7 +38,7 @@ var Tip = function (sequelize) {
   };
 
   var update = function (fields, condition, callback) {
-    tip
+    lottery_ticket
       .update(fields, {
         where: condition,
       })
@@ -55,11 +51,11 @@ var Tip = function (sequelize) {
   };
 
   var find = function (params, callback) {
-    tip
+    lottery_ticket
       .findOne({
         attributes: fields,
         where: {
-          id: params.params.tip_id,
+          id: params.params.lottery_ticket_id,
         },
       })
       .then(function (result) {
@@ -71,7 +67,7 @@ var Tip = function (sequelize) {
   };
 
   var findAll = function (params, callback) {
-    tip
+    lottery_ticket
       .findAll({
         attributes: fields,
         where: params.filters,
@@ -85,7 +81,7 @@ var Tip = function (sequelize) {
   };
 
   var destroy = function (condition, callback) {
-    tip
+    lottery_ticket
       .destroy({
         where: condition,
       })
@@ -98,7 +94,7 @@ var Tip = function (sequelize) {
   };
 
   return {
-    model: tip,
+    model: lottery_ticket,
     create: create,
     update: update,
     find: find,
@@ -107,4 +103,4 @@ var Tip = function (sequelize) {
   };
 };
 
-module.exports = Tip;
+module.exports = LotteryTicket;

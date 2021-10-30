@@ -5,6 +5,8 @@ var user = require('./../models').user.model,
   _ = require('underscore'),
   Sequelize = require('sequelize');
 
+// TODO: Show balance of the lottery
+
 var Command = function (bot) {
   return async function (msg, match) {
     try {
@@ -70,14 +72,27 @@ var Command = function (bot) {
         );
 
         resp =
-          'Balance: *' +
+          '💰 Balance: *' +
           numeral(found_user.balance).format('0,0') +
           '* WEBD ($' +
           numeral(balance_usd).format('0,0.00') +
           '). Receiving /staking rewards @ *' +
           config.staking.yearly_percentage +
-          '%* per year.\n\n';
-        resp += '💵 You can add more funds using /topup.';
+          '%* per year.\n';
+
+        if (found_user.balance_lottery > 0) {
+          const balance_lottery_usd = parseFloat(
+            found_user.balance_lottery * webdollar.price_usd
+          );
+
+          resp += `🎲 Lottery balance: *${numeral(
+            found_user.balance_lottery
+          ).format('0,0')}* WEBD ($${numeral(balance_lottery_usd).format(
+            '0,0.00'
+          )}). Eligible for weekly /lottery rewards.\n`;
+        }
+
+        resp += '\n💵 You can add more funds using /topup.';
       } else {
         resp = 'Your user can not be found. Create a new acount /start';
       }
