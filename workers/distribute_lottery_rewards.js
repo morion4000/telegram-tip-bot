@@ -17,9 +17,7 @@ scaleBetween(392699, 0, 300, 0, 999999);
 //   return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 // }
 
-const transaction_model = require('./../models').transaction.model;
 const user_model = require('./../models').user.model;
-const coin_model = require('./../models').coin.model;
 const Webdchain = require('./../services/webdchain');
 const Lottery = require('./../services/lottery');
 const config = require('./../config');
