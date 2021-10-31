@@ -70,8 +70,25 @@ module.exports = class Lottery {
     return 7;
   }
 
+  /*
+    https://stackoverflow.com/questions/5294955/how-to-scale-down-a-range-of-numbers-with-a-known-min-and-max-value
+    0000000000000419f11950bab07f1ea973eecf0bf40b8fae4975cad412f7143b => 6590591447954890045974689391889537768735955443814658257392699
+    last 6 digits of the block number
+    scaleBetween(392699, 0, 300, 0, 999999);
+  */
   calculate_winner_ticket_number(block) {
     // TODO: Implement
+
+    // function scaleBetween(unscaledNum, minAllowed, maxAllowed, min, max) {
+    //   return (
+    //     ((maxAllowed - minAllowed) * (unscaledNum - min)) / (max - min) + minAllowed
+    //   );
+    // }
+
+    // function scale(num, in_min, in_max, out_min, out_max) {
+    //   return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    // }
+
     return 4;
   }
 
