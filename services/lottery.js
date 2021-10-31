@@ -70,6 +70,27 @@ module.exports = class Lottery {
     return 7;
   }
 
+  calculate_winner_ticket_number(block) {
+    // TODO: Implement
+    return 4;
+  }
+
+  async get_winner(ticket_number) {
+    // TODO: Make sure range is correct
+    const ticket = await lottery_ticket.model.findOne({
+      where: {
+        range_min: {
+          [Op.gte]: ticket_number,
+        },
+        range_max: {
+          [Op.lte]: ticket_number,
+        },
+      },
+    });
+
+    return user_model.model.findById(ticket.user_id);
+  }
+
   get_tickets_for_user(user) {
     return lottery_ticket.model.findAll({
       where: {
@@ -130,12 +151,18 @@ module.exports = class Lottery {
     });
   }
 
-  close_round(round, user) {
+  close_round(round, user, ticket_number) {
     return this.update_round(round, {
       ended: true,
       ended_at: new Date(),
-      winner_1_id: user.id,
+      winner_1_user_id: user.id,
+      winner_1_ticket_number: ticket_number,
     });
+  }
+
+  start_round() {
+    // TODO: Add start_block_height, end_block_height, etc
+    return this.add_round('Round 1');
   }
 
   distribute_prize(user, round) {

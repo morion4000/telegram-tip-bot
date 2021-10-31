@@ -35,6 +35,12 @@ module.exports = class Webdchain {
     );
   }
 
+  async get_block_by_height(height) {
+    const [block] = this.get_blocks_by_height(height, height);
+
+    return block;
+  }
+
   async get_height() {
     const chain = await this.get_chain();
 

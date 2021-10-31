@@ -35,33 +35,31 @@ exports.handler = async function (event) {
   const webdchain = new Webdchain();
   const lottery = new Lottery();
 
-  const height = await webdchain.get_height();
+  const current_height = await webdchain.get_height();
 
-  if (height < config.lottery.blocks_start) {
+  if (current_height < config.lottery.blocks_start) {
     console.log(
-      `Lottery not started (${config.lottery.blocks_start}, ${height})`
+      `Lottery not started (${config.lottery.blocks_start}, ${current_height})`
     );
 
     return;
   }
 
   // TODO: Check if the block was mined
-  // TODO: Get the block info
-  // TODO: Select the winner number
 
   const round = await lottery.get_last_round();
-
-  // TODO: Select the winner user
-  const winner = 4;
-
+  const height = round.end_block_height;
+  const block = await webdchain.get_block_by_height(height);
+  const winner_ticket_number = await lottery.calculate_winner_ticket_number(block);
+  const winner = await lottery.get_winner(winner_ticket_number);
   await lottery.distribute_prize(round, winner);
 
   // TODO: Notify the winner
 
-  await lottery.close_round(round, winner);
+  await lottery.close_round(round, winner, winner_ticket_number);
 
   // Add new round
-  const new_round = await lottery.add_round('Round');
+  const new_round = await lottery.start_round();
 
   // TODO: Notify the participants
 

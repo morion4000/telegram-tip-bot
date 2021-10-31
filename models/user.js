@@ -60,7 +60,7 @@ var User = function (sequelize) {
   });
 
   user.hasOne(lottery_round, {
-    foreignKey: 'winner_1_id',
+    foreignKey: 'winner_1_user_id',
   });
 
   var create = function (params, callback) {
