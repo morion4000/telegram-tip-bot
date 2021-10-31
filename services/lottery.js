@@ -178,7 +178,7 @@ module.exports = class Lottery {
   }
 
   start_round() {
-    // TODO: Add start_block_height, end_block_height, etc
+    // TODO: Calculate and add start_block_height, end_block_height, etc
     return this.add_round('Round 1');
   }
 
