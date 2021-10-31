@@ -1,11 +1,14 @@
-var Sequelize = require('sequelize'),
-  _ = require('underscore');
+const Sequelize = require('sequelize');
+const _ = require('underscore');
+
+const lottery_ticket = require('./index').lottery_ticket.model;
 
 var LotteryRound = function (sequelize) {
   var fields = [
     'id',
     'name',
     'winner_1_id',
+    'winner_1_number',
     'prize',
     'tickets',
     'ended',
@@ -21,6 +24,7 @@ var LotteryRound = function (sequelize) {
     {
       name: Sequelize.STRING,
       winner_1_id: Sequelize.INTEGER,
+      winner_1_number: Sequelize.INTEGER,
       prize: Sequelize.INTEGER,
       tickets: Sequelize.INTEGER,
       ended: Sequelize.BOOLEAN,
@@ -33,6 +37,10 @@ var LotteryRound = function (sequelize) {
       tableName: 'lottery_rounds',
     }
   );
+
+  lottery_round.hasOne(lottery_ticket, {
+    foreignKey: 'round_id',
+  });
 
   var create = function (params, callback) {
     lottery_round

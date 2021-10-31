@@ -19,8 +19,8 @@ var sequelize = new Sequelize(config.mysql.connection_string, {
 module.exports.tip = require('./tip')(sequelize);
 module.exports.transaction = require('./transaction')(sequelize);
 module.exports.log = require('./log')(sequelize);
-module.exports.lottery_round = require('./lottery_round')(sequelize);
 module.exports.lottery_ticket = require('./lottery_ticket')(sequelize);
+module.exports.lottery_round = require('./lottery_round')(sequelize);
 module.exports.user = require('./user')(sequelize);
 module.exports.coin = require('./coin')(sequelize);
 

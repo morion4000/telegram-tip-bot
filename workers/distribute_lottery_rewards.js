@@ -48,14 +48,45 @@ exports.handler = async function (event) {
   // TODO: Check if the block was mined
   // TODO: Get the block info
   // TODO: Select the winner number
+
+  const round = await lottery.get_last_round();
+
   // TODO: Select the winner user
-  // TODO: Distribute the prize
-  // TODO: Close the current round
-  // TODO: Add new round
-  // TODO: Notify the participants
+  const winner = 4;
+
+  await lottery.distribute_prize(round, winner);
+
   // TODO: Notify the winner
-  // TODO: Withdraw pending lottery balances
-  // TODO: Create new tickets automatically
+
+  await lottery.close_round(round, winner);
+
+  // Add new round
+  const new_round = await lottery.add_round('Round');
+
+  // TODO: Notify the participants
+
+  // Withdraw pending lottery balances
+  const users_with_balance_lottery_withdraw =
+    await lottery.get_users_with_balance_lottery_withdraw();
+
+  for (const user of users_with_balance_lottery_withdraw) {
+    await user_model.update(user.id, {
+      balance: user.balance + user.balance_lottery_withdraw,
+      balance_lottery_withdraw: 0,
+    });
+
+    // TODO: Notify the user that withdraw was successful
+  }
+
+  // Create new tickets automatically
+  const users_with_balance_lottery =
+    await get_random_users_with_balance_lottery();
+
+  for (const user of users_with_balance_lottery) {
+    await lottery.buy_tickets(user, user.balance_lottery);
+
+    // TODO: Notify the user that they bought tickets
+  }
 
   return {
     message: ``,

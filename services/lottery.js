@@ -1,5 +1,6 @@
 const lottery_ticket = require('./../models').lottery_ticket;
 const lottery_round = require('./../models').lottery_round;
+const user_model = require('./../models').user;
 const config = require('./../config');
 
 module.exports = class Lottery {
@@ -19,6 +20,27 @@ module.exports = class Lottery {
         round_id: round.id,
       },
       order: [['id', 'DESC']],
+    });
+  }
+
+  get_users_with_balance_lottery_withdraw() {
+    return user_model.model.findAll({
+      where: {
+        balance_lottery_withdraw: {
+          [Op.gt]: 0,
+        },
+      },
+    });
+  }
+
+  get_random_users_with_balance_lottery() {
+    return user_model.model.findAll({
+      where: {
+        balance_lottery: {
+          [Op.gt]: 0,
+        },
+      },
+      order: [['id', 'RANDOM']],
     });
   }
 
@@ -105,6 +127,20 @@ module.exports = class Lottery {
       where: {
         id: round.id,
       },
+    });
+  }
+
+  close_round(round, user) {
+    return this.update_round(round, {
+      ended: true,
+      ended_at: new Date(),
+      winner_1_id: user.id,
+    });
+  }
+
+  distribute_prize(user, round) {
+    return user_model.model.update(user.id, {
+      balance_lottery: user.balance_lottery + round.prize,
     });
   }
 

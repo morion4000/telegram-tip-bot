@@ -3,6 +3,7 @@ var Sequelize = require('sequelize'),
   tip = require('./index').tip.model,
   log = require('./index').log.model,
   transaction = require('./index').transaction.model,
+  lottery_round = require('./index').lottery_round.model,
   lottery_ticket = require('./index').lottery_ticket.model;
 
 var User = function (sequelize) {
@@ -56,6 +57,10 @@ var User = function (sequelize) {
 
   user.hasOne(lottery_ticket, {
     foreignKey: 'user_id',
+  });
+
+  user.hasOne(lottery_round, {
+    foreignKey: 'winner_1_id',
   });
 
   var create = function (params, callback) {
