@@ -75,7 +75,7 @@ module.exports = class Lottery {
     return 4;
   }
 
-  async get_winner(ticket_number) {
+  async get_winner_user(ticket_number) {
     // TODO: Make sure range is correct
     const ticket = await lottery_ticket.model.findOne({
       where: {

@@ -52,15 +52,15 @@ exports.handler = async function (event) {
   const winner_ticket_number = await lottery.calculate_winner_ticket_number(
     block
   );
-  const winner = await lottery.get_winner(winner_ticket_number);
-  await lottery.distribute_prize(round, winner);
+  const winner_user = await lottery.get_winner_user(winner_ticket_number);
+  await lottery.distribute_prize(round, winner_user);
 
   console.log(`Winner ticket number: ${winner_ticket_number}`);
-  console.log(`Winner user id: ${winner.id}`);
+  console.log(`Winner user id: ${winner_user.id}`);
 
   // TODO: Notify the winner
 
-  await lottery.close_round(round, winner, winner_ticket_number);
+  await lottery.close_round(round, winner_user, winner_ticket_number);
 
   const new_round = await lottery.start_round();
 
