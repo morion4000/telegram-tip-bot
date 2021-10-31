@@ -1,9 +1,4 @@
 /*
-Query lottery participants and create array.
-Calculate the prize pool based on the number of participants.
-Calculate random number for the lottery based on the Nth WEBD block?
-Distribute the lottery to the winner.
-
 Worker will only run every 5 minutes.
 
 https://stackoverflow.com/questions/5294955/how-to-scale-down-a-range-of-numbers-with-a-known-min-and-max-value
@@ -36,29 +31,39 @@ exports.handler = async function (event) {
   const lottery = new Lottery();
 
   const current_height = await webdchain.get_height();
+  const round = await lottery.get_last_round();
 
   if (current_height < config.lottery.blocks_start) {
     console.log(
-      `Lottery not started (${config.lottery.blocks_start}, ${current_height})`
+      `Lottery not started (${current_height} < ${config.lottery.blocks_start})`
     );
 
     return;
   }
 
-  // TODO: Check if the block was mined
+  if (current_height < round.end_block_height) {
+    console.log(
+      `Lottery round not ended (${current_height} < ${round.end_block_height})`
+    );
 
-  const round = await lottery.get_last_round();
+    return;
+  }
+
   const height = round.end_block_height;
   const block = await webdchain.get_block_by_height(height);
-  const winner_ticket_number = await lottery.calculate_winner_ticket_number(block);
+  const winner_ticket_number = await lottery.calculate_winner_ticket_number(
+    block
+  );
   const winner = await lottery.get_winner(winner_ticket_number);
   await lottery.distribute_prize(round, winner);
+
+  console.log(`Winner ticket number: ${winner_ticket_number}`);
+  console.log(`Winner user id: ${winner.id}`);
 
   // TODO: Notify the winner
 
   await lottery.close_round(round, winner, winner_ticket_number);
 
-  // Add new round
   const new_round = await lottery.start_round();
 
   // TODO: Notify the participants
