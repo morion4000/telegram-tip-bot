@@ -43,6 +43,7 @@ var scoreboard_command = commands.scoreboard(bot);
 var topup_command = commands.topup(bot);
 var tutorial_command = commands.tutorial(bot);
 var lottery_command = commands.lottery(bot);
+var lottery_tickets = commands.lottery_tickets(bot); // ?
 var lottery_deposit_command = commands.lottery_deposit(bot);
 var lottery_withdraw_command = commands.lottery_withdraw(bot);
 var lottery_faq_command = commands.lottery_faq(bot);

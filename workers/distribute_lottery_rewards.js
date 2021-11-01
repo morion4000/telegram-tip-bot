@@ -53,9 +53,9 @@ exports.handler = async function (event) {
         `🎲 Weekly round finished. Winning ticket number is *${winner_ticket_number}* ([winning block](${webdchain.get_block_url_by_hash(
           hash
         )})).\n` +
-          `💵 Prize of ${format_number(round.prize)} WEBD ($${format_number(prize_usd)}) was won by @${
-            winner_user.telegram_username
-          }.`,
+          `💵 Prize of ${format_number(round.prize)} WEBD ($${format_number(
+            prize_usd
+          )}) was won by @${winner_user.telegram_username}.`,
         Telegram.PARSE_MODE.MARKDOWN
       )
       .catch(console.error);
@@ -68,7 +68,9 @@ exports.handler = async function (event) {
       winner_user.telegram_id,
       `🎉 Congratulations! You have won ${format_number(
         round.prize
-      )} WEBD ($${format_number(prize_usd)}). Funds have been added to your /tipbalance.`
+      )} WEBD ($${format_number(
+        prize_usd
+      )}). Funds have been added to your /tipbalance.`
     )
     .catch(console.error);
 
@@ -95,7 +97,7 @@ exports.handler = async function (event) {
     telegram
       .send_message(
         user.telegram_id,
-        `💰 You have withdrawn ${format_number(
+        `💰 Withdrew ${format_number(
           user.balance_lottery_withdraw
         )} WEBD from lottery. The funds are in your /tipbalance.`
       )
@@ -115,7 +117,7 @@ exports.handler = async function (event) {
     telegram
       .send_message(
         user.telegram_id,
-        `🎟 You have bought ${format_number(
+        `🎟 Bought ${format_number(
           tickets
         )} /lottery_tickets for the new round (${format_number(
           price

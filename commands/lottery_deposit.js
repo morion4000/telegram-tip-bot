@@ -1,6 +1,8 @@
 const user = require('./../models').user;
 const config = require('./../config');
+const { format_number, convert_to_usd } = require('./../utils');
 const Lottery = require('./../services/lottery');
+
 const _ = require('underscore');
 const Sequelize = require('sequelize');
 
@@ -95,9 +97,9 @@ const Command = function (bot) {
         const { tickets, price, range_min, range_max } =
           await lottery.buy_tickets(found_user, amount);
 
-        resp = `Bought ${tickets} tickets at ${price} WEBD / ticket. Numbers: ${range_min} - ${range_max}`;
+        resp = `🎟 Bought ${format_number(tickets)} tickets (${format_number(price)} WEBD / ticket). Numbers: ${range_min} - ${range_max}`;
       } else {
-        resp = `You don't have enough balance to deposit ${amount}. Your /tipbalance ${found_user.balance}`;
+        resp = `You don't have enough /tipbalance to deposit ${amount}.`;
       }
     } else {
       resp = 'Your user can not be found. Create a new acount /start';
