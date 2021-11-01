@@ -38,8 +38,8 @@ module.exports = class Telegram {
     chat_id,
     message,
     parse_mode = Telegram.PARSE_MODE.HTML,
-    disable_web_page_preview = true,
-    disable_notification = false
+    disable_notification = false,
+    disable_web_page_preview = true
   ) {
     return this.bot.sendMessage(chat_id, message, {
       parse_mode,

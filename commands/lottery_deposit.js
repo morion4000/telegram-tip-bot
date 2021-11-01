@@ -1,6 +1,6 @@
 const user = require('./../models').user;
 const config = require('./../config');
-const { format_number, convert_to_usd } = require('./../utils');
+const { format_number } = require('./../utils');
 const Lottery = require('./../services/lottery');
 
 const _ = require('underscore');
@@ -94,10 +94,16 @@ const Command = function (bot) {
           }
         );
 
-        const { tickets, price, range_min, range_max } =
-          await lottery.buy_tickets(found_user, amount);
+        const { tickets, price } = await lottery.buy_tickets(
+          found_user,
+          amount
+        );
 
-        resp = `🎟 Bought ${format_number(tickets)} tickets (${format_number(price)} WEBD / ticket). Numbers: ${range_min} - ${range_max}`;
+        resp = `🎟 Bought ${format_number(
+          tickets
+        )} /lottery_tickets for this round. (${format_number(
+          price
+        )} WEBD / ticket).`;
       } else {
         resp = `You don't have enough /tipbalance to deposit ${amount}.`;
       }
@@ -106,7 +112,6 @@ const Command = function (bot) {
     }
 
     bot.sendMessage(msg.chat.id, resp, {
-      parse_mode: 'Markdown',
       disable_web_page_preview: true,
       disable_notification: true,
     });

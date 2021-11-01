@@ -6,7 +6,10 @@ const coin_model = require('./models').coin.model;
 const config = require('./config');
 
 function format_number(number) {
-  return numeral(number).format('0,0');
+  // Format number to 1 decimal places if float
+  return number % 1 === 0
+    ? numeral(number).format('0,0')
+    : numeral(number).format('0,0.0');
 }
 
 async function convert_to_usd(amount) {

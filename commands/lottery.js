@@ -1,32 +1,38 @@
-/*
-    - prize pool
-    - remaining time,
-    - participation stats for the current user (if command ran in private chat)
-*/
-
-const user = require('./../models').user;
+const user_model = require('./../models').user.model;
+const Telegram = require('./../services/telegram');
 const Lottery = require('./../services/lottery');
+const Webdchain = require('./../services/webdchain');
+const { format_number, convert_to_usd } = require('./../utils');
 const config = require('./../config');
+
 const _ = require('underscore');
 
-const Command = function (bot) {
-  return async function (msg, match) {
-    console.log(msg.text, msg.chat.id);
+module.exports = (bot) => async (msg, match) => {
+  console.log(msg.text, msg.chat.id);
 
-    const lottery = new Lottery();
-    var resp = 'Not implemented';
+  const telegram = new Telegram();
+  const webdchain = new Webdchain();
+  const current_height = await webdchain.get_height();
+  const lottery = new Lottery(current_height);
 
-    const round = await lottery.get_last_round();
-    const participants = await lottery.get_unique_users_for_round(round);
+  const round = await lottery.get_last_round();
+  const participants = await lottery.get_participants(round);
+  const prize_usd = await convert_to_usd(round.prize);
+  const days_until_next_round = await lottery.calculate_days_until_next_round(
+    round
+  );
 
-    resp = `Round ${round.name}. Prize ${round.prize}. Participants ${participants.length}`;
+  const message =
+    `🎲 Prize: ${format_number(round.prize)} WEBD ($${format_number(
+      prize_usd
+    )}).\n` +
+    `👥 Participants ${participants.length}.\n` +
+    `📅 Ends in ${days_until_next_round} days.`;
 
-    bot.sendMessage(msg.chat.id, resp, {
-      parse_mode: 'Markdown',
-      disable_web_page_preview: true,
-      disable_notification: true,
-    });
-  };
+  await telegram.send_message(
+    msg.chat.id,
+    message,
+    Telegram.PARSE_MODE.MARKDOWN,
+    false
+  );
 };
-
-module.exports = Command;
