@@ -1,6 +1,7 @@
 const user = require('./../models').user;
 const config = require('./../config');
 const { format_number } = require('./../utils');
+const Webdchain = require('./../services/webdchain');
 const Lottery = require('./../services/lottery');
 
 const _ = require('underscore');
@@ -57,8 +58,11 @@ const Command = function (bot) {
       return;
     }
 
-    const lottery = new Lottery();
-    let resp = 'Not implemented';
+    const webdchain = new Webdchain();
+    const current_height = await webdchain.get_height();
+    const lottery = new Lottery(current_height);
+
+    let resp = '';
     let amount = amount_match[0];
 
     if (_.isString(amount)) {
@@ -101,7 +105,7 @@ const Command = function (bot) {
 
         resp = `🎟 Bought ${format_number(
           tickets
-        )} /lottery_tickets for this round. (${format_number(
+        )} /lottery_tickets for this round (${format_number(
           price
         )} WEBD / ticket).`;
       } else {

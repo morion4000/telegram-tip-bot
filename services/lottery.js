@@ -63,6 +63,30 @@ module.exports = class Lottery {
     });
   }
 
+  // TODO: Calculate the SUM via query
+  async calculate_tickets_number_for_round(round) {
+    const tickets = await this.get_tickets_for_round(round);
+    let tickets_number = 0;
+
+    for (const ticket of tickets) {
+      tickets_number += ticket.tickets;
+    }
+
+    return tickets_number;
+  }
+
+    // TODO: Calculate the SUM via query
+    async calculate_tickets_number_for_user_and_round(user, round) {
+      const tickets = await this.get_tickets_for_user_and_round(user, round);
+      let tickets_number = 0;
+  
+      for (const ticket of tickets) {
+        tickets_number += ticket.tickets;
+      }
+  
+      return tickets_number;
+    }
+
   async get_last_ticket_number() {
     const round = await this.get_last_round();
     const ticket = await this.get_last_ticket_for_round(round);
@@ -191,10 +215,11 @@ module.exports = class Lottery {
     });
   }
 
-  add_ticket(user, round, range_min, range_max, price, staking_rewards) {
+  add_ticket(user, round, tickets, range_min, range_max, price, staking_rewards) {
     return lottery_ticket.model.create({
       user_id: user.id,
       round_id: round.id,
+      tickets,
       range_min,
       range_max,
       price,
@@ -270,6 +295,7 @@ module.exports = class Lottery {
     await this.add_ticket(
       user,
       round,
+      tickets,
       range_min,
       range_max,
       price,

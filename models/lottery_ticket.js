@@ -6,6 +6,7 @@ var LotteryTicket = function (sequelize) {
     'id',
     'round_id',
     'user_id',
+    'tickets',
     'range_min',
     'range_max',
     'price',
@@ -19,6 +20,7 @@ var LotteryTicket = function (sequelize) {
     {
       round_id: Sequelize.INTEGER,
       user_id: Sequelize.INTEGER,
+      tickets: Sequelize.INTEGER,
       range_min: Sequelize.INTEGER,
       range_max: Sequelize.INTEGER,
       price: Sequelize.INTEGER,
