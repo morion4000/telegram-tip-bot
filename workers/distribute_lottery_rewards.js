@@ -7,7 +7,7 @@ const Webdchain = require('./../services/webdchain');
 const Lottery = require('./../services/lottery');
 const Telegram = require('./../services/telegram');
 const config = require('./../config');
-const numeral = require('numeral');
+const { format_number, convert_to_usd } = require('./../utils');
 
 exports.handler = async function (event) {
   const telegram = new Telegram();
@@ -44,6 +44,7 @@ exports.handler = async function (event) {
   console.log(`Winner user id: ${winner_user.id}`);
 
   const participants = await lottery.get_participants();
+  const prize_usd = await convert_to_usd(round.prize);
 
   for (const participant of participants) {
     telegram
@@ -52,7 +53,9 @@ exports.handler = async function (event) {
         `🎲 Weekly round finished. Winning ticket number is *${winner_ticket_number}* ([winning block](${webdchain.get_block_url_by_hash(
           hash
         )})).\n` +
-          `💵 Prize of ${round.prize} WEBD was won by @${winner_user.telegram_username}.`,
+          `💵 Prize of ${format_number(round.prize)} WEBD ($${format_number(prize_usd)}) was won by @${
+            winner_user.telegram_username
+          }.`,
         Telegram.PARSE_MODE.MARKDOWN
       )
       .catch(console.error);
@@ -63,7 +66,9 @@ exports.handler = async function (event) {
   telegram
     .send_message(
       winner_user.telegram_id,
-      `🎉 Congratulations! You have won ${round.prize} WEBD. Funds have been added to your /tipbalance.`
+      `🎉 Congratulations! You have won ${format_number(
+        round.prize
+      )} WEBD ($${format_number(prize_usd)}). Funds have been added to your /tipbalance.`
     )
     .catch(console.error);
 
@@ -91,7 +96,9 @@ exports.handler = async function (event) {
     telegram
       .send_message(
         user.telegram_id,
-        `💰 You have withdrawn ${user.balance_lottery_withdraw} WEBD from lottery. The funds are in your /tipbalance.`
+        `💰 You have withdrawn ${format_number(
+          user.balance_lottery_withdraw
+        )} WEBD from lottery. The funds are in your /tipbalance.`
       )
       .catch(console.error);
   }
@@ -109,7 +116,11 @@ exports.handler = async function (event) {
     telegram
       .send_message(
         user.telegram_id,
-        `🎟 You have bought ${tickets} /lottery_tickets for the new round (${price} WEBD / ticket).`
+        `🎟 You have bought ${format_number(
+          tickets
+        )} /lottery_tickets for the new round (${format_number(
+          price
+        )} WEBD / ticket).`
       )
       .catch(console.error);
   }

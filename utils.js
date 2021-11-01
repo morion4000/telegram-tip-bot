@@ -2,7 +2,26 @@ const TelegramBot = require('node-telegram-bot-api');
 const numeral = require('numeral');
 
 const user_model = require('./models').user.model;
+const coin_model = require('./models').coin.model;
 const config = require('./config');
+
+function format_number(number) {
+  return numeral(number).format('0,0');
+}
+
+async function convert_to_usd(amount) {
+  const webdollar = await coin_model.findOne({
+    where: {
+      ticker: 'WEBD',
+    },
+  });
+
+  if (!webdollar) {
+    throw new Error('Coin not found');
+  }
+
+  return parseFloat(amount * webdollar.price_usd);
+}
 
 function get_amount_for_price(price) {
   let amount = 0;
@@ -92,4 +111,6 @@ module.exports = {
   get_amount_for_price,
   transfer_funds,
   update_username,
+  format_number,
+  convert_to_usd,
 };
