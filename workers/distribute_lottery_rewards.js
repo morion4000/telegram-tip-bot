@@ -73,8 +73,7 @@ exports.handler = async function (event) {
     .catch(console.error);
 
   await lottery.close_round(round, winner_user, winner_ticket_number, hash);
-
-  const new_round = await lottery.start_round();
+  await lottery.start_round();
 
   // Withdraw pending lottery balances
   const users_with_balance_lottery_withdraw =
