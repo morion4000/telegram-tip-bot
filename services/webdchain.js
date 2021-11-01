@@ -10,6 +10,8 @@ module.exports = class Webdchain {
   }
 
   async make_request(url) {
+    console.log(`Making request to ${url}`);
+
     const response = await axios.get(url, {
       headers: {
         Accept: 'application/json',
@@ -29,14 +31,18 @@ module.exports = class Webdchain {
     return this.make_request(`${this.base_url}/chain`);
   }
 
-  get_blocks_by_height(start, end = start) {
+  get_blocks_by_height(start, end) {
+    if (!end) {
+      end = start + 1;
+    }
+
     return this.make_request(
       `${this.base_url}/blocks?start=${start}&end=${end}`
     );
   }
 
   async get_block_by_height(height) {
-    const [block] = this.get_blocks_by_height(height, height);
+    const [block] = await this.get_blocks_by_height(height, height + 1);
 
     return block;
   }

@@ -33,13 +33,15 @@ exports.handler = async function (event) {
   }
 
   const height = round.end_block_height;
-  const block = await webdchain.get_block_by_height(height);
+  const { hash } = await webdchain.get_block_by_height(height);
   const winner_ticket_number = await lottery.calculate_winner_ticket_number(
-    block
+    hash
   );
-  const winner_user = await lottery.get_winner_user(winner_ticket_number);
 
   console.log(`Winner ticket number: ${winner_ticket_number}`);
+
+  const winner_user = await lottery.get_winner_user(winner_ticket_number);
+
   console.log(`Winner user id: ${winner_user.id}`);
 
   await lottery.distribute_prize(round, winner_user);

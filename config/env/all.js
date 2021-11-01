@@ -75,8 +75,12 @@ module.exports = {
       usd: 10,
     },
   },
+  blockchain: {
+    block_time_seconds: 40,
+  },
   lottery: {
-    blocks_start: 2543110, // start lottery after 200k blocks
-    duration_blocks: 253, // ~7 days (1 block = ~40 seconds)
+    last_n_digits_of_block_hash: 10, // this allows for up to 10 billion lottery tickets
+    upper_bound_of_block_hash: 9999999999,
+    duration_blocks: 15120, // ~7 days (1 block = ~40 seconds)
   },
 };
