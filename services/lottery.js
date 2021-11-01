@@ -160,6 +160,16 @@ module.exports = class Lottery {
     });
   }
 
+  get_participants() {
+    return user_model.model.findAll({
+      where: {
+        balance_lottery: {
+          [Sequelize.Op.gt]: 0,
+        },
+      },
+    });
+  }
+
   get_unique_users_for_round(round) {
     return lottery_ticket.model.findAll({
       where: {
@@ -211,12 +221,13 @@ module.exports = class Lottery {
     });
   }
 
-  close_round(round, user, ticket_number) {
+  close_round(round, user, ticket_number, block_hash) {
     return this.update_round(round, {
       ended: true,
       ended_at: new Date(),
       winner_1_user_id: user.id,
       winner_1_ticket_number: ticket_number,
+      winner_1_block_hash: block_hash,
     });
   }
 
