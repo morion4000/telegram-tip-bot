@@ -24,12 +24,12 @@ module.exports = (bot) => async (msg, match) => {
   );
 
   const message =
-    `🎲 Prize: ${format_number(round.prize)} WEBD ($${format_number(
+    `🎲 Prize: *${format_number(round.prize)} WEBD* ($${format_number(
       prize_usd
     )}).\n` +
-    `👥 Participants: ${format_number(participants.length)}.\n` +
-    `🎟 Tickets: ${format_number(tickets_number)}.\n` +
-    `📅 Ends in ${days_until_next_round} days.`;
+    `👥 Participants: *${format_number(participants.length)}*.\n` +
+    `🎟 Tickets: *${format_number(tickets_number)}*.\n` +
+    `📅 Ends in *${days_until_next_round}* days.`;
 
   await telegram.send_message(
     msg.chat.id,

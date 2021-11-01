@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+// TODO: Caching
+// TODO: Exponential backoff
 module.exports = class Webdchain {
   constructor(
     url = 'https://webdchain.io',
