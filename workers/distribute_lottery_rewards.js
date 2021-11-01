@@ -42,13 +42,11 @@ exports.handler = async function (event) {
   console.log(`Winner user id: ${winner_user.id}`);
 
   await lottery.distribute_prize(round, winner_user);
-
   // TODO: Notify the winner
 
   await lottery.close_round(round, winner_user, winner_ticket_number);
 
   const new_round = await lottery.start_round();
-
   // TODO: Notify the participants
 
   // Withdraw pending lottery balances
