@@ -8,6 +8,8 @@ const config = require('./../config');
 module.exports = class Lottery {
   constructor(current_height) {
     this.cached_current_height = current_height;
+    // TODO: Implement fee
+    this.fee = 0;
   }
 
   // https://stackoverflow.com/questions/5294955/how-to-scale-down-a-range-of-numbers-with-a-known-min-and-max-value
@@ -236,9 +238,8 @@ module.exports = class Lottery {
     const start_block_height = round.end_block_height;
     const end_block_height =
       start_block_height + config.lottery.duration_blocks;
-    const fee = 0; // TODO: Implement fee
 
-    return this.add_round('Round', start_block_height, end_block_height, fee);
+    return this.add_round('Round', start_block_height, end_block_height, this.fee);
   }
 
   distribute_prize(user, round) {

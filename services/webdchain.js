@@ -1,12 +1,20 @@
 const axios = require('axios');
 
 module.exports = class Webdchain {
-  constructor(base_url = 'https://webdchain.io:2053') {
-    this.base_url = base_url;
+  constructor(
+    url = 'https://webdchain.io',
+    api_url = 'https://webdchain.io:2053'
+  ) {
+    this.url = url;
+    this.api_url = api_url;
   }
 
   encode_address(address) {
     return encodeURIComponent(address);
+  }
+
+  get_block_url_by_hash(hash) {
+    return `${this.url}/block/${hash}`;
   }
 
   async make_request(url) {
@@ -23,12 +31,12 @@ module.exports = class Webdchain {
 
   get_transactions(address) {
     return this.make_request(
-      `${this.base_url}/address-txs?address=${this.encode_address(address)}`
+      `${this.api_url}/address-txs?address=${this.encode_address(address)}`
     );
   }
 
   get_chain() {
-    return this.make_request(`${this.base_url}/chain`);
+    return this.make_request(`${this.api_url}/chain`);
   }
 
   get_blocks_by_height(start, end) {
@@ -37,7 +45,7 @@ module.exports = class Webdchain {
     }
 
     return this.make_request(
-      `${this.base_url}/blocks?start=${start}&end=${end}`
+      `${this.api_url}/blocks?start=${start}&end=${end}`
     );
   }
 

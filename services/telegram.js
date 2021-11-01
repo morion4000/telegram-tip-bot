@@ -14,6 +14,7 @@ module.exports = class Telegram {
     return {
       HTML: 'HTML',
       MARKDOWN: 'Markdown',
+      MARKDOWN2: 'MarkdownV2',
     };
   }
 
@@ -40,10 +41,6 @@ module.exports = class Telegram {
     disable_web_page_preview = true,
     disable_notification = false
   ) {
-    if (!(parse_mode in Telegram.PARSE_MODE)) {
-      parse_mode = Telegram.PARSE_MODE.HTML;
-    }
-
     return this.bot.sendMessage(chat_id, message, {
       parse_mode,
       disable_web_page_preview,

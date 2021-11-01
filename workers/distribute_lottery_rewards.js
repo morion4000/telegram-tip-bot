@@ -43,23 +43,33 @@ exports.handler = async function (event) {
   console.log(`Winner ticket number: ${winner_ticket_number}`);
   console.log(`Winner user id: ${winner_user.id}`);
 
+  const participants = await lottery.get_participants();
+
+  for (const participant of participants) {
+    telegram
+      .send_message(
+        participant.telegram_id,
+        `🎲 Weekly round finished. Winning ticket number is *${winner_ticket_number}* ([winning block](${webdchain.get_block_url_by_hash(
+          hash
+        )})).\n` +
+          `💵 Prize of ${round.prize} WEBD was won by @${winner_user.telegram_username}.`,
+        Telegram.PARSE_MODE.MARKDOWN
+      )
+      .catch(console.error);
+  }
+
   await lottery.distribute_prize(round, winner_user);
 
-  telegram.send_message(winner_user.telegram_id, `You have won ${round.prize}`);
+  telegram
+    .send_message(
+      winner_user.telegram_id,
+      `🎉 Congratulations! You have won ${round.prize} WEBD. Funds have been added to your /tipbalance.`
+    )
+    .catch(console.error);
 
   await lottery.close_round(round, winner_user, winner_ticket_number, hash);
 
   const new_round = await lottery.start_round();
-
-  const participants = await lottery.get_participants();
-
-  for (const participant of participants) {
-    telegram.send_message(
-      participant.telegram_id,
-      `The round has finished. New round info. Winner is @${winner_user.telegram_username}`,
-      Telegram.PARSE_MODE.MARKDOWN
-    );
-  }
 
   // Withdraw pending lottery balances
   const users_with_balance_lottery_withdraw =
@@ -78,10 +88,12 @@ exports.handler = async function (event) {
       }
     );
 
-    telegram.send_message(
-      user.telegram_id,
-      `You have withdrawn ${user.balance_lottery_withdraw} WEBD from lottery.`
-    );
+    telegram
+      .send_message(
+        user.telegram_id,
+        `💰 You have withdrawn ${user.balance_lottery_withdraw} WEBD from lottery. The funds are in your /tipbalance.`
+      )
+      .catch(console.error);
   }
 
   // Create new tickets automatically
@@ -94,10 +106,12 @@ exports.handler = async function (event) {
       user.balance_lottery
     );
 
-    telegram.send_message(
-      user.telegram_id,
-      `You have bought ${tickets} at ${price} WEBD per ticket.`
-    );
+    telegram
+      .send_message(
+        user.telegram_id,
+        `🎟 You have bought ${tickets} /lottery_tickets for the new round (${price} WEBD / ticket).`
+      )
+      .catch(console.error);
   }
 
   return {
