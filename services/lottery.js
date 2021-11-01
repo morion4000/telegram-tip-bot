@@ -3,12 +3,11 @@ const Sequelize = require('sequelize');
 const lottery_ticket = require('./../models').lottery_ticket;
 const lottery_round = require('./../models').lottery_round;
 const user_model = require('./../models').user;
-const Webdchain = require('./../services/webdchain');
 const config = require('./../config');
 
 module.exports = class Lottery {
-  constructor() {
-    this.webdchain = new Webdchain();
+  constructor(current_height) {
+    this.cached_current_height = current_height;
   }
 
   // https://stackoverflow.com/questions/5294955/how-to-scale-down-a-range-of-numbers-with-a-known-min-and-max-value
@@ -58,7 +57,7 @@ module.exports = class Lottery {
           [Sequelize.Op.gt]: 0,
         },
       },
-      order: [['id', 'RANDOM']],
+      order: [Sequelize.fn('RAND')],
     });
   }
 
@@ -93,7 +92,7 @@ module.exports = class Lottery {
 
   async calculate_days_until_next_round() {
     const round = await this.get_last_round();
-    const height = await this.webdchain.get_height(); // TODO: Move network call out of the service?
+    const height = this.cached_current_height;
     const blocks_left = round.end_block_height - height;
 
     const days_left =
@@ -130,15 +129,19 @@ module.exports = class Lottery {
     const ticket = await lottery_ticket.model.findOne({
       where: {
         range_min: {
-          [Sequelize.Op.gte]: ticket_number,
+          [Sequelize.Op.lte]: ticket_number,
         },
         range_max: {
-          [Sequelize.Op.lte]: ticket_number,
+          [Sequelize.Op.gte]: ticket_number,
         },
       },
     });
 
-    return user_model.model.findById(ticket.user_id);
+    return user_model.model.findOne({
+      where: {
+        id: ticket.user_id,
+      },
+    });
   }
 
   get_tickets_for_user(user) {
@@ -217,8 +220,8 @@ module.exports = class Lottery {
     });
   }
 
-  start_round() {
-    const round = this.get_last_round();
+  async start_round() {
+    const round = await this.get_last_round();
     const start_block_height = round.end_block_height;
     const end_block_height =
       start_block_height + config.lottery.duration_blocks;
@@ -228,9 +231,16 @@ module.exports = class Lottery {
   }
 
   distribute_prize(user, round) {
-    return user_model.model.update(user.id, {
-      balance_lottery: user.balance_lottery + round.prize,
-    });
+    return user_model.model.update(
+      {
+        balance_lottery: user.balance_lottery + round.prize,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+      }
+    );
   }
 
   async buy_tickets(user, amount) {
