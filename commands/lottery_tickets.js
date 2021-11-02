@@ -3,9 +3,7 @@ const Telegram = require('./../services/telegram');
 const Lottery = require('./../services/lottery');
 const Webdchain = require('./../services/webdchain');
 const { format_number } = require('./../utils');
-const config = require('./../config');
 
-const _ = require('underscore');
 
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
@@ -25,23 +23,21 @@ module.exports = (bot) => async (msg, match) => {
   const tickets_number =
     await lottery.calculate_tickets_number_for_user_and_round(user, round);
   const chance = (tickets_number / round.tickets) * 100;
-  let message =
-    `🎟 You bought *${format_number(
-      tickets_number
-    )}* tickets for the current /lottery round.\n` +
-    `📈 Chance of winning: *${chance}%*.\n\n`;
+  let message = `🎟 You bought *${format_number(
+    tickets_number
+  )}* tickets for the current /lottery round:\n\n`;
 
   for (const ticket of tickets) {
-    message += `▫️ Tickets *${format_number(
-      ticket.range_min
-    )}* - *${format_number(ticket.range_max)}* bought at ${format_number(
-      ticket.price
-    )} WEBD / ticket \n`;
+    message += `▫️ *${format_number(ticket.range_min)}* - *${format_number(
+      ticket.range_max
+    )}* (${format_number(ticket.price)} WEBD / ticket) \n`;
   }
 
   if (tickets.length === 0) {
-    message += `🤷‍♂️ You don't have any tickets.`;
+    message += `🤷‍♂️ No tickets.`;
   }
+
+  message += `\n📈 Chance of winning: *${chance}%*.`;
 
   await telegram.send_message(
     msg.chat.id,

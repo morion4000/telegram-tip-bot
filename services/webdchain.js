@@ -19,6 +19,10 @@ module.exports = class Webdchain {
     return `${this.url}/block/${hash}`;
   }
 
+  get_block_url_by_height(height) {
+    return `${this.url}/block/${height}`;
+  }
+
   async make_request(url) {
     console.log(`Making request to ${url}`);
 
