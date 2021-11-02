@@ -1,15 +1,11 @@
 const user = require('./../models').user;
 const Telegram = require('./../services/telegram');
-const Lottery = require('./../services/lottery');
-const Webdchain = require('./../services/webdchain');
-const config = require('./../config');
 const {
   check_private_message,
   check_telegram_username,
+  find_user_by_id_or_username,
+  extract_amount,
 } = require('./../utils');
-
-const _ = require('underscore');
-const Sequelize = require('sequelize');
 
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
@@ -19,67 +15,57 @@ module.exports = (bot) => async (msg, match) => {
     await check_telegram_username(msg);
 
     const telegram = new Telegram();
-    const webdchain = new Webdchain();
-    const current_height = await webdchain.get_height();
-    const lottery = new Lottery(current_height);
 
-    const amount_match = msg.text.match(/ [0-9]+/);
-    let amount = amount_match ? amount_match[0] : 0; // 0 = withdraw all
-    let resp = 'Not implemented';
+    let amount = await extract_amount(msg);
 
-    if (_.isString(amount)) {
-      amount = amount.trim();
+    const found_user = await find_user_by_id_or_username(
+      msg.from.id,
+      msg.from.username
+    );
+
+    if (amount === null) {
+      amount = found_user.balance_lottery;
     }
 
-    amount = parseInt(amount);
+    if (!found_user) {
+      await telegram.send_message(
+        msg.chat.id,
+        'Your user can not be found. Create a new acount /start',
+        Telegram.PARSE_MODE.MARKDOWN,
+        true
+      );
 
-    const found_user = await user.model.findOne({
-      where: {
-        [Sequelize.Op.or]: [
-          {
-            telegram_id: msg.from.id,
-          },
-          {
-            telegram_username: msg.from.username,
-          },
-        ],
+      return;
+    }
+
+    if (found_user.balance_lottery < amount) {
+      await telegram.send_message(
+        msg.chat.id,
+        `You don't have enough balance to withdraw ${amount}. Your lottery balance is ${found_user.balance_lottery}.`,
+        Telegram.PARSE_MODE.MARKDOWN,
+        true
+      );
+
+      return;
+    }
+
+    await user.model.update(
+      {
+        balance_lottery: found_user.balance_lottery - amount,
+        balance_lottery_withdraw: found_user.balance_lottery_withdraw + amount,
       },
-    });
-
-    if (found_user) {
-      if (amount === 0) {
-        amount = found_user.balance_lottery;
+      {
+        where: {
+          id: found_user.id,
+        },
       }
-
-      // TODO: Implement lottery.sell_tickets
-
-      if (found_user.balance_lottery >= amount) {
-        await user.model.update(
-          {
-            balance_lottery: found_user.balance_lottery - amount,
-            balance_lottery_withdraw:
-              found_user.balance_lottery_withdraw + amount,
-          },
-          {
-            where: {
-              id: found_user.id,
-            },
-          }
-        );
-
-        resp = `Withdrew ${amount} from lottery balance. The amount will be credited to your /tipbalance when the /lottery rounds ends.`;
-      } else {
-        resp = `You don't have enough balance to withdraw ${amount}. Your lottery balance is ${found_user.balance_lottery}`;
-      }
-    } else {
-      resp = 'Your user can not be found. Create a new acount /start';
-    }
+    );
 
     await telegram.send_message(
       msg.chat.id,
-      resp,
+      `Withdrew ${amount} from lottery balance. The amount will be credited to your /tipbalance when the /lottery rounds ends.`,
       Telegram.PARSE_MODE.MARKDOWN,
-      true,
+      true
     );
   } catch (e) {
     console.error(e);

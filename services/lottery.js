@@ -317,7 +317,4 @@ module.exports = class Lottery {
       range_max,
     };
   }
-
-  // TODO: Implement
-  async withdraw(user, amount) {}
 };

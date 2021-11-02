@@ -1,5 +1,6 @@
 const numeral = require('numeral');
 const _ = require('underscore');
+const Sequelize = require('sequelize');
 
 const Telegram = require('./services/telegram');
 const user_model = require('./models').user.model;
@@ -143,19 +144,11 @@ async function check_telegram_username(msg) {
   }
 }
 
-async function check_and_extract_amount(msg) {
-  const telegram = new Telegram();
+async function extract_amount(msg) {
   const amount_match = msg.text.match(/ [0-9]+/);
 
   if (amount_match === null) {
-    await telegram.send_message(
-      msg.chat.id,
-      'Please specify an amount',
-      Telegram.PARSE_MODE.MARKDOWN,
-      false
-    );
-
-    throw new Error('No amount');
+    return null;
   }
 
   let amount = amount_match[0];
@@ -169,6 +162,39 @@ async function check_and_extract_amount(msg) {
   return amount;
 }
 
+async function check_and_extract_amount(msg) {
+  const telegram = new Telegram();
+  const amount = await extract_amount(msg);
+
+  if (amount === null) {
+    await telegram.send_message(
+      msg.chat.id,
+      'Please specify an amount',
+      Telegram.PARSE_MODE.MARKDOWN,
+      false
+    );
+
+    throw new Error('No amount');
+  }
+
+  return amount;
+}
+
+function find_user_by_id_or_username(id, username) {
+  return user_model.findOne({
+    where: {
+      [Sequelize.Op.or]: [
+        {
+          telegram_id: id,
+        },
+        {
+          telegram_username: username,
+        },
+      ],
+    },
+  });
+}
+
 module.exports = {
   get_amount_for_price,
   transfer_funds,
@@ -178,4 +204,6 @@ module.exports = {
   check_private_message,
   check_telegram_username,
   check_and_extract_amount,
+  extract_amount,
+  find_user_by_id_or_username,
 };
