@@ -7,6 +7,8 @@ module.exports = (bot) => async (msg, match) => {
   const telegram = new Telegram();
   let message = 'Not implemented';
 
+  // TODO: Last 10 rounds
+
   await telegram.send_message(
     msg.chat.id,
     message,

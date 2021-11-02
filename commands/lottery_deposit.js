@@ -100,9 +100,9 @@ module.exports = (bot) => async (msg, match) => {
 
       const { tickets, price } = await lottery.buy_tickets(found_user, amount);
 
-      resp = `🎟 Bought *${format_number(
+      resp = `🎟 Bought ${format_number(
         tickets
-      )}* /lottery_tickets for this round (${format_number(
+      )} /lottery_tickets for this round (${format_number(
         price
       )} WEBD / ticket).`;
     } else {
@@ -113,6 +113,6 @@ module.exports = (bot) => async (msg, match) => {
   }
 
   telegram
-    .send_message(msg.chat.id, resp, Telegram.PARSE_MODE.MARKDOWN, false)
+    .send_message(msg.chat.id, resp, Telegram.PARSE_MODE.HTML, false)
     .catch(console.error);
 };

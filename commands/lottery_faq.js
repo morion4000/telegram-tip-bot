@@ -13,6 +13,8 @@ module.exports = (bot) => async (msg, match) => {
 
   // FORMULA: FLOOR(TICKETS_NUMBER * LAST_TEN_DIGITS_OF_BLOCK_HASH_DECIMAL / 9999999999)
 
+  // TODO: Q & A
+
   await telegram.send_message(
     msg.chat.id,
     message,
