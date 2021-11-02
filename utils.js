@@ -1,6 +1,5 @@
-const TelegramBot = require('node-telegram-bot-api');
 const numeral = require('numeral');
-const _  = require('underscore');
+const _ = require('underscore');
 
 const Telegram = require('./services/telegram');
 const user_model = require('./models').user.model;
@@ -49,11 +48,9 @@ function get_amount_for_price(price) {
 }
 
 async function transfer_funds(username, amount) {
-  try {
-    const bot = new TelegramBot(config.telegram.token, {
-      polling: false,
-    });
+  const telegram = new Telegram();
 
+  try {
     const user = await user_model.findOne({
       where: {
         telegram_username: username,
@@ -77,16 +74,17 @@ async function transfer_funds(username, amount) {
       }
     );
 
-    const resp =
+    const message =
       '💰 Your account was credited with *' +
       numeral(amount).format('0,0') +
       '* WEBD from your purchase. Funds in your /tipbalance are receiving /staking rewards.';
 
-    await bot.sendMessage(user.telegram_id, resp, {
-      parse_mode: 'Markdown',
-      disable_web_page_preview: true,
-      disable_notification: true,
-    });
+    await telegram.send_message(
+      user.telegram_id,
+      message,
+      Telegram.PARSE_MODE.MARKDOWN,
+      true
+    );
   } catch (error) {
     console.error(error);
   }
