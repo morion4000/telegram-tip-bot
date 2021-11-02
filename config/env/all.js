@@ -24,7 +24,6 @@ module.exports = {
     tip: 0, // fixed
     withdraw: 10, // fixed
     deposit: 0, // fixed
-    lottery: 10, // percentage
   },
   /*
   reward per day: 12,960,000
@@ -79,6 +78,7 @@ module.exports = {
     block_time_seconds: 40,
   },
   lottery: {
+    staking_yearly_percentage: 3,
     last_n_digits_of_block_hash: 10, // this allows for up to 10 billion lottery tickets
     upper_bound_of_block_hash: 9999999999,
     duration_blocks: 15120, // ~7 days (1 block = ~40 seconds)

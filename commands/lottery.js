@@ -20,6 +20,7 @@ module.exports = (bot) => async (msg, match) => {
     const days_until_next_round = await lottery.calculate_days_until_next_round(
       round
     );
+    const price = await lottery.calculate_ticket_price(days_until_next_round);
 
     const message =
       `🎲 Prize: *${format_number(round.prize)} WEBD* ($${format_number(
@@ -27,6 +28,7 @@ module.exports = (bot) => async (msg, match) => {
       )}).\n` +
       `👥 Participants: *${format_number(participants.length)}*.\n` +
       `🎟 Tickets: *${format_number(tickets_number)}*.\n` +
+      `💵 Price: *${format_number(price)} WEBD* / ticket.\n` +
       `📅 Ends in *${days_until_next_round}* days ([block ${round.end_block_height}](${webdchain.url})).`;
 
     await telegram.send_message(

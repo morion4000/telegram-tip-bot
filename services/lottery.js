@@ -5,12 +5,9 @@ const lottery_round = require('./../models').lottery_round;
 const user_model = require('./../models').user;
 const config = require('./../config');
 
-
 module.exports = class Lottery {
   constructor(current_height = 0) {
     this.cached_current_height = current_height;
-    // TODO: Implement fee
-    this.fee = 0;
   }
 
   // https://stackoverflow.com/questions/5294955/how-to-scale-down-a-range-of-numbers-with-a-known-min-and-max-value
@@ -266,7 +263,7 @@ module.exports = class Lottery {
       'Round',
       start_block_height,
       end_block_height,
-      this.fee
+      config.staking_yearly_percentage
     );
   }
 
@@ -292,7 +289,7 @@ module.exports = class Lottery {
     const range_min = last_ticket_number > 0 ? last_ticket_number + 1 : 0;
     const range_max = range_min + tickets - 1;
     const daily_staking_rewards =
-      (amount * config.staking.yearly_percentage) / 100 / 365;
+      (amount * config.lottery.staking_yearly_percentage) / 100 / 365;
     const staking_rewards = daily_staking_rewards * days_until_next_round;
 
     await this.add_ticket(
