@@ -1,4 +1,3 @@
-const user_model = require('./../models').user.model;
 const Telegram = require('./../services/telegram');
 const Lottery = require('./../services/lottery');
 const Webdchain = require('./../services/webdchain');
