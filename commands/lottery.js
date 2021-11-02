@@ -21,8 +21,10 @@ module.exports = (bot) => async (msg, match) => {
     );
     const price = await lottery.calculate_ticket_price(days_until_next_round);
 
+    // TODO: add start / end dates to weekly round
     const message =
-      `🎲 Prize: *${format_number(round.prize)} WEBD* ($${format_number(
+      `🎲 *Weekly round*\n\n` +
+      `💰 Prize: *${format_number(round.prize)} WEBD* ($${format_number(
         prize_usd
       )}).\n` +
       `👥 Participants: *${format_number(participants.length)}*.\n` +
