@@ -64,8 +64,8 @@ module.exports = class Lottery {
   }
 
   // TODO: Calculate the SUM via query
-  async calculate_tickets_number_for_round(round) {
-    const tickets = await this.get_tickets_for_round(round);
+  async calculate_tickets_number_for_user_and_round(user, round) {
+    const tickets = await this.get_tickets_for_user_and_round(user, round);
     let tickets_number = 0;
 
     for (const ticket of tickets) {
@@ -74,18 +74,6 @@ module.exports = class Lottery {
 
     return tickets_number;
   }
-
-    // TODO: Calculate the SUM via query
-    async calculate_tickets_number_for_user_and_round(user, round) {
-      const tickets = await this.get_tickets_for_user_and_round(user, round);
-      let tickets_number = 0;
-  
-      for (const ticket of tickets) {
-        tickets_number += ticket.tickets;
-      }
-  
-      return tickets_number;
-    }
 
   async get_last_ticket_number() {
     const round = await this.get_last_round();
@@ -215,7 +203,15 @@ module.exports = class Lottery {
     });
   }
 
-  add_ticket(user, round, tickets, range_min, range_max, price, staking_rewards) {
+  add_ticket(
+    user,
+    round,
+    tickets,
+    range_min,
+    range_max,
+    price,
+    staking_rewards
+  ) {
     return lottery_ticket.model.create({
       user_id: user.id,
       round_id: round.id,
@@ -248,13 +244,14 @@ module.exports = class Lottery {
     });
   }
 
-  close_round(round, user, ticket_number, block_hash) {
+  close_round(round, user, ticket_number, block_hash, chance) {
     return this.update_round(round, {
       ended: true,
       ended_at: new Date(),
       winner_1_user_id: user.id,
       winner_1_ticket_number: ticket_number,
       winner_1_block_hash: block_hash,
+      winner_1_chance: chance,
     });
   }
 
@@ -264,7 +261,12 @@ module.exports = class Lottery {
     const end_block_height =
       start_block_height + config.lottery.duration_blocks;
 
-    return this.add_round('Round', start_block_height, end_block_height, this.fee);
+    return this.add_round(
+      'Round',
+      start_block_height,
+      end_block_height,
+      this.fee
+    );
   }
 
   distribute_prize(user, round) {
@@ -314,4 +316,7 @@ module.exports = class Lottery {
       range_max,
     };
   }
+
+  // TODO: Implement
+  async withdraw(user, amount) {}
 };

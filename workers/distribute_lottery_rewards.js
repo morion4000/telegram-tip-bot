@@ -39,6 +39,12 @@ exports.handler = async function (event) {
   );
 
   const winner_user = await lottery.get_winner_user(winner_ticket_number);
+  const winner_tickets_number =
+    await lottery.calculate_tickets_number_for_user_and_round(
+      winner_user,
+      round
+    );
+  const winner_chance = (round.tickets / winner_tickets_number) * 100;
 
   console.log(`Winner ticket number: ${winner_ticket_number}`);
   console.log(`Winner user id: ${winner_user.id}`);
@@ -74,7 +80,13 @@ exports.handler = async function (event) {
     )
     .catch(console.error);
 
-  await lottery.close_round(round, winner_user, winner_ticket_number, hash);
+  await lottery.close_round(
+    round,
+    winner_user,
+    winner_ticket_number,
+    hash,
+    winner_chance
+  );
   await lottery.start_round();
 
   // Withdraw pending lottery balances

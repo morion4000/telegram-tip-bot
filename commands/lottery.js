@@ -4,7 +4,6 @@ const Lottery = require('./../services/lottery');
 const Webdchain = require('./../services/webdchain');
 const { format_number, convert_to_usd } = require('./../utils');
 
-
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
@@ -15,9 +14,7 @@ module.exports = (bot) => async (msg, match) => {
 
   const round = await lottery.get_last_round();
   const participants = await lottery.get_participants(round);
-  const tickets_number = await lottery.calculate_tickets_number_for_round(
-    round
-  );
+  const tickets_number = round.tickets;
   const prize_usd = await convert_to_usd(round.prize);
   const days_until_next_round = await lottery.calculate_days_until_next_round(
     round
