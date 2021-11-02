@@ -77,14 +77,13 @@ async function transfer_funds(username, amount) {
 
     const message =
       '💰 Your account was credited with *' +
-      numeral(amount).format('0,0') +
+      format_number(amount) +
       '* WEBD from your purchase. Funds in your /tipbalance are receiving /staking rewards.';
 
     await telegram.send_message(
       user.telegram_id,
       message,
-      Telegram.PARSE_MODE.MARKDOWN,
-      true
+      Telegram.PARSE_MODE.MARKDOWN
     );
   } catch (error) {
     console.error(error);
@@ -121,8 +120,8 @@ async function check_private_message(msg) {
     await telegram.send_message(
       msg.chat.id,
       'Private command. Please DM the bot: @webdollar_tip_bot to use the command.',
-      Telegram.PARSE_MODE.MARKDOWN,
-      false
+      Telegram.PARSE_MODE.HTML,
+      true
     );
 
     throw new Error('Private command');
@@ -136,8 +135,8 @@ async function check_telegram_username(msg) {
     await telegram.send_message(
       msg.chat.id,
       'Please set an username for your telegram account to use the bot.',
-      Telegram.PARSE_MODE.MARKDOWN,
-      false
+      Telegram.PARSE_MODE.HTML,
+      true
     );
 
     throw new Error('No username');
@@ -170,8 +169,8 @@ async function check_and_extract_amount(msg) {
     await telegram.send_message(
       msg.chat.id,
       'Please specify an amount',
-      Telegram.PARSE_MODE.MARKDOWN,
-      false
+      Telegram.PARSE_MODE.HTML,
+      true
     );
 
     throw new Error('No amount');
