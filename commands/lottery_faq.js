@@ -14,6 +14,7 @@ module.exports = (bot) => async (msg, match) => {
     // FORMULA: FLOOR(TICKETS_NUMBER * LAST_TEN_DIGITS_OF_BLOCK_HASH_DECIMAL / 9999999999)
 
     // TODO: Q & A
+    // TODO: Price increase (30% per day)
 
     await telegram.send_message(
       msg.chat.id,

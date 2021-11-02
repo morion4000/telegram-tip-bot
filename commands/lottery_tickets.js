@@ -37,7 +37,7 @@ module.exports = (bot) => async (msg, match) => {
     for (const ticket of tickets) {
       message += `▫️ *${format_number(ticket.range_min)}* - *${format_number(
         ticket.range_max
-      )}* (${format_number(ticket.price)} WEBD / ticket) \n`;
+      )}*\n`;
     }
 
     if (tickets.length === 0) {
@@ -50,7 +50,7 @@ module.exports = (bot) => async (msg, match) => {
       msg.chat.id,
       message,
       Telegram.PARSE_MODE.MARKDOWN,
-      true,
+      true
     );
   } catch (e) {
     console.log(e);

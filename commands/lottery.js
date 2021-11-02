@@ -28,14 +28,14 @@ module.exports = (bot) => async (msg, match) => {
       )}).\n` +
       `👥 Participants: *${format_number(participants.length)}*.\n` +
       `🎟 Tickets: *${format_number(tickets_number)}*.\n` +
-      `💵 Price: *${format_number(price)} WEBD* / ticket.\n` +
+      `💵 Current Price: *${format_number(price)} WEBD* / ticket.\n` +
       `📅 Ends in *${days_until_next_round}* days ([block ${round.end_block_height}](${webdchain.url})).`;
 
     await telegram.send_message(
       msg.chat.id,
       message,
       Telegram.PARSE_MODE.MARKDOWN,
-      true,
+      true
     );
   } catch (e) {
     console.log(e);
