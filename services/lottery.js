@@ -5,6 +5,7 @@ const lottery_round = require('./../models').lottery_round;
 const user_model = require('./../models').user;
 const config = require('./../config');
 
+
 module.exports = class Lottery {
   constructor(current_height = 0) {
     this.cached_current_height = current_height;
