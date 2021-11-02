@@ -75,7 +75,7 @@ module.exports = (bot) => async (msg, match) => {
       msg.chat.id,
       resp,
       Telegram.PARSE_MODE.HTML,
-      false
+      true,
     );
   } catch (e) {
     console.error(e);

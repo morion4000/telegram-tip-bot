@@ -79,7 +79,7 @@ module.exports = (bot) => async (msg, match) => {
       msg.chat.id,
       resp,
       Telegram.PARSE_MODE.MARKDOWN,
-      false
+      true,
     );
   } catch (e) {
     console.error(e);

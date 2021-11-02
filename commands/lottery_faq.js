@@ -18,6 +18,6 @@ module.exports = (bot) => async (msg, match) => {
     msg.chat.id,
     message,
     Telegram.PARSE_MODE.MARKDOWN,
-    false
+    true,
   );
 };
