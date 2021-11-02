@@ -1,14 +1,16 @@
+const Telegram = require('./../services/telegram');
+
 
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
-  var resp = 'Not implemented';
+  const telegram = new Telegram();
+  let message = 'Not implemented';
 
-  console.log(msg.text, msg.chat.id);
-
-  bot.sendMessage(msg.chat.id, resp, {
-    parse_mode: 'Markdown',
-    disable_web_page_preview: true,
-    disable_notification: true,
-  });
+  await telegram.send_message(
+    msg.chat.id,
+    message,
+    Telegram.PARSE_MODE.MARKDOWN,
+    false
+  );
 };
