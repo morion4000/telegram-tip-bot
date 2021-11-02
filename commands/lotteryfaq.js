@@ -5,7 +5,7 @@ module.exports = (bot) => async (msg, match) => {
 
   try {
     const telegram = new Telegram();
-    let message = 'Not implemented';
+    let message = '';
 
     // https://en.wikipedia.org/wiki/Premium_Bond
     // https://webdchain.io/block/0000000000000419f11950bab07f1ea973eecf0bf40b8fae4975cad412f7143b
@@ -13,8 +13,8 @@ module.exports = (bot) => async (msg, match) => {
 
     // FORMULA: FLOOR(TICKETS_NUMBER * LAST_TEN_DIGITS_OF_BLOCK_HASH_DECIMAL / 9999999999)
 
-    // TODO: Q & A
-    // TODO: Price increase (30% per day)
+    message += `*How much does a ticket cost?* \n`;
+    message += `📖 The price of a ticket increases 30% per day. It starts at 1 WEBD / ticket.\n\n`;
 
     await telegram.send_message(
       msg.chat.id,

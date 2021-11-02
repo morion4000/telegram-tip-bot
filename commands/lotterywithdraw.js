@@ -5,6 +5,7 @@ const {
   check_telegram_username,
   find_user_by_id_or_username,
   extract_amount,
+  format_number,
 } = require('./../utils');
 
 module.exports = (bot) => async (msg, match) => {
@@ -63,7 +64,9 @@ module.exports = (bot) => async (msg, match) => {
 
     await telegram.send_message(
       msg.chat.id,
-      `Withdrew ${amount} from lottery balance. The amount will be credited to your /tipbalance when the /lottery rounds ends.`,
+      `The amount (${format_number(
+        amount
+      )} WEBD) will be credited to your /tipbalance when the /lottery round ends.`,
       Telegram.PARSE_MODE.MARKDOWN,
       true
     );
