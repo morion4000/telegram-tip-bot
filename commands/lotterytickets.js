@@ -30,7 +30,7 @@ module.exports = (bot) => async (msg, match) => {
     const tickets_number =
       await lottery.calculate_tickets_number_for_user_and_round(user, round);
     const chance = (tickets_number / round.tickets) * 100;
-    let message = `🎟 Bought *${format_number(
+    let message = `🎟 You have *${format_number(
       tickets_number
     )}* tickets for the current /lottery round:\n\n`;
 

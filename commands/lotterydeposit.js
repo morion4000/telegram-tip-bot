@@ -64,7 +64,7 @@ module.exports = (bot) => async (msg, match) => {
 
     const { tickets, price } = await lottery.buy_tickets(found_user, amount);
 
-    const message = `🎟 Bought ${format_number(
+    const message = `🎟 Got ${format_number(
       tickets
     )} /lotterytickets for this round (${format_number(
       price
