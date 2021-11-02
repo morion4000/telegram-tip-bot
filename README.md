@@ -25,11 +25,11 @@
 * __topup__ - Buy WEBD with your card or PayPal
 * __tutorial__ - How to use WebDollar in the browser
 * __lottery__ - Shows information about the current round
-* __lottery_deposit__ - Move funds to lottery balance
-* __lottery_withdraw__ - Move funds to balance
-* __lottery_tickets__ - Shows the tickets for the current round
-* __lottery_faq__ - Most common questions about the lottery
-* __lottery_history__ - Shows the last 10 rounds
+* __lotterytickets__ - Shows the tickets for the current round
+* __lotterydeposit__ - Move funds to lottery balance
+* __lotterywithdraw__ - Move funds to balance
+* __lotteryfaq__ - Most common questions about the lottery
+* __lotteryhistory__ - Shows the last 10 rounds
 
 ## Install
 
