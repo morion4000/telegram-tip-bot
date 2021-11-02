@@ -64,11 +64,9 @@ module.exports = (bot) => async (msg, match) => {
 
     const { tickets, price } = await lottery.buy_tickets(found_user, amount);
 
-    const message = `🎟 Got ${format_number(
+    const message = `🎟 You got ${format_number(
       tickets
-    )} /lotterytickets for this round (${format_number(
-      price
-    )} WEBD / ticket).`;
+    )} additional /lotterytickets at ${format_number(price)} WEBD / ticket.`;
 
     await telegram.send_message(
       msg.chat.id,
