@@ -16,38 +16,38 @@ sequelize
   });
 
 // Create a bot that uses 'polling' to fetch new updates
-var bot = new TelegramBot(config.telegram.token, {
+const bot = new TelegramBot(config.telegram.token, {
   polling: true,
 });
 
-var start_command = commands.start(bot);
-var tip_empty_command = commands.tip_empty(bot);
-var tip_command = commands.tip(bot);
-var balance_command = commands.balance(bot);
-var deposit_command = commands.deposit(bot);
-var withdraw_command = commands.withdraw(bot);
-var withdraw_empty_command = commands.withdraw_empty(bot);
-var transactions_command = commands.transactions(bot);
-var wallet_command = commands.wallet(bot);
-var setwallet_command = commands.setwallet(bot);
-var setwallet_empty_command = commands.setwallet_empty(bot);
-var nam_command = commands.nam(bot);
-var filantropica_command = commands.filantropica(bot);
-var help_command = commands.help(bot);
-var fees_command = commands.fees(bot);
-var price_command = commands.price(bot);
-var staking_command = commands.staking(bot);
-var system_command = commands.system(bot);
-var stats_command = commands.stats(bot);
-var scoreboard_command = commands.scoreboard(bot);
-var topup_command = commands.topup(bot);
-var tutorial_command = commands.tutorial(bot);
-var lottery_command = commands.lottery(bot);
-var lottery_tickets_command = commands.lottery_tickets(bot);
-var lottery_deposit_command = commands.lottery_deposit(bot);
-var lottery_withdraw_command = commands.lottery_withdraw(bot);
-var lottery_faq_command = commands.lottery_faq(bot);
-var lottery_history_command = commands.lottery_history(bot);
+const start_command = commands.start(bot);
+const tip_empty_command = commands.tip_empty(bot);
+const tip_command = commands.tip(bot);
+const balance_command = commands.balance(bot);
+const deposit_command = commands.deposit(bot);
+const withdraw_command = commands.withdraw(bot);
+const withdraw_empty_command = commands.withdraw_empty(bot);
+const transactions_command = commands.transactions(bot);
+const wallet_command = commands.wallet(bot);
+const setwallet_command = commands.setwallet(bot);
+const setwallet_empty_command = commands.setwallet_empty(bot);
+const nam_command = commands.nam(bot);
+const filantropica_command = commands.filantropica(bot);
+const help_command = commands.help(bot);
+const fees_command = commands.fees(bot);
+const price_command = commands.price(bot);
+const staking_command = commands.staking(bot);
+const system_command = commands.system(bot);
+const stats_command = commands.stats(bot);
+const scoreboard_command = commands.scoreboard(bot);
+const topup_command = commands.topup(bot);
+const tutorial_command = commands.tutorial(bot);
+const lottery_command = commands.lottery(bot);
+const lottery_tickets_command = commands.lottery_tickets(bot);
+const lottery_deposit_command = commands.lottery_deposit(bot);
+const lottery_withdraw_command = commands.lottery_withdraw(bot);
+const lottery_faq_command = commands.lottery_faq(bot);
+const lottery_history_command = commands.lottery_history(bot);
 
 // Middleware
 bot.on('message', async (msg) => {
