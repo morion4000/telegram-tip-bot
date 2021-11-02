@@ -113,6 +113,8 @@ async function update_username(from) {
 }
 
 async function check_private_message(msg) {
+  const telegram = new Telegram();
+
   if (
     msg.chat.type !== 'private' &&
     !config.public_channels.includes(msg.chat.id)
@@ -129,6 +131,8 @@ async function check_private_message(msg) {
 }
 
 async function check_telegram_username(msg) {
+  const telegram = new Telegram();
+
   if (!msg.from.username) {
     await telegram.send_message(
       msg.chat.id,
@@ -142,6 +146,7 @@ async function check_telegram_username(msg) {
 }
 
 async function check_and_extract_amount(msg) {
+  const telegram = new Telegram();
   const amount_match = msg.text.match(/ [0-9]+/);
 
   if (amount_match === null) {
