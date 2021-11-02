@@ -66,7 +66,7 @@ module.exports = (bot) => async (msg, match) => {
 
     const message = `🎟 Bought ${format_number(
       tickets
-    )} /lottery_tickets for this round (${format_number(
+    )} /lotterytickets for this round (${format_number(
       price
     )} WEBD / ticket).`;
 

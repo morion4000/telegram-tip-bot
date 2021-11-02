@@ -131,7 +131,7 @@ exports.handler = async function (event) {
         user.telegram_id,
         `🎟 Bought ${format_number(
           tickets
-        )} /lottery_tickets for the new round (${format_number(
+        )} /lotterytickets for the new round (${format_number(
           price
         )} WEBD / ticket).`
       )
