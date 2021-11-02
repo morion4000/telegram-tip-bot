@@ -1,6 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
 const numeral = require('numeral');
+const _  = require('underscore');
 
+const Telegram = require('./services/telegram');
 const user_model = require('./models').user.model;
 const coin_model = require('./models').coin.model;
 const config = require('./config');
@@ -110,10 +112,67 @@ async function update_username(from) {
   }
 }
 
+async function check_private_message(msg) {
+  if (
+    msg.chat.type !== 'private' &&
+    !config.public_channels.includes(msg.chat.id)
+  ) {
+    await telegram.send_message(
+      msg.chat.id,
+      'Private command. Please DM the bot: @webdollar_tip_bot to use the command.',
+      Telegram.PARSE_MODE.MARKDOWN,
+      false
+    );
+
+    throw new Error('Private command');
+  }
+}
+
+async function check_telegram_username(msg) {
+  if (!msg.from.username) {
+    await telegram.send_message(
+      msg.chat.id,
+      'Please set an username for your telegram account to use the bot.',
+      Telegram.PARSE_MODE.MARKDOWN,
+      false
+    );
+
+    throw new Error('No username');
+  }
+}
+
+async function check_and_extract_amount(msg) {
+  const amount_match = msg.text.match(/ [0-9]+/);
+
+  if (amount_match === null) {
+    await telegram.send_message(
+      msg.chat.id,
+      'Please specify an amount',
+      Telegram.PARSE_MODE.MARKDOWN,
+      false
+    );
+
+    throw new Error('No amount');
+  }
+
+  let amount = amount_match[0];
+
+  if (_.isString(amount)) {
+    amount = amount.trim();
+  }
+
+  amount = parseInt(amount);
+
+  return amount;
+}
+
 module.exports = {
   get_amount_for_price,
   transfer_funds,
   update_username,
   format_number,
   convert_to_usd,
+  check_private_message,
+  check_telegram_username,
+  check_and_extract_amount,
 };

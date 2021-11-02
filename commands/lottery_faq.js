@@ -1,6 +1,5 @@
 const Telegram = require('./../services/telegram');
 
-
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
