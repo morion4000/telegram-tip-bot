@@ -28,9 +28,9 @@ module.exports = (bot) => async (msg, match) => {
 
     const message =
       `🎲 *Weekly round* (${date_start_formatted} - ${date_end_formatted})\n\n` +
-      `💰 Prize: *${format_number(round.prize)} WEBD* ($${format_number(
-        prize_usd
-      )})\n` +
+      `💰 Prize: *${format_number(
+        parseInt(round.prize)
+      )} WEBD* ($${format_number(prize_usd)})\n` +
       `👥 Participants: *${format_number(participants.length)}*\n` +
       `🎟 Tickets: *${format_number(tickets_number)}*\n` +
       `📅 Ends in ~*${days_until_next_round}* days ([block ${round.end_block_height}](${webdchain.url}))`;

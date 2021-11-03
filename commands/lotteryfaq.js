@@ -16,8 +16,8 @@ module.exports = (bot) => async (msg, match) => {
     message += `*How much does a ticket cost?* \n`;
     message += `📖 The price of a ticket increases 30% per day. It starts at 1 WEBD / ticket.\n\n`;
 
-    // How is the prize pool calculated?
-    // How long does the lottery last?
+    // How is the prize pool calculated? (tickets * config.lottery.staking_yearly_percentage) / 100 / 365
+    // How long does the lottery last? 7 days (or blocks)
     // How are numbers assigned?
     // How many numbers does a ticket have?
     // How many numbers are in the lottery?
