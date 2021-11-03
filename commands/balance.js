@@ -76,7 +76,7 @@ var Command = function (bot) {
           numeral(balance_usd).format('0,0.00') +
           '). Receiving /staking rewards @ *' +
           config.staking.yearly_percentage +
-          '%* per year.\n';
+          '%* per year.\n\n';
 
         const balance_lottery_usd = parseFloat(
           found_user.balance_lottery * webdollar.price_usd
