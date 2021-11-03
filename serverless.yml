@@ -1,0 +1,109 @@
+service: workers
+
+frameworkVersion: '2'
+useDotenv: true
+
+provider:
+  name: aws
+  profile: hostero
+  runtime: nodejs12.x
+  region: eu-central-1
+  stage: ${opt:stage, 'prod'}
+  memorySize: 512
+  timeout: 600
+  environment:
+    MYSQL_CONNECTION_STRING: ${env:MYSQL_CONNECTION_STRING}
+    TELEGRAM_TOKEN: ${env:TELEGRAM_TOKEN}
+    WEBDSCAN_TOKEN: ${env:WEBDSCAN_TOKEN}
+    MAILGUN_KEY: ${env:MAILGUN_KEY}
+    WEBDOLLAR_NODE_URL: ${env:WEBDOLLAR_NODE_URL}
+    WEBDOLLAR_NODE_KEY: ${env:WEBDOLLAR_NODE_KEY}
+    STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY}
+    STRIPE_SIGNING_SECRET: ${env:STRIPE_SIGNING_SECRET}
+    PAYPAL_CLIENT_SECRET: ${env:PAYPAL_CLIENT_SECRET}
+    COINMARKETCAP_KEY: ${env:COINMARKETCAP_KEY}
+
+functions:
+  process_inbound_transactions:
+    memorySize: 256
+    handler: workers/process_inbound_transactions3.handler
+    events:
+      - schedule: rate(1 minute)
+    environment:
+      NODE_ENV: production
+
+  process_outbound_transactions:
+    memorySize: 256
+    handler: workers/process_outbound_transactions3.handler
+    events:
+      - schedule: rate(1 minute)
+    environment:
+      NODE_ENV: production
+
+  credit_accounts:
+    memorySize: 128
+    handler: workers/credit_accounts.handler
+    events:
+      - schedule: rate(1 minute)
+    environment:
+      NODE_ENV: production
+
+  process_withdraws:
+    memorySize: 256
+    handler: workers/process_withdraws.handler
+    events:
+      - schedule: rate(10 minutes)
+    environment:
+      NODE_ENV: production
+
+  create_stake:
+    memorySize: 256
+    handler: workers/create_stake.handler
+    events:
+      - schedule: cron(0 10 * * ? *)
+    environment:
+      NODE_ENV: production
+
+  update_webdollar_price:
+    memorySize: 256
+    handler: workers/update_webdollar_price.handler
+    events:
+      - schedule: rate(30 minutes)
+    environment:
+      NODE_ENV: production
+
+  check_node_fork_tip_bot:
+    memorySize: 256
+    handler: workers/check_node_fork.handler
+    events:
+      - schedule: rate(20 minutes)
+    environment:
+      NODE_ENV: production
+      NODE_URL: ${env:WEBDOLLAR_NODE_URL}
+      DELTA: 10
+
+  # check_node_fork_wmp_europe:
+  #   memorySize: 256
+  #   handler: workers/check_node_fork.handler
+  #   events:
+  #     - schedule: rate(60 minutes)
+  #   environment:
+  #     NODE_ENV: production
+  #     NODE_URL: https://server.webdollarminingpool.com
+  #     DELTA: 40
+
+  capture_paypal_orders:
+    memorySize: 256
+    handler: workers/capture_paypal_orders.handler
+    events:
+      - schedule: rate(2 minutes)
+    environment:
+      NODE_ENV: production
+
+  distribute_lottery_rewards:
+    memorySize: 256
+    handler: workers/distribute_lottery_rewards.handler
+    events:
+      - schedule: rate(5 minutes)
+    environment:
+      NODE_ENV: production

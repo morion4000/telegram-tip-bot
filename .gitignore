@@ -64,5 +64,3 @@ tmp/
 
 .idea
 .serverless
-serverless.yml
-send_announcement.js
