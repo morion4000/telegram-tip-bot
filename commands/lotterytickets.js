@@ -33,19 +33,21 @@ module.exports = (bot) => async (msg, match) => {
       round
     );
     const price = await lottery.calculate_ticket_price(days_until_next_round);
-    const chance = (tickets_number / round.tickets) * 100;
+    let chance = (tickets_number / round.tickets) * 100;
     let message = `🎟 You have *${format_number(
       tickets_number
-    )}* tickets for the current /lottery round.\n\n🎲 Your numbers:\n`;
+    )}* tickets for the current /lottery round.\n`;
+
+    chance = chance ? chance : 0;
+
+    if (tickets.length > 0) {
+      message += `\n🎲 Your numbers:\n`;
+    }
 
     for (const ticket of tickets) {
       message += `▫️ *${format_number(ticket.range_min)}* to *${format_number(
         ticket.range_max
       )}*\n`;
-    }
-
-    if (tickets.length === 0) {
-      message += `🤷‍♂️ No tickets.`;
     }
 
     message += `\n💵 Current Price: *${format_number(price)} WEBD* / ticket.`;
