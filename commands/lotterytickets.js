@@ -29,6 +29,10 @@ module.exports = (bot) => async (msg, match) => {
     const tickets = await lottery.get_tickets_for_user_and_round(user, round);
     const tickets_number =
       await lottery.calculate_tickets_number_for_user_and_round(user, round);
+    const days_until_next_round = await lottery.calculate_days_until_next_round(
+      round
+    );
+    const price = await lottery.calculate_ticket_price(days_until_next_round);
     const chance = (tickets_number / round.tickets) * 100;
     let message = `🎟 You have *${format_number(
       tickets_number
@@ -44,10 +48,9 @@ module.exports = (bot) => async (msg, match) => {
       message += `🤷‍♂️ No tickets.`;
     }
 
+    message += `\n💵 Current Price: *${format_number(price)} WEBD* / ticket.`;
     message += `\n📈 Chance of winning: *${chance}%*.`;
-    // message += `\n💵 Cost of tickets: *${format_number(
-    //   user.balance_lottery
-    // )} WEBD*.`;
+    message += '\n\nℹ️ To receive more tickets: `/lotterydeposit AMOUNT`';
 
     await telegram.send_message(
       msg.chat.id,
