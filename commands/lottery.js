@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const Telegram = require('./../services/telegram');
 const Lottery = require('./../services/lottery');
 const Webdchain = require('./../services/webdchain');
@@ -19,10 +21,13 @@ module.exports = (bot) => async (msg, match) => {
     const days_until_next_round = await lottery.calculate_days_until_next_round(
       round
     );
+    const date_start_formatted = moment(round.started_at).format('MMMM Do');
+    const date_end_formatted = moment(round.started_at)
+      .add(days_until_next_round, 'days')
+      .format('MMMM Do');
 
-    // TODO: add start / end dates to weekly round
     const message =
-      `🎲 *Weekly round*\n\n` +
+      `🎲 *Weekly round* (${date_start_formatted} - ${date_end_formatted})\n\n` +
       `💰 Prize: *${format_number(round.prize)} WEBD* ($${format_number(
         prize_usd
       )})\n` +
