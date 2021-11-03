@@ -129,7 +129,7 @@ exports.handler = async function (event) {
     telegram
       .send_message(
         user.telegram_id,
-        `🎟 You got ${format_number(
+        `🎟 You received ${format_number(
           tickets
         )} /lotterytickets for the new round (${format_number(
           price
