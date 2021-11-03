@@ -51,7 +51,7 @@ module.exports = (bot) => async (msg, match) => {
     }
 
     message += `\n💵 Current Price: *${format_number(price)} WEBD* / ticket.`;
-    message += `\n📈 Chance of winning: *${chance}%*.`;
+    message += `\n📈 Chance of winning: *${format_number(chance)}%*.`;
     message += '\n\nℹ️ To receive more tickets: `/lotterydeposit AMOUNT`';
 
     await telegram.send_message(
