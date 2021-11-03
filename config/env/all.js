@@ -11,6 +11,9 @@ module.exports = {
   webdscan: {
     token: process.env.WEBDSCAN_TOKEN,
   },
+  telegram: {
+    token: process.env.TELEGRAM_TOKEN,
+  },
   webdollar: {
     node: {
       url: process.env.WEBDOLLAR_NODE_URL,

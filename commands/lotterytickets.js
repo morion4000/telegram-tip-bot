@@ -32,7 +32,7 @@ module.exports = (bot) => async (msg, match) => {
     const chance = (tickets_number / round.tickets) * 100;
     let message = `🎟 You have *${format_number(
       tickets_number
-    )}* tickets for the current /lottery round.\n\n🔢 Your numbers:\n`;
+    )}* tickets for the current /lottery round.\n\n🎲 Your numbers:\n`;
 
     for (const ticket of tickets) {
       message += `▫️ *${format_number(ticket.range_min)}* to *${format_number(

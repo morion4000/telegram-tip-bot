@@ -6,7 +6,4 @@ module.exports = {
     client_secret: process.env.PAYPAL_CLIENT_SECRET,
     webhook_id: '8T272472T5937810F',
   },
-  telegram: {
-    token: '640491895:AAGVdDpKqmIqu--f5MgOPYrNwsnmtjnKnoY', // @WMP_Status_Bot (retired)
-  },
 };

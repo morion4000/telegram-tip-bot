@@ -26,11 +26,11 @@ module.exports = (bot) => async (msg, match) => {
       `🎲 *Weekly round*\n\n` +
       `💰 Prize: *${format_number(round.prize)} WEBD* ($${format_number(
         prize_usd
-      )}).\n` +
-      `👥 Participants: *${format_number(participants.length)}*.\n` +
-      `🎟 Tickets: *${format_number(tickets_number)}*.\n` +
-      `💵 Current Price: *${format_number(price)} WEBD* / ticket.\n` +
-      `📅 Ends in *${days_until_next_round}* days ([block ${round.end_block_height}](${webdchain.url})).`;
+      )})\n` +
+      `👥 Participants: *${format_number(participants.length)}*\n` +
+      `🎟 Tickets: *${format_number(tickets_number)}*\n` +
+      `💵 Current Price: *${format_number(price)} WEBD* / ticket\n` +
+      `📅 Ends in *${days_until_next_round}* days ([block ${round.end_block_height}](${webdchain.url}))`;
 
     await telegram.send_message(
       msg.chat.id,
