@@ -1,7 +1,3 @@
-/*
-  Worker will only run every 5 minutes.
-*/
-
 const user_model = require('./../models').user.model;
 const Webdchain = require('./../services/webdchain');
 const Lottery = require('./../services/lottery');
