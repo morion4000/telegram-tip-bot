@@ -53,7 +53,7 @@ module.exports = (bot) => async (msg, match) => {
     await user.model.update(
       {
         balance: found_user.balance - amount,
-        balance_lottery: amount,
+        balance_lottery: found_user.balance_lottery + amount,
       },
       {
         where: {
