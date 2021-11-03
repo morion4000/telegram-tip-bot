@@ -31,7 +31,7 @@ var LotteryRound = function (sequelize) {
       winner_1_ticket_number: Sequelize.INTEGER,
       winner_1_block_hash: Sequelize.STRING,
       winner_1_chance: Sequelize.STRING,
-      prize: Sequelize.INTEGER,
+      prize: Sequelize.FLOAT,
       tickets: Sequelize.INTEGER,
       ended: Sequelize.BOOLEAN,
       fee: Sequelize.INTEGER,
