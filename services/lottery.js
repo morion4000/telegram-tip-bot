@@ -289,7 +289,7 @@ module.exports = class Lottery {
     const range_min = last_ticket_number > 0 ? last_ticket_number + 1 : 0;
     const range_max = range_min + tickets - 1;
     const daily_staking_rewards =
-      (amount * config.lottery.staking_yearly_percentage) / 100 / 365;
+      (tickets * config.lottery.staking_yearly_percentage) / 100 / 365;
     const staking_rewards = daily_staking_rewards * days_until_next_round;
 
     await this.add_ticket(

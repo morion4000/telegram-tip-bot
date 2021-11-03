@@ -16,6 +16,15 @@ module.exports = (bot) => async (msg, match) => {
     message += `*How much does a ticket cost?* \n`;
     message += `📖 The price of a ticket increases 30% per day. It starts at 1 WEBD / ticket.\n\n`;
 
+    // How is the prize pool calculated?
+    // How long does the lottery last?
+    // How are numbers assigned?
+    // How many numbers does a ticket have?
+    // How many numbers are in the lottery?
+    // How is the winner number calculated?
+    // How do I know if I have a winning ticket number?
+    // How do I get tickets?
+
     await telegram.send_message(
       msg.chat.id,
       message,
