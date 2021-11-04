@@ -14,6 +14,7 @@ module.exports = (bot) => async (msg, match) => {
     const current_height = await webdchain.get_height();
     const lottery = new Lottery(current_height);
 
+    const bonus = 10000;
     const round = await lottery.get_last_round();
     const participants = await lottery.get_participants(round);
     const tickets_number = round.tickets;
@@ -30,7 +31,9 @@ module.exports = (bot) => async (msg, match) => {
       `🎲 *Weekly round* (${date_start_formatted} - ${date_end_formatted})\n\n` +
       `💰 Prize: *${format_number(
         parseInt(round.prize)
-      )} WEBD* ($${format_number(prize_usd)})\n` +
+      )} WEBD* ($${format_number(prize_usd)}) + *${format_number(
+        bonus
+      )} WEBD* (bonus) \n` +
       `👥 Participants: *${format_number(participants.length)}*\n` +
       `🎟 Tickets: *${format_number(tickets_number)}*\n` +
       `📅 Ends in ~*${days_until_next_round}* days ([block ${round.end_block_height}](${webdchain.url}))`;
