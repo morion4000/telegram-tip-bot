@@ -88,7 +88,7 @@ module.exports = class Lottery {
 
   calculate_ticket_price(days_until_next_round) {
     let price = 1;
-    const days_elapsed = 6 - days_until_next_round;
+    const days_elapsed = config.lottery.duration_days - days_until_next_round;
 
     // Tickets get more expensive over time (30% per day)
     price = price * Math.pow(1.3, days_elapsed);
@@ -97,7 +97,7 @@ module.exports = class Lottery {
   }
 
   calculate_days_for_blocks(blocks) {
-    return Math.floor(
+    return Math.ceil(
       (blocks * config.blockchain.block_time_seconds) / 60 / 60 / 24
     );
   }
@@ -107,10 +107,7 @@ module.exports = class Lottery {
     const height = this.cached_current_height;
     const blocks_left = round.end_block_height - height;
 
-    const days_left =
-      blocks_left > 0 ? this.calculate_days_for_blocks(blocks_left) : 0;
-
-    return Math.floor(days_left);
+    return blocks_left > 0 ? this.calculate_days_for_blocks(blocks_left) : 0;
   }
 
   async calculate_winner_ticket_number(block_hash) {
