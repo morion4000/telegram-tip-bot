@@ -1,9 +1,12 @@
 const Telegram = require('./../services/telegram');
+const { check_private_message } = require('./../utils');
 
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
   try {
+    await check_private_message(msg);
+
     const telegram = new Telegram();
     let message = '';
 
