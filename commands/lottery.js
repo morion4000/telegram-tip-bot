@@ -14,6 +14,7 @@ module.exports = (bot) => async (msg, match) => {
     const current_height = await webdchain.get_height();
     const lottery = new Lottery(current_height);
 
+    // TODO: Add bonus to the round table?
     const bonus = 10000;
     const round = await lottery.get_last_round();
     const participants = await lottery.get_participants(round);

@@ -17,7 +17,7 @@ module.exports = (bot) => async (msg, match) => {
     await check_private_message(msg);
     await check_telegram_username(msg);
 
-    const amount = await check_and_extract_amount(msg);
+    const amount = await check_and_extract_amount(msg, '/lotterydeposit');
     const telegram = new Telegram();
     const webdchain = new Webdchain();
     const current_height = await webdchain.get_height();

@@ -161,15 +161,20 @@ async function extract_amount(msg) {
   return amount;
 }
 
-async function check_and_extract_amount(msg) {
+async function check_and_extract_amount(msg, extra_msg) {
   const telegram = new Telegram();
   const amount = await extract_amount(msg);
+  let message = 'Please specify an amount.';
 
   if (amount === null) {
+    if (extra_msg) {
+      message += ' Example: `' + extra_msg + ' 100`';
+    }
+
     await telegram.send_message(
       msg.chat.id,
-      'Please specify an amount',
-      Telegram.PARSE_MODE.HTML,
+      message,
+      Telegram.PARSE_MODE.MARKDOWN,
       true
     );
 
