@@ -12,8 +12,6 @@ module.exports = class Activity {
   get size() {
     let size = 0;
 
-    console.log(this.channels);
-
     for (const channel_id of this.channels) {
       size += this.get_size_of_channel(channel_id);
     }

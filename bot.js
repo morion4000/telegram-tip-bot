@@ -71,6 +71,8 @@ bot.on('message', async (msg) => {
 
   console.log(`Activity size: ${activity.size}`);
 
+  console.log(`Channels: ${activity.channels}`);
+
   // For debugging
   // console.log(msg);
 });
