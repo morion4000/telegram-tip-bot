@@ -1,7 +1,7 @@
 {
-  "name": "telegram-bot",
-  "version": "0.0.1",
-  "description": "",
+  "name": "telegram-tip-bot",
+  "version": "1.2.0",
+  "description": "Telegram bot for making tips, buying, and staking WebDollar (WEBD). ",
   "author": "morion4000",
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.2",
@@ -33,5 +33,12 @@
     "socketio-wildcard": "^2.0.0",
     "stripe": "^8.144.0",
     "underscore": "^1.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
