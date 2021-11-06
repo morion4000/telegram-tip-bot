@@ -5,6 +5,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const config = require('./config');
 const commands = require('./commands');
 const sequelize = require('./models').sequelize;
+const Activity = require('./services/activity');
 const { update_username } = require('./utils');
 
 sequelize
@@ -19,6 +20,8 @@ sequelize
 const bot = new TelegramBot(config.telegram.token, {
   polling: true,
 });
+
+const activity = new Activity();
 
 const start_command = commands.start(bot);
 const tip_empty_command = commands.tip_empty(bot);
@@ -57,6 +60,16 @@ bot.on('message', async (msg) => {
   } catch (error) {
     console.error(error);
   }
+
+  console.log(msg.chat);
+
+  activity.add_activity_for_user_on_channel(msg.from.id, msg.chat.id);
+
+  console.log(
+    `Active users: ${activity.get_active_users_for_channel(msg.chat.id)}`
+  );
+
+  console.log(`Activity size: ${activity.size}`);
 
   // For debugging
   // console.log(msg);
@@ -154,8 +167,14 @@ bot.onText(/\/tutorial@webdollar_tip_bot$/, tutorial_command);
 bot.onText(/\/lottery@webdollar_tip_bot$/, lottery_command);
 bot.onText(/\/lotterytickets@webdollar_tip_bot$/, lotterytickets_command);
 bot.onText(/\/lotterydeposit@webdollar_tip_bot$/, lotterydeposit_command);
-bot.onText(/\/lotterydeposit@webdollar_tip_bot [0-9]+$/, lotterydeposit_command);
+bot.onText(
+  /\/lotterydeposit@webdollar_tip_bot [0-9]+$/,
+  lotterydeposit_command
+);
 bot.onText(/\/lotterywithdraw@webdollar_tip_bot$/, lotterywithdraw_command);
-bot.onText(/\/lotterywithdraw@webdollar_tip_bot [0-9]+$/, lotterywithdraw_command);
+bot.onText(
+  /\/lotterywithdraw@webdollar_tip_bot [0-9]+$/,
+  lotterywithdraw_command
+);
 bot.onText(/\/lotteryfaq@webdollar_tip_bot$/, lotteryfaq_command);
 bot.onText(/\/lotteryhistory@webdollar_tip_bot$/, lotteryhistory_command);
