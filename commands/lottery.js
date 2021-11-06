@@ -4,6 +4,7 @@ const Telegram = require('./../services/telegram');
 const Lottery = require('./../services/lottery');
 const Webdchain = require('./../services/webdchain');
 const { format_number, convert_to_usd } = require('./../utils');
+const config = require('./../config');
 
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
@@ -25,7 +26,7 @@ module.exports = (bot) => async (msg, match) => {
     );
     const date_start_formatted = moment(round.started_at).format('MMMM Do');
     const date_end_formatted = moment(round.started_at)
-      .add(days_until_next_round, 'days')
+      .add(config.lottery.duration_days, 'days')
       .format('MMMM Do');
 
     const message =
