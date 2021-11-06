@@ -61,17 +61,20 @@ bot.on('message', async (msg) => {
     console.error(error);
   }
 
-  console.log(msg.chat);
+  // Do not log activity with bot in private (only channels)
+  if (msg.chat && msg.chat.type && msg.chat.type !== 'private') {
+    //console.log(msg.chat);
 
-  activity.add_activity_for_user_on_channel(msg.from.id, msg.chat.id);
+    activity.add_activity_for_user_on_channel(msg.from.id, msg.chat.id);
 
-  console.log(
-    `Active users: ${activity.get_active_users_for_channel(msg.chat.id)}`
-  );
+    console.log(
+      `Active users: ${activity.get_active_users_for_channel(msg.chat.id)}`
+    );
 
-  console.log(`Activity size: ${activity.size}`);
+    console.log(`Activity size: ${activity.size}`);
 
-  console.log(`Channels: ${activity.channels}`);
+    console.log(`Channels: ${activity.channels}`);
+  }
 
   // For debugging
   // console.log(msg);
