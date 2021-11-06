@@ -50,10 +50,10 @@ var Command = function (bot) {
       });
 
       if (msg.chat.type === 'private') {
-        await bot.sendPhoto(
-          msg.chat.id,
-          'https://www.hostero.eu/assets/img/tipbot/price_command.jpg'
-        );
+        // await bot.sendPhoto(
+        //   msg.chat.id,
+        //   'https://www.hostero.eu/assets/img/tipbot/price_command.jpg'
+        // );
       }
     } catch (e) {
       console.error('/price', e);

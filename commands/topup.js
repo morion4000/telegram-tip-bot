@@ -30,12 +30,12 @@ var Command = function (bot) {
           disable_notification: true,
         });
       } else {
-//         resp = 'Purchasing WEBD using the bot has been disabled.';
-//         return bot.sendMessage(msg.chat.id, resp, {
-//           //parse_mode: 'Markdown',
-//           disable_web_page_preview: true,
-//           disable_notification: true,
-//         });
+        //         resp = 'Purchasing WEBD using the bot has been disabled.';
+        //         return bot.sendMessage(msg.chat.id, resp, {
+        //           //parse_mode: 'Markdown',
+        //           disable_web_page_preview: true,
+        //           disable_notification: true,
+        //         });
 
         var url = `https://pay.hostero.eu/tipbot?username=${msg.from.username}`;
         var package1_webd = numeral(config.topup.package1.webd).format('0,0');
@@ -64,23 +64,23 @@ var Command = function (bot) {
                   text: `Buy ${package1_webd} WEBD`,
                   url: `${url}&amount=${config.topup.package1.webd}&price=${config.topup.package1.usd}`,
                 },
-//                 {
-//                   text: `Buy ${package2_webd} WEBD`,
-//                   url: `${url}&amount=${config.topup.package2.webd}&price=${config.topup.package2.usd}`,
-//                 },
-//                 {
-//                   text: `Buy ${package3_webd} WEBD`,
-//                   url: `${url}&amount=${config.topup.package3.webd}&price=${config.topup.package3.usd}`,
-//                 },
+                //                 {
+                //                   text: `Buy ${package2_webd} WEBD`,
+                //                   url: `${url}&amount=${config.topup.package2.webd}&price=${config.topup.package2.usd}`,
+                //                 },
+                //                 {
+                //                   text: `Buy ${package3_webd} WEBD`,
+                //                   url: `${url}&amount=${config.topup.package3.webd}&price=${config.topup.package3.usd}`,
+                //                 },
               ],
             ],
           },
         });
 
-        bot.sendPhoto(
-          msg.chat.id,
-          'https://www.hostero.eu/assets/img/tipbot/topup_command.jpg'
-        );
+        // bot.sendPhoto(
+        //   msg.chat.id,
+        //   'https://www.hostero.eu/assets/img/tipbot/topup_command.jpg'
+        // );
       }
     } catch (e) {
       console.error('/toptup', e);

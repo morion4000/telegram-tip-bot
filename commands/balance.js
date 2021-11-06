@@ -99,10 +99,10 @@ var Command = function (bot) {
         disable_notification: true,
       });
 
-      await bot.sendPhoto(
-        msg.chat.id,
-        'https://www.hostero.eu/assets/img/tipbot/tipbalance_command.jpg'
-      );
+      // await bot.sendPhoto(
+      //   msg.chat.id,
+      //   'https://www.hostero.eu/assets/img/tipbot/tipbalance_command.jpg'
+      // );
     } catch (e) {
       console.error('/balance', e);
 

@@ -33,10 +33,10 @@ var Command = function (bot) {
         });
 
         if (msg.chat.type === 'private') {
-          bot.sendPhoto(
-            msg.chat.id,
-            'https://www.hostero.eu/assets/img/tipbot/scoreboard_command.jpg'
-          );
+          // bot.sendPhoto(
+          //   msg.chat.id,
+          //   'https://www.hostero.eu/assets/img/tipbot/scoreboard_command.jpg'
+          // );
         }
       });
   };

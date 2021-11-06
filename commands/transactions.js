@@ -92,10 +92,10 @@ var Command = function (bot) {
                   disable_notification: true,
                 });
 
-                bot.sendPhoto(
-                  msg.chat.id,
-                  'https://www.hostero.eu/assets/img/tipbot/transactions_command.jpg'
-                );
+                // bot.sendPhoto(
+                //   msg.chat.id,
+                //   'https://www.hostero.eu/assets/img/tipbot/transactions_command.jpg'
+                // );
               });
           } else {
             resp = 'Your user can not be found. Create a new acount /start';

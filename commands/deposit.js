@@ -82,10 +82,10 @@ var Command = function (bot) {
             disable_notification: true,
           });
 
-          bot.sendPhoto(
-            msg.chat.id,
-            'https://www.hostero.eu/assets/img/tipbot/deposit_command.jpg'
-          );
+          // bot.sendPhoto(
+          //   msg.chat.id,
+          //   'https://www.hostero.eu/assets/img/tipbot/deposit_command.jpg'
+          // );
         })
         .catch(console.error);
     } catch (e) {
