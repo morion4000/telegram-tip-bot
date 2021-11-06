@@ -2,6 +2,11 @@ var user = require('./../models').user,
   config = require('./../config'),
   _ = require('underscore');
 
+/*
+ TODO: Extend the help command to show details about each command
+ e.g. /help price - Will show the FAQ img (if available) and additional text about the command
+ */
+
 var Command = function (bot) {
   return function (msg, match) {
     var resp = '⚙️ You can run the following commands: \n\n';
@@ -26,6 +31,12 @@ var Command = function (bot) {
     resp += '\t /scoreboard - Top 10 tippers (only public tips are counted) \n';
     resp += '\t /topup - Buy WEBD with your card or PayPal \n';
     resp += '\t /tutorial - How to use WebDollar in the browser \n';
+    resp += '\t /lottery - Shows information about the current round \n';
+    resp += '\t /lotterytickets - Shows the tickets for the current round \n';
+    resp += '\t /lotterydeposit 1000 - Move funds to lottery balance \n';
+    resp += '\t /lotterywithdraw 1000 - Move funds to balance \n';
+    resp += '\t /lotteryfaq - Most common questions about the lottery \n';
+    resp += '\t /lotteryhistory - Shows the last 10 rounds \n';
 
     resp +=
       '\n🆘 You can write on @hosteroeu for any issues you encounter with the bot.';
