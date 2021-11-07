@@ -62,15 +62,15 @@ bot.on('message', async (msg) => {
   }
 
   // Do not log activity with bot in private (only channels)
-  if (msg.chat && msg.chat.type && msg.chat.type !== 'private') {
+  // if (msg.chat && msg.chat.type && msg.chat.type !== 'private') {
     //console.log(msg.chat);
 
-    activity.add_activity_for_user_on_channel(msg.from, msg.chat);
+    activity.add(msg.from, msg.chat);
 
     console.log(
-      `Activity (size: ${activity.size}, channels: ${activity.channels.length})`
+      `Activity (size: ${activity.total_size}, channels: ${activity.size})`
     );
-  }
+  // }
 
   // For debugging
   // console.log(msg);

@@ -1,85 +1,62 @@
 module.exports = class Activity {
   constructor() {
-    this.activity = {};
-    this.period = 60;
-    this.stale_after_minutes = 60;
+    this.channels = new Map();
   }
 
-  get channels() {
-    return Object.keys(this.activity);
+  build_activity(user, channel) {
+    return {
+      user: user,
+      channel: channel,
+      messages: 0,
+      last_message_at: new Date(),
+    };
   }
 
   get size() {
+    return this.channels.size;
+  }
+
+  get total_size() {
     let size = 0;
 
-    for (const channel_id of this.channels) {
-      size += this.get_size_of_channel(channel_id);
+    for (const channel of this.channels.values()) {
+      size += channel.size;
     }
 
     return size;
   }
 
-  get_users_in_channel(channel_id) {
-    if (!this.channel_exists(channel_id)) {
-      return [];
-    }
+  add(channel, user) {
+    const activities = this.get(channel);
 
-    return Object.keys(this.activity[channel_id]);
+    const activity = activities.has(user.id)
+      ? activities.get(user.id)
+      : this.build_activity(user, channel);
+
+    activity.messages++;
+    activity.last_message_at = new Date();
+
+    activities.set(user.id, activity);
+
+    this.channels.set(channel.id, activities);
   }
 
-  get_size_of_channel(channel_id) {
-    if (!this.channel_exists(channel_id)) {
-      return 0;
-    }
-
-    return Object.keys(this.activity[channel_id]).length;
+  get(channel) {
+    return this.channels.has(channel.id)
+      ? this.channels.get(channel.id)
+      : new Map();
   }
 
-  get_active_users_for_channel_id(channel_id) {
-    return ['528354447'];
+  // TODO: Can I use filter?
+  get_last_60_minutes(channel) {
+    const activities = new Map([...this.get(channel)]);
 
-    // TODO: Check last_active_at
-    return this.get_users_in_channel(channel_id).filter(
-      (user) => user.messages > 0
-    );
-  }
-
-  channel_exists(channel_id) {
-    return this.activity.hasOwnProperty(channel_id);
-  }
-
-  user_exists_on_channel(user_id, channel_id) {
-    return (
-      this.channel_exists(channel_id) &&
-      this.activity[channel_id].hasOwnProperty(user_id)
-    );
-  }
-
-  remove_stale_activity() {
-    for (const channel_id of this.channels) {
-      for (const user_id of this.get_users_in_channel(channel_id)) {
-        if (this.activity[channel_id][user_id] < Date.now() - 1000 * 60 * 60) {
-          delete this.activity[channel_id][user_id];
-        }
+    for (const [key, value] of activities) {
+      if (value.last_message_at < new Date(Date.now() - 60 * 60 * 1000)) {
+        activities.delete(key);
       }
     }
-  }
 
-  add_activity_for_user_on_channel(user, channel) {
-    if (!this.channel_exists(channel.id)) {
-      this.activity[channel.id] = {};
-    }
-
-    if (!this.user_exists_on_channel(user.id, channel.id)) {
-      this.activity[channel.id][user.id] = {
-        user: user,
-        channel: channel,
-        messages: 1,
-        last_message_at: new Date(),
-      };
-    } else {
-      this.activity[channel.id][user.id].messages++;
-      this.activity[channel.id][user.id].last_message_at = new Date();
-    }
+    return activities;
   }
 };

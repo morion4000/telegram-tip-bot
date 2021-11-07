@@ -56,9 +56,9 @@ module.exports = (bot, activity) => async (msg, match) => {
       }
     );
 
-    const users_id = activity.get_active_users_for_channel_id(msg.chat.id);
+    const activities = activity.get_last_60_minutes(msg.chat);
 
-    if (users_id.length === 0) {
+    if (activities.length === 0) {
       await telegram.send_message(
         msg.chat.id,
         `ℹ️ No active users on the channel in the past hour.`,
@@ -74,25 +74,27 @@ module.exports = (bot, activity) => async (msg, match) => {
       `💧 Rained *${format_number(amount)} WEBD* ($${format_number(
         amount_usd
       )}) to ${
-        users_id.length
+        activities.size
       } users on the channel (active in the past hour).`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
-    for (const user_id of users_id) {
-      const user_amount = amount / users_id.length;
+    for (const [key, value] of activities) {
+      const user_amount = amount / activities.size;
       const user_amount_usd = await convert_to_usd(user_amount);
 
       await telegram.send_message(
         msg.chat.id,
-        `💰 [user](tg://user?id=${user_id}) was tipped *${format_number(
+        `💰 [${
+          value.user.username
+        }](tg://user?id=${key}) was tipped *${format_number(
           user_amount
         )} WEBD* ($${format_number(user_amount_usd)})`,
         Telegram.PARSE_MODE.MARKDOWN
       );
 
       await telegram.send_message(
-        user_id,
+        key,
         `💰 You were tipped *${format_number(
           user_amount
         )} WEBD* ($${format_number(user_amount_usd)}) by @${msg.from.username}`,
