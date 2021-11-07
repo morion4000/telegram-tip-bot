@@ -36,6 +36,8 @@ module.exports = class Activity {
   }
 
   get_active_users_for_channel(channel_id) {
+    return ['528354447'];
+
     // TODO: Check last_active_at
     return this.get_users_in_channel(channel_id).filter(
       (user) => user.messages > 0

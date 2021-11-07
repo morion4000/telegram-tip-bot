@@ -1,0 +1,105 @@
+const user = require('./../models').user;
+const Telegram = require('./../services/telegram');
+const {
+  check_public_message,
+  check_and_extract_amount,
+  format_number,
+  find_user_by_id_or_username,
+  convert_to_usd,
+} = require('./../utils');
+
+module.exports = (bot, activity) => async (msg, match) => {
+  console.log(msg.text, msg.chat.id);
+
+  try {
+    //await check_public_message(msg);
+
+    const amount = await check_and_extract_amount(msg, '/rain');
+    const amount_usd = await convert_to_usd(amount);
+    const telegram = new Telegram();
+
+    const found_user = await find_user_by_id_or_username(
+      msg.from.id,
+      msg.from.username
+    );
+
+    if (!found_user) {
+      await telegram.send_message(
+        msg.chat.id,
+        'ℹ️ Your user can not be found. Create a new acount /start',
+        Telegram.PARSE_MODE.HTML,
+        true
+      );
+
+      throw new Error('User not found');
+    }
+
+    if (found_user.balance < amount) {
+      await telegram.send_message(
+        msg.chat.id,
+        `ℹ️ You don't have enough /tipbalance to rain ${amount}.`,
+        Telegram.PARSE_MODE.HTML,
+        true
+      );
+
+      throw new Error('Not enough balance');
+    }
+
+    await user.model.update(
+      {
+        balance: found_user.balance - amount,
+      },
+      {
+        where: {
+          id: found_user.id,
+        },
+      }
+    );
+
+    const users_id = activity.get_active_users_for_channel(msg.chat.id);
+
+    if (users_id.length === 0) {
+      await telegram.send_message(
+        msg.chat.id,
+        `ℹ️ No active users on the channel in the past hour.`,
+        Telegram.PARSE_MODE.MARKDOWN,
+        true
+      );
+
+      return;
+    }
+
+    await telegram.send_message(
+      msg.chat.id,
+      `💧 Rained *${format_number(amount)} WEBD* ($${format_number(
+        amount_usd
+      )}) to ${
+        users_id.length
+      } users on the channel (active in the past hour).`,
+      Telegram.PARSE_MODE.MARKDOWN
+    );
+
+    for (const user_id of users_id) {
+      const user_amount = amount / users_id.length;
+      const user_amount_usd = await convert_to_usd(user_amount);
+
+      await telegram.send_message(
+        msg.chat.id,
+        `💰 [user](tg://user?id=${user_id}) was tipped *${format_number(
+          user_amount
+        )} WEBD* ($${format_number(user_amount_usd)})`,
+        Telegram.PARSE_MODE.MARKDOWN
+      );
+
+      await telegram.send_message(
+        user_id,
+        `💰 You were tipped *${format_number(
+          user_amount
+        )} WEBD* ($${format_number(user_amount_usd)}) by @${msg.from.username}`,
+        Telegram.PARSE_MODE.MARKDOWN
+      );
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};

@@ -76,16 +76,16 @@ exports.handler = async function (event) {
     let stake = Math.floor(
       (user.balance * config.staking.yearly_percentage) / 100 / 360
     );
-    
+
     // Allow staking with low amounts
     if (stake < 1) {
       stake = 1;
     }
-    
+
     const new_balance = user.balance + stake;
     const stake_usd = parseFloat(stake * webdollar.price_usd);
     const new_balance_usd = parseFloat(new_balance * webdollar.price_usd);
-    
+
     total_stake += stake;
 
     console.log(
@@ -132,7 +132,7 @@ exports.handler = async function (event) {
       }
     );
 
-    const resp = `✅ New /staking reward: *${numeral(stake).format(
+    const resp = `💰 New /staking reward: *${numeral(stake).format(
       '0,0'
     )}* WEBD ($${numeral(stake_usd).format(
       '0,0.00'

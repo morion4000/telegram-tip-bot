@@ -34,7 +34,7 @@ var Command = function (bot) {
 
       if (user_match === null || amount_match === null) {
         resp =
-          'You need to specify the user and amount in WEBD or USD: /tip @morion4000 1000 or /tip @morion4000 $1';
+          'ℹ️ You need to specify the user and amount in WEBD or USD: /tip @morion4000 1000 or /tip @morion4000 $1';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
@@ -136,7 +136,7 @@ var Command = function (bot) {
 
           if (!users[0]) {
             resp =
-              'No Account. Please DM the bot: @webdollar_tip_bot to set up an account.';
+              'ℹ️ No Account. Please DM the bot: @webdollar_tip_bot to set up an account.';
 
             bot.sendMessage(msg.chat.id, resp, {
               //parse_mode: 'Markdown',
@@ -172,7 +172,7 @@ var Command = function (bot) {
           } else if (from_user.id === to_user.id) {
             resp = 'You can not tip yourself.';
           } else if (amount < 10 || amount > 10000000) {
-            resp = 'Please send between 10 and 10,000,000 WEBD.';
+            resp = 'ℹ️ Please send between 10 and 10,000,000 WEBD.';
           } else {
             tip_model.create({
               amount: amount,
@@ -209,7 +209,7 @@ var Command = function (bot) {
 
             if (to_user.telegram_id) {
               var tip_msg =
-                'You were tipped ' +
+                '💰 You were tipped ' +
                 numeral(amount).format('0,0') +
                 ' WEBD ($' +
                 numeral(amount_usd).format('0,0.00') +
@@ -225,7 +225,7 @@ var Command = function (bot) {
             }
 
             resp =
-              '@' +
+              '💰 @' +
               to_user.telegram_username +
               ' was tipped ' +
               numeral(amount).format('0,0') +

@@ -106,7 +106,7 @@ async function update_username(from) {
       }
     );
 
-    console.log(`Updated username: ${from.username}`);
+    console.log(`Updated username: ${from.username} (${from.id})`);
   }
 }
 
@@ -119,12 +119,27 @@ async function check_private_message(msg) {
   ) {
     await telegram.send_message(
       msg.chat.id,
-      'Private command. Please DM the bot: @webdollar_tip_bot to use the command.',
+      'ℹ️ Private command. Please DM the bot: @webdollar_tip_bot to use the command.',
       Telegram.PARSE_MODE.HTML,
       true
     );
 
     throw new Error('Private command');
+  }
+}
+
+async function check_public_message(msg) {
+  const telegram = new Telegram();
+
+  if (msg.chat.type === 'private') {
+    await telegram.send_message(
+      msg.chat.id,
+      'ℹ️ Public command. Please use the command in a channel or group.',
+      Telegram.PARSE_MODE.HTML,
+      true
+    );
+
+    throw new Error('Public command');
   }
 }
 
@@ -134,7 +149,7 @@ async function check_telegram_username(msg) {
   if (!msg.from.username) {
     await telegram.send_message(
       msg.chat.id,
-      'Please set an username for your telegram account to use the bot.',
+      'ℹ️ Please set an username for your telegram account to use the bot.',
       Telegram.PARSE_MODE.HTML,
       true
     );
@@ -207,6 +222,7 @@ module.exports = {
   format_number,
   convert_to_usd,
   check_private_message,
+  check_public_message,
   check_telegram_username,
   check_and_extract_amount,
   extract_amount,

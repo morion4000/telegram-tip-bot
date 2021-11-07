@@ -4,15 +4,15 @@
   "description": "Telegram bot for making tips, buying, and staking WebDollar (WEBD). ",
   "author": "morion4000",
   "dependencies": {
-    "@paypal/checkout-server-sdk": "^1.0.2",
+    "@paypal/checkout-server-sdk": "^1.0.3",
     "async": "^2.6.3",
-    "axios": "^0.21.0",
+    "axios": "^0.21.4",
     "body-parser": "^1.19.0",
     "cached-request": "^2.0.3",
     "cheerio": "^0.22.0",
     "cli": "^1.0.1",
     "cors": "^2.8.5",
-    "dotenv": "^9.0.1",
+    "dotenv": "^9.0.2",
     "events": "^2.0.0",
     "express": "^4.17.1",
     "influxdb-nodejs": "^2.7.6",
@@ -31,7 +31,7 @@
     "socket.io": "2.4.0",
     "socket.io-client": "^1.7.4",
     "socketio-wildcard": "^2.0.0",
-    "stripe": "^8.144.0",
+    "stripe": "^8.186.1",
     "underscore": "^1.13.1"
   },
   "devDependencies": {

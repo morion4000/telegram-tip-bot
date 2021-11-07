@@ -8,9 +8,9 @@ var Command = function (bot) {
 
     console.log(msg.text, msg.chat.id);
 
-    resp += '\t - Tipping: ' + config.fees.tip + ' WEBD \n';
-    resp += '\t - Deposit: ' + config.fees.deposit + ' WEBD \n';
-    resp += '\t - Withdraw: ' + config.fees.withdraw + ' WEBD \n';
+    resp += '\t\t▫️ Tipping: ' + config.fees.tip + ' WEBD \n';
+    resp += '\t\t▫️ Deposit: ' + config.fees.deposit + ' WEBD \n';
+    resp += '\t\t▫️ Withdraw: ' + config.fees.withdraw + ' WEBD \n';
 
     bot.sendMessage(msg.chat.id, resp, {
       //parse_mode: 'Markdown',

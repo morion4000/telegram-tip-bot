@@ -1,10 +1,9 @@
 require('dotenv').config();
 
-const _ = require('underscore');
 const TelegramBot = require('node-telegram-bot-api');
 const config = require('./config');
 const commands = require('./commands');
-const sequelize = require('./models').sequelize;
+// const sequelize = require('./models').sequelize;
 const Activity = require('./services/activity');
 const { update_username } = require('./utils');
 
@@ -26,6 +25,7 @@ const activity = new Activity();
 const start_command = commands.start(bot);
 const tip_empty_command = commands.tip_empty(bot);
 const tip_command = commands.tip(bot);
+const rain_command = commands.rain(bot, activity);
 const balance_command = commands.balance(bot);
 const deposit_command = commands.deposit(bot);
 const withdraw_command = commands.withdraw(bot);
@@ -104,6 +104,8 @@ bot.onText(/\/tip@webdollar_tip_bot @\w+  \w+$/, tip_command);
 bot.onText(/\/tip@webdollar_tip_bot @\w+ \$\w+$/, tip_command);
 bot.onText(/\/tip@webdollar_tip_bot @\w+  \$\w+$/, tip_command);
 
+bot.onText(/\/rain$/, rain_command);
+bot.onText(/\/rain [0-9]+$/, rain_command);
 bot.onText(/\/start$/, start_command);
 bot.onText(/\/tipbalance$/, balance_command);
 bot.onText(/\/deposit$/, deposit_command);
@@ -141,6 +143,8 @@ bot.onText(/\/lotterywithdraw [0-9]+$/, lotterywithdraw_command);
 bot.onText(/\/lotteryfaq$/, lotteryfaq_command);
 bot.onText(/\/lotteryhistory$/, lotteryhistory_command);
 
+bot.onText(/\/rain@webdollar_tip_bot$/, rain_command);
+bot.onText(/\/rain@webdollar_tip_bot [0-9]+$/, rain_command);
 bot.onText(/\/start@webdollar_tip_bot$/, start_command);
 bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
 bot.onText(/\/deposit@webdollar_tip_bot$/, deposit_command);
