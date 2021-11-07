@@ -56,7 +56,7 @@ module.exports = (bot, activity) => async (msg, match) => {
       }
     );
 
-    const users_id = activity.get_active_users_for_channel(msg.chat.id);
+    const users_id = activity.get_active_users_for_channel_id(msg.chat.id);
 
     if (users_id.length === 0) {
       await telegram.send_message(

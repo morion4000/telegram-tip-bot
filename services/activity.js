@@ -35,7 +35,7 @@ module.exports = class Activity {
     return Object.keys(this.activity[channel_id]).length;
   }
 
-  get_active_users_for_channel(channel_id) {
+  get_active_users_for_channel_id(channel_id) {
     return ['528354447'];
 
     // TODO: Check last_active_at
@@ -65,19 +65,21 @@ module.exports = class Activity {
     }
   }
 
-  add_activity_for_user_on_channel(user_id, channel_id) {
-    if (!this.channel_exists(channel_id)) {
-      this.activity[channel_id] = {};
+  add_activity_for_user_on_channel(user, channel) {
+    if (!this.channel_exists(channel.id)) {
+      this.activity[channel.id] = {};
     }
 
-    if (!this.user_exists_on_channel(user_id, channel_id)) {
-      this.activity[channel_id][user_id] = {
+    if (!this.user_exists_on_channel(user.id, channel.id)) {
+      this.activity[channel.id][user.id] = {
+        user: user,
+        channel: channel,
         messages: 1,
         last_message_at: new Date(),
       };
     } else {
-      this.activity[channel_id][user_id].messages++;
-      this.activity[channel_id][user_id].last_message_at = new Date();
+      this.activity[channel.id][user.id].messages++;
+      this.activity[channel.id][user.id].last_message_at = new Date();
     }
   }
 };

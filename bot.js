@@ -65,15 +65,11 @@ bot.on('message', async (msg) => {
   if (msg.chat && msg.chat.type && msg.chat.type !== 'private') {
     //console.log(msg.chat);
 
-    activity.add_activity_for_user_on_channel(msg.from.id, msg.chat.id);
+    activity.add_activity_for_user_on_channel(msg.from, msg.chat);
 
     console.log(
-      `Active users: ${activity.get_active_users_for_channel(msg.chat.id)}`
+      `Activity (size: ${activity.size}, channels: ${activity.channels.length})`
     );
-
-    console.log(`Activity size: ${activity.size}`);
-
-    console.log(`Channels: ${activity.channels}`);
   }
 
   // For debugging
