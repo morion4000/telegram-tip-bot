@@ -88,7 +88,7 @@ var Command = function (bot) {
           '0,0.00'
         )}). Eligible for weekly /lottery rewards.\n`;
 
-        resp += '\n💵 You can add more funds using /topup.';
+        resp += '\nℹ️ You can add more funds using /topup.';
       } else {
         resp = 'Your user can not be found. Create a new acount /start';
       }

@@ -164,8 +164,9 @@ async function extract_amount(msg) {
 async function check_and_extract_amount(msg, extra_msg) {
   const telegram = new Telegram();
   const amount = await extract_amount(msg);
-  let message = 'Please specify an amount.';
+  let message = 'ℹ️ You need to specify the amount.';
 
+  // TODO: Check this logic
   if (amount === null) {
     if (extra_msg) {
       message += ' Example: `' + extra_msg + ' 100`';
