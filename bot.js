@@ -8,13 +8,13 @@ const sequelize = require('./models').sequelize;
 const Activity = require('./services/activity');
 const { update_username } = require('./utils');
 
-sequelize
-  .sync({
-    //force: true
-  })
-  .then(function () {
-    console.log('Db synced');
-  });
+// sequelize
+//   .sync({
+//     //force: true
+//   })
+//   .then(function () {
+//     console.log('Db synced');
+//   });
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(config.telegram.token, {

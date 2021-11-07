@@ -24,11 +24,10 @@ var Command = function (bot) {
       return;
     }
 
-    resp =
-      'You need to specify the amount you want to withdraw: /withdraw AMOUNT';
+    resp = 'You need to specify the amount. Example: `/withdraw 100`';
 
     bot.sendMessage(msg.chat.id, resp, {
-      //parse_mode: 'Markdown',
+      parse_mode: 'Markdown',
       disable_web_page_preview: true,
       disable_notification: true,
     });

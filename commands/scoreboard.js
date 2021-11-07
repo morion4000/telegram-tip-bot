@@ -8,7 +8,7 @@ var Command = function (bot) {
 
     console.log(msg.text, msg.chat.id);
 
-    resp = 'Top 10 tippers (only public tips are counted)\n\n';
+    resp = '💰 Top 10 tippers (only public tips are counted):\n\n';
 
     sequelize
       .query(
@@ -19,7 +19,7 @@ var Command = function (bot) {
 
         for (var i = 0; i < tips.length; i++) {
           resp +=
-            '\t 💰 ' +
+            '\t\t▫️ ' +
             numeral(tips[i].amount).format('0,0') +
             ' WEBD: ' +
             tips[i].username +

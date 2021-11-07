@@ -60,11 +60,7 @@ var Command = function (bot) {
               '📈 The staking reward is *' +
               config.staking.yearly_percentage +
               '%* per year, received daily.\n\n';
-            resp +=
-              'You must have at least ' +
-              numeral(config.staking.threshold).format('0,0') +
-              ' WEBD to get staking rewards.\n\n';
-            resp += 'ℹ️ Latest 10 staking rewards:\n\n';
+            resp += '💰 Latest 10 staking rewards:\n\n';
 
             log.model
               .findAll({
@@ -92,15 +88,19 @@ var Command = function (bot) {
                   const reward_usd = extra.reward_usd || 0;
 
                   resp +=
-                    '\t ✅  (' +
-                    moment(l.createdAt).format('L') +
-                    ') New reward: *' +
+                    '\t\t▫️ ' +
+                    moment(l.createdAt).format('MMMM Do') +
+                    ': *' +
                     numeral(extra.reward).format('0,0') +
                     '* WEBD ($' +
                     numeral(reward_usd).format('0,0.00') +
                     ')\n';
                 }
 
+                resp +=
+                  '\nℹ️ You must have at least ' +
+                  numeral(config.staking.threshold).format('0,0') +
+                  ' WEBD to get staking rewards.\n\n';
                 //resp += '\nFor bigger staking rewards we recommend: https://www.hostero.eu/docs/webdollar-pos-mining';
 
                 bot.sendMessage(msg.chat.id, resp, {

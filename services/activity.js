@@ -36,16 +36,10 @@ module.exports = class Activity {
   }
 
   get_active_users_for_channel(channel_id) {
-    let active_users = [];
-    const users = this.get_users_in_channel(channel_id).filter(
+    // TODO: Check last_active_at
+    return this.get_users_in_channel(channel_id).filter(
       (user) => user.messages > 0
     );
-
-    for (const user_id of users) {
-      active_users.push(user_id);
-    }
-
-    return active_users;
   }
 
   channel_exists(channel_id) {

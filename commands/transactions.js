@@ -72,16 +72,16 @@ var Command = function (bot) {
                   }
 
                   var t = transactions[i];
-                  var status = t.processed ? 'Processed' : 'Pending';
+                  var status = t.processed ? 'Completed' : 'Pending';
 
                   resp +=
-                    '\t ✅ (' +
-                    moment(t.createdAt).format('L') +
-                    ') ' +
+                    '\t\t▫️ ' +
+                    moment(t.createdAt).format('MMMM Do') +
+                    ': ' +
                     status +
                     ' ' +
                     t.type +
-                    ': *' +
+                    ' of *' +
                     numeral(t.amount).format('0,0') +
                     '* WEBD\n';
                 }

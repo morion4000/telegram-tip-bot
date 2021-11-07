@@ -5,7 +5,9 @@ var user = require('./../models').user,
 var Command = function (bot) {
   return function (msg, match) {
     var resp =
-      'You need to specify the user and amount in WEBD or USD: `/tip @morion4000 1000` or `/tip @morion4000 $1`';
+      'ℹ️ You need to specify the username and amount (WEBD or USD).\n\nExamples:\n' +
+      '\t▫️ `/tip @morion4000 1000`\n' +
+      '\t▫️ `/tip @morion4000 $1`\n';
 
     console.log(msg.text, msg.chat.id);
 
@@ -15,10 +17,12 @@ var Command = function (bot) {
       disable_notification: true,
     });
 
-    bot.sendPhoto(
-      msg.chat.id,
-      'https://www.hostero.eu/assets/img/tipbot/tip_command.jpg'
-    );
+    if (msg.chat && msg.chat.type && msg.chat.type === 'private') {
+      bot.sendPhoto(
+        msg.chat.id,
+        'https://www.hostero.eu/assets/img/tipbot/tip_command.jpg'
+      );
+    }
   };
 };
 

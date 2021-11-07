@@ -41,11 +41,11 @@ module.exports = (bot) => async (msg, match) => {
     chance = chance ? chance : 0;
 
     if (tickets.length > 0) {
-      message += `\n🎲 Your numbers:\n`;
+      message += `\n🎲 Your numbers:\n\n`;
     }
 
     for (const ticket of tickets) {
-      message += `▫️ *${format_number(ticket.range_min)}* to *${format_number(
+      message += `\t\t▫️ *${format_number(ticket.range_min)}* to *${format_number(
         ticket.range_max
       )}*\n`;
     }
