@@ -66,14 +66,14 @@ var Command = function (bot) {
               //var link = 'https://webdollar.io/payment/' + config.vault;
               //resp = 'Go to ' + link + ' and complete the transfer, or deposit WEBD to the following address: *' + config.vault + '*';
               resp =
-                'Send WEBD to the following address: `' +
+                '🌐 Transfer your funds to the following address: `' +
                 config.vault +
-                '`\n\nMake sure you make the transfer from the /wallet you set.';
+                '`\n\nℹ️ Make sure you make the transfer from the /wallet you set.';
             } else {
-              resp = 'Configure your wallet first /setwallet';
+              resp = 'ℹ️ Configure your wallet first /setwallet';
             }
           } else {
-            resp = 'Your user can not be found. Create a new acount /start';
+            resp = 'ℹ️ Your user can not be found. Create a new acount /start';
           }
 
           bot.sendMessage(msg.chat.id, resp, {
