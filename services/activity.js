@@ -47,13 +47,20 @@ module.exports = class Activity {
       : new Map();
   }
 
-  // TODO: Can I use filter?
-  get_last_60_minutes(channel) {
+  get_last_60_minutes(channel, exclude_user = null) {
     const activities = new Map([...this.get(channel)]);
 
     for (const [key, value] of activities) {
+      if (exclude_user && key === exclude_user.id) {
+        activities.delete(key);
+
+        continue;
+      }
+
       if (value.last_message_at < new Date(Date.now() - 60 * 60 * 1000)) {
         activities.delete(key);
+
+        continue;
       }
     }
 

@@ -56,9 +56,10 @@ module.exports = (bot, activity) => async (msg, match) => {
       }
     );
 
-    const activities = activity.get_last_60_minutes(msg.chat);
+    // TODO: Exclude current user from rain?
+    const activities = activity.get_last_60_minutes(msg.chat, msg.from);
 
-    if (activities.length === 0) {
+    if (activities.size === 0) {
       await telegram.send_message(
         msg.chat.id,
         `ℹ️ No active users on the channel in the past hour.`,
