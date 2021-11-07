@@ -56,7 +56,6 @@ module.exports = (bot, activity) => async (msg, match) => {
       }
     );
 
-    // TODO: Exclude current user from rain?
     const activities = activity.get_last_60_minutes(msg.chat, msg.from);
 
     if (activities.size === 0) {
@@ -81,7 +80,8 @@ module.exports = (bot, activity) => async (msg, match) => {
     );
 
     for (const [key, value] of activities) {
-      const user_amount = amount / activities.size;
+      // TODO: Implement weight?
+      const user_amount = Math.floor(amount / activities.size);
       const user_amount_usd = await convert_to_usd(user_amount);
 
       await telegram.send_message(
