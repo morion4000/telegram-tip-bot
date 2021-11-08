@@ -6,8 +6,8 @@ var Command = function (bot) {
   return function (msg, match) {
     var resp =
       'ℹ️ You need to specify the username and amount (WEBD or USD).\n\nExamples:\n' +
-      '\t▫️ `/tip @webdollar_tip_bot 1000`\n' +
-      '\t▫️ `/tip @webdollar_tip_bot $1`\n';
+      '\t▫️ `/tip @morion4000 1000`\n' +
+      '\t▫️ `/tip @morion4000 $1`\n';
 
     console.log(msg.text, msg.chat.id);
 

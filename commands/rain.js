@@ -12,7 +12,7 @@ module.exports = (bot, activity) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
   try {
-    //await check_public_message(msg);
+    await check_public_message(msg);
 
     const amount = await check_and_extract_amount(msg, '/rain');
     const amount_usd = await convert_to_usd(amount);
@@ -57,6 +57,7 @@ module.exports = (bot, activity) => async (msg, match) => {
     );
 
     const activities = activity.get_last_60_minutes(msg.chat, msg.from);
+    const messages = activity.get_messages_from_activities(activities);
 
     if (activities.size === 0) {
       await telegram.send_message(
@@ -83,6 +84,32 @@ module.exports = (bot, activity) => async (msg, match) => {
       // TODO: Implement weight?
       const user_amount = Math.floor(amount / activities.size);
       const user_amount_usd = await convert_to_usd(user_amount);
+
+      // TODO: Create service to Tip
+      // Find receiving user or create a new one
+      // Substract amount
+      // Insert tip in db
+      // Send telegram messages
+      // Etc.
+      const _found_user = find_user_by_id_or_username(
+        value.user.id,
+        value.user.username
+      );
+
+      if (!_found_user) {
+        continue;
+      }
+
+      await user.model.update(
+        {
+          balance: _found_user.balance + user_amount,
+        },
+        {
+          where: {
+            id: _found_user.id,
+          },
+        }
+      );
 
       await telegram.send_message(
         msg.chat.id,

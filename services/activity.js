@@ -47,6 +47,13 @@ module.exports = class Activity {
       : new Map();
   }
 
+  get_messages_from_activities(activities) {
+    return Array.from(activities.values()).reduce(
+      (acc, value) => acc + value.messages,
+      0
+    );
+  }
+
   get_last_60_minutes(channel, exclude_user = null) {
     const activities = new Map([...this.get(channel)]);
 
