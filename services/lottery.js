@@ -265,9 +265,11 @@ module.exports = class Lottery {
   }
 
   distribute_prize(user, round) {
+    const bonus = round.bonus ? round.bonus : 0;
+    
     return user_model.model.update(
       {
-        balance_lottery: user.balance_lottery + round.prize,
+        balance_lottery: user.balance_lottery + round.prize + bonus,
       },
       {
         where: {
