@@ -134,7 +134,7 @@ module.exports = class Lottery {
     return winner_ticket_number;
   }
 
-  async get_winner_user(ticket_number) {
+  async get_winner_user_for_round(ticket_number, round) {
     const ticket = await lottery_ticket.model.findOne({
       where: {
         range_min: {
@@ -143,6 +143,7 @@ module.exports = class Lottery {
         range_max: {
           [Sequelize.Op.gte]: ticket_number,
         },
+        round_id: round.id,
       },
     });
 
@@ -266,7 +267,7 @@ module.exports = class Lottery {
 
   distribute_prize(user, round) {
     const bonus = round.bonus ? round.bonus : 0;
-    
+
     return user_model.model.update(
       {
         balance_lottery: user.balance_lottery + round.prize + bonus,

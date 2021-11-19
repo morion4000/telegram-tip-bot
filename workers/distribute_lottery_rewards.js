@@ -35,7 +35,7 @@ exports.handler = async function (event) {
     hash
   );
 
-  const winner_user = await lottery.get_winner_user(winner_ticket_number);
+  const winner_user = await lottery.get_winner_user_for_round(winner_ticket_number, round);
   const winner_tickets_number =
     await lottery.calculate_tickets_number_for_user_and_round(
       winner_user,
