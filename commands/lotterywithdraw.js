@@ -17,16 +17,12 @@ module.exports = (bot) => async (msg, match) => {
 
     const telegram = new Telegram();
 
-    let amount = await extract_amount(msg);
+    const amount = await check_and_extract_amount(msg, '/lotterywithdraw');
 
     const found_user = await find_user_by_id_or_username(
       msg.from.id,
       msg.from.username
     );
-
-    if (amount === null) {
-      amount = found_user.balance_lottery;
-    }
 
     if (!found_user) {
       await telegram.send_message(
