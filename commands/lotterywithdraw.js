@@ -4,7 +4,7 @@ const {
   check_private_message,
   check_telegram_username,
   find_user_by_id_or_username,
-  extract_amount,
+  check_and_extract_amount,
   format_number,
 } = require('./../utils');
 
