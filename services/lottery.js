@@ -270,7 +270,7 @@ module.exports = class Lottery {
 
     return user_model.model.update(
       {
-        balance_lottery: user.balance_lottery + round.prize + bonus,
+        balance_lottery: Math.floor(user.balance_lottery + round.prize + bonus),
       },
       {
         where: {
