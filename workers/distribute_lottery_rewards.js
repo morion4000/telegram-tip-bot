@@ -65,7 +65,7 @@ exports.handler = async function (event) {
       .catch(console.error);
   }
 
-  await lottery.distribute_prize(round, winner_user);
+  await lottery.distribute_prize(winner_user, round);
 
   telegram
     .send_message(
