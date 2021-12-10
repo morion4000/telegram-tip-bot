@@ -26,7 +26,7 @@ module.exports = class Activity {
     return size;
   }
 
-  add(channel, user) {
+  add(channel, user, last_message_at = new Date()) {
     const activities = this.get(channel);
 
     const activity = activities.has(user.id)
@@ -34,7 +34,7 @@ module.exports = class Activity {
       : this.build_activity(user, channel);
 
     activity.messages++;
-    activity.last_message_at = new Date();
+    activity.last_message_at = last_message_at;
 
     activities.set(user.id, activity);
 
