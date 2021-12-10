@@ -35,10 +35,27 @@
     "underscore": "^1.13.1"
   },
   "devDependencies": {
+    "jest": "^27.4.3",
     "nodemon": "^2.0.14"
   },
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest"
+  },
+  "jest": {
+    "testTimeout": 10000,
+    "setupFiles": [
+      "dotenv/config"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/config/env/test.js"
+    ],
+    "testEnvironment": "node",
+    "globalSetup": "./utils/jest_globalsetup.js",
+    "globalTeardown": "./utils/jest_globalteardown.js",
+    "snapshotResolver": "./utils/jest_snapshotresolver.js",
+    "moduleNameMapper": {
+      "@config/(.*)": "<rootDir>/config/$1"
+    }
   }
 }
