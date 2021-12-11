@@ -1,76 +1,76 @@
-module.exports = class Activity {
-  constructor() {
-    this.channels = new Map();
-  }
+const DEFAULT_ACTIVITY_INTERVAL_MINUTES = 60;
 
-  build_activity(user, channel) {
-    return {
-      user: user,
-      channel: channel,
-      messages: 0,
-      last_message_at: new Date(),
-    };
+class Activity {
+  constructor() {
+    this.activities = [];
+    this.stale_after_minutes = 60 * 6; // Do not keep activity more than 6 hours
+    this.clean_interval_ms = 30 * 60 * 1000;
   }
 
   get size() {
-    return this.channels.size;
+    return this.activities.length;
   }
 
-  get total_size() {
-    let size = 0;
-
-    for (const channel of this.channels.values()) {
-      size += channel.size;
-    }
-
-    return size;
+  get channels() {
+    return [...new Set(this.activities.map((a) => a.channel))].length;
   }
 
-  add(channel, user, last_message_at = new Date()) {
-    const activities = this.get(channel);
-
-    const activity = activities.has(user.id)
-      ? activities.get(user.id)
-      : this.build_activity(user, channel);
-
-    activity.messages++;
-    activity.last_message_at = last_message_at;
-
-    activities.set(user.id, activity);
-
-    this.channels.set(channel.id, activities);
+  get last_activity() {
+    return this.activities[this.activities.length - 1];
   }
 
-  get(channel) {
-    return this.channels.has(channel.id)
-      ? this.channels.get(channel.id)
-      : new Map();
-  }
-
-  get_messages_from_activities(activities) {
-    return Array.from(activities.values()).reduce(
-      (acc, value) => acc + value.messages,
-      0
+  watch() {
+    this.clean_interval = setInterval(
+      () => this.clean(),
+      this.clean_interval_ms
     );
   }
 
-  get_last_60_minutes(channel, exclude_user = null) {
-    const activities = new Map([...this.get(channel)]);
-
-    for (const [key, value] of activities) {
-      if (exclude_user && key === exclude_user.id) {
-        activities.delete(key);
-
-        continue;
-      }
-
-      if (value.last_message_at < new Date(Date.now() - 60 * 60 * 1000)) {
-        activities.delete(key);
-
-        continue;
-      }
-    }
-
-    return activities;
+  prune() {
+    this.activities = [];
   }
-};
+
+  clean() {
+    this.activities = this.activities.filter(
+      (activity) =>
+        activity.time >
+        new Date(Date.now() - this.stale_after_minutes * 60 * 1000)
+    );
+  }
+
+  add(channel, user, message, time = new Date()) {
+    this.activities.push({
+      channel,
+      user,
+      message,
+      time,
+    });
+  }
+
+  get_activities_for_channel(
+    channel,
+    interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
+  ) {
+    return this.activities.filter(
+      (activity) =>
+        activity.channel === channel &&
+        activity.time > new Date(Date.now() - interval_minutes * 60 * 1000)
+    );
+  }
+
+  get_activities_for_channel_and_user(
+    channel,
+    user,
+    interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
+  ) {
+    return this.activities.filter(
+      (activity) =>
+        activity.channel === channel &&
+        activity.user === user &&
+        activity.time > new Date(Date.now() - interval_minutes * 60 * 1000)
+    );
+  }
+}
+
+exports.Activity = Activity;
+exports.DEFAULT_ACTIVITY_INTERVAL_MINUTES = DEFAULT_ACTIVITY_INTERVAL_MINUTES;

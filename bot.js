@@ -67,9 +67,7 @@ bot.on('message', async (msg) => {
 
     //activity.add(msg.from, msg.chat);
 
-    console.log(
-      `Activity (size: ${activity.total_size}, channels: ${activity.size})`
-    );
+    console.log(`Activity (size: ${activity.size})`);
   }
 
   // For debugging
