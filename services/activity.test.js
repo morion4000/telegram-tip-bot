@@ -12,10 +12,6 @@ describe('Activity', () => {
     activity.add('test', user_mock, message_mock);
   });
 
-  it('should init', () => {
-    expect(activity).toBeDefined();
-  });
-
   it('should get size', () => {
     expect(activity.size).toBe(1);
 
@@ -60,7 +56,7 @@ describe('Activity', () => {
       new Date(Date.now() - DEFAULT_ACTIVITY_INTERVAL_MINUTES * 60 * 1000)
     );
 
-    expect(activity.get_activities_for_channel('test').length).toBe(1);
+    expect  (activity.get_activities_for_channel('test').length).toBe(1);
     expect(
       activity.get_activities_for_channel(
         'test',

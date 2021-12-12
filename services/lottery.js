@@ -86,6 +86,12 @@ module.exports = class Lottery {
     });
   }
 
+  get_rounds() {
+    return lottery_round.model.findAll({
+      order: [['id', 'DESC']],
+    });
+  }
+
   calculate_ticket_price(days_until_next_round) {
     let price = 1;
     const days_elapsed = config.lottery.duration_days - days_until_next_round;

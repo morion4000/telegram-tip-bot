@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const config = require('./config');
 const commands = require('./commands');
 // const sequelize = require('./models').sequelize;
-const Activity = require('./services/activity');
+const { Activity } = require('./services/activity');
 const { update_username } = require('./utils');
 
 // sequelize
