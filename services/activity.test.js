@@ -4,8 +4,8 @@ describe('Activity', () => {
   const activity = new Activity();
   const channel_id = '21421421421';
   const channel_id2 = '24145464664';
-  const user_id = 1;
-  const user_id2 = 2;
+  const user_id = '1';
+  const user_id2 = '2';
 
   beforeEach(() => {
     activity.prune();
@@ -62,5 +62,14 @@ describe('Activity', () => {
         DEFAULT_ACTIVITY_INTERVAL_MINUTES + 1
       ).length
     ).toBe(2);
+  });
+
+  it('should get activities for channel grouped by user', () => {
+    activity.add(channel_id, user_id2);
+
+    const activities =
+      activity.get_activities_for_channel_grouped_by_user(channel_id);
+
+    expect(Object.keys(activities).length).toBe(2);
   });
 });

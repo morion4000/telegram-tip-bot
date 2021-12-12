@@ -1,6 +1,9 @@
 const user = require('./../models').user;
 const Telegram = require('./../services/telegram');
-const { Activity } = require('./../services/activity');
+const {
+  Activity,
+  DEFAULT_ACTIVITY_INTERVAL_MINUTES,
+} = require('./../services/activity');
 const {
   check_public_message,
   check_and_extract_amount,
@@ -58,13 +61,13 @@ module.exports = (bot, activity) => async (msg, match) => {
       }
     );
 
-    console.log(msg.chat);
-    const activities = activity.get_activities_for_channel(msg.chat);
+    // Remove after testing
+    activity.add(msg.chat.id, msg.from.id);
 
-    if (activities.size === 0) {
+    if (activity.size === 0) {
       await telegram.send_message(
         msg.chat.id,
-        `ℹ️ No active users on the channel in the past hour.`,
+        `ℹ️ No active users on the channel in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes.`,
         Telegram.PARSE_MODE.MARKDOWN,
         true
       );
@@ -72,17 +75,19 @@ module.exports = (bot, activity) => async (msg, match) => {
       return;
     }
 
+    const activities = activity.get_activities_for_channel(msg.chat.id);
+
     await telegram.send_message(
       msg.chat.id,
       `💧 Rained *${format_number(amount)} WEBD* ($${format_number(
         amount_usd
       )}) to ${
-        activities.size
-      } users on the channel (active in the past hour).`,
+        activities.length
+      } users on the channel (active in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes).`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
-    for (const [key, value] of activities) {
+    for (const activity in activities) {
       // TODO: Implement weight?
       const user_amount = Math.floor(amount / activities.size);
       const user_amount_usd = await convert_to_usd(user_amount);
@@ -94,8 +99,8 @@ module.exports = (bot, activity) => async (msg, match) => {
       // Send telegram messages
       // Etc.
       const _found_user = find_user_by_id_or_username(
-        value.user.id,
-        value.user.username
+        activity.user_id,
+        'not_implemented_!!!'
       );
 
       if (!_found_user) {

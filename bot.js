@@ -73,6 +73,8 @@ bot.on('message', async (msg) => {
     console.log(
       `Activity (size: ${activity.size}, channels: ${activity.channels})`
     );
+
+    console.log(`Last: ${activity.last_activity}`);
   }
 
   // For debugging
