@@ -28,8 +28,6 @@ module.exports = (bot) => async (msg, match) => {
       const prize = Math.floor(round.prize + bonus);
 
       if (user) {
-        console.log(user.telegram_username);
-
         message += `\t\t▫️ ${moment(round.ended_at).format('MMMM Do')}: @${user.telegram_username} won ${format_number(
           prize
         )} WEBD (${format_number(round.winner_1_chance)}% chance) with number ${round.winner_1_ticket_number}\n`;
