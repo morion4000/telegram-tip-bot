@@ -74,7 +74,7 @@ bot.on('message', async (msg) => {
       `Activity (size: ${activity.size}, channels: ${activity.channels})`
     );
 
-    console.log(`Last: ${activity.last_activity}`);
+    console.log(`Last: ${JSON.stringify(activity.last_activity)}`);
   }
 
   // For debugging

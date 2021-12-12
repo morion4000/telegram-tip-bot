@@ -63,6 +63,7 @@ module.exports = (bot, activity) => async (msg, match) => {
 
     // Remove after testing
     activity.add(msg.chat.id, msg.from.id);
+    activity.add(msg.chat.id, '24242424242');
 
     if (activity.size === 0) {
       await telegram.send_message(
@@ -75,21 +76,22 @@ module.exports = (bot, activity) => async (msg, match) => {
       return;
     }
 
+    const grouped_activities =
+      activity.get_activities_for_channel_grouped_by_user(msg.chat.id);
     const activities = activity.get_activities_for_channel(msg.chat.id);
+    const users = Object.keys(grouped_activities).length;
 
     await telegram.send_message(
       msg.chat.id,
       `💧 Rained *${format_number(amount)} WEBD* ($${format_number(
         amount_usd
-      )}) to ${
-        activities.length
-      } users on the channel (active in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes).`,
+      )}) to ${users} users on the channel (active in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes):`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
-    for (const activity in activities) {
-      // TODO: Implement weight?
-      const user_amount = Math.floor(amount / activities.size);
+    for (const [user_id, _activities] of Object.entries(grouped_activities)) {
+      const user_percentage = (_activities.length / activities.length) * 100;
+      const user_amount = Math.floor((user_percentage * amount) / 100);
       const user_amount_usd = await convert_to_usd(user_amount);
 
       // TODO: Create service to Tip
@@ -98,8 +100,8 @@ module.exports = (bot, activity) => async (msg, match) => {
       // Insert tip in db
       // Send telegram messages
       // Etc.
-      const _found_user = find_user_by_id_or_username(
-        activity.user_id,
+      const _found_user = await find_user_by_id_or_username(
+        user_id,
         'not_implemented_!!!'
       );
 
@@ -120,16 +122,16 @@ module.exports = (bot, activity) => async (msg, match) => {
 
       await telegram.send_message(
         msg.chat.id,
-        `💰 [${
-          value.user.username
-        }](tg://user?id=${key}) was tipped *${format_number(
+        `💰 [@${
+          _found_user.telegram_username
+        }](tg://user?id=${user_id}) received *${format_number(
           user_amount
         )} WEBD* ($${format_number(user_amount_usd)})`,
         Telegram.PARSE_MODE.MARKDOWN
       );
 
       await telegram.send_message(
-        key,
+        user_id,
         `💰 You were tipped *${format_number(
           user_amount
         )} WEBD* ($${format_number(user_amount_usd)}) by @${msg.from.username}`,
