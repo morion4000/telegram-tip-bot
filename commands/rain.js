@@ -16,7 +16,7 @@ module.exports = (bot, activity) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
   try {
-    //await check_public_message(msg);
+    await check_public_message(msg);
 
     const amount = await check_and_extract_amount(msg, '/rain');
     const amount_usd = await convert_to_usd(amount);
@@ -62,8 +62,8 @@ module.exports = (bot, activity) => async (msg, match) => {
     );
 
     // Remove after testing
-    activity.add(msg.chat.id, msg.from.id);
-    activity.add(msg.chat.id, '24242424242');
+    //activity.add(msg.chat.id, msg.from.id);
+    //activity.add(msg.chat.id, '24242424242');
 
     if (activity.size === 0) {
       await telegram.send_message(
@@ -79,11 +79,12 @@ module.exports = (bot, activity) => async (msg, match) => {
     const grouped_activities =
       activity.get_activities_for_channel_grouped_by_user(msg.chat.id);
     const activities = activity.get_activities_for_channel(msg.chat.id);
+    // TODO: group_activities_by_user
     const users = Object.keys(grouped_activities).length;
 
     await telegram.send_message(
       msg.chat.id,
-      `💧 Rained *${format_number(amount)} WEBD* ($${format_number(
+      `💧 Rained *${format_number(amount)}* WEBD ($${format_number(
         amount_usd
       )}) to ${users} users on the channel (active in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes):`,
       Telegram.PARSE_MODE.MARKDOWN
@@ -98,8 +99,6 @@ module.exports = (bot, activity) => async (msg, match) => {
       // Find receiving user or create a new one
       // Substract amount
       // Insert tip in db
-      // Send telegram messages
-      // Etc.
       const _found_user = await find_user_by_id_or_username(
         user_id,
         'not_implemented_!!!'
@@ -126,7 +125,7 @@ module.exports = (bot, activity) => async (msg, match) => {
           _found_user.telegram_username
         }](tg://user?id=${user_id}) received *${format_number(
           user_amount
-        )} WEBD* ($${format_number(user_amount_usd)})`,
+        )}* WEBD ($${format_number(user_amount_usd)})`,
         Telegram.PARSE_MODE.MARKDOWN
       );
 
