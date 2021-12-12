@@ -3,8 +3,8 @@ const DEFAULT_ACTIVITY_INTERVAL_MINUTES = 60;
 class Activity {
   constructor() {
     this.activities = [];
-    this.stale_after_minutes = 60 * 6; // Do not keep activity more than 6 hours
-    this.clean_interval_ms = 30 * 60 * 1000;
+    this.stale_after_minutes = 60 * 12; // Do not keep activity more than 12 hours
+    this.clean_interval_ms = 30 * 60 * 1000; // Clean every half an hour
   }
 
   get size() {
@@ -12,7 +12,7 @@ class Activity {
   }
 
   get channels() {
-    return [...new Set(this.activities.map((a) => a.channel))].length;
+    return [...new Set(this.activities.map((a) => a.channel_id))].length;
   }
 
   get last_activity() {
@@ -20,10 +20,15 @@ class Activity {
   }
 
   watch() {
-    this.clean_interval = setInterval(
-      () => this.clean(),
-      this.clean_interval_ms
-    );
+    console.log(`[ACTIVITY] Started watching: ${this.clean_interval_ms}ms`);
+
+    this.clean_interval = setInterval(() => {
+      const old_size = this.size;
+
+      this.clean();
+
+      console.log(`[ACTIVITY] Ran clean: ${old_size} => ${this.size}`);
+    }, this.clean_interval_ms);
   }
 
   prune() {
@@ -38,35 +43,21 @@ class Activity {
     );
   }
 
-  add(channel, user, message, time = new Date()) {
+  add(channel_id, user_id, time = new Date()) {
     this.activities.push({
-      channel,
-      user,
-      message,
+      channel_id,
+      user_id,
       time,
     });
   }
 
   get_activities_for_channel(
-    channel,
+    channel_id,
     interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
   ) {
     return this.activities.filter(
       (activity) =>
-        activity.channel === channel &&
-        activity.time > new Date(Date.now() - interval_minutes * 60 * 1000)
-    );
-  }
-
-  get_activities_for_channel_and_user(
-    channel,
-    user,
-    interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
-  ) {
-    return this.activities.filter(
-      (activity) =>
-        activity.channel === channel &&
-        activity.user === user &&
+        activity.channel_id === channel_id &&
         activity.time > new Date(Date.now() - interval_minutes * 60 * 1000)
     );
   }

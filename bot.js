@@ -22,6 +22,9 @@ const bot = new TelegramBot(config.telegram.token, {
 
 const activity = new Activity();
 
+// To clear activity backlog
+activity.watch();
+
 const start_command = commands.start(bot);
 const tip_empty_command = commands.tip_empty(bot);
 const tip_command = commands.tip(bot);
@@ -65,9 +68,11 @@ bot.on('message', async (msg) => {
   if (msg.chat && msg.chat.type && msg.chat.type !== 'private') {
     //console.log(msg.chat);
 
-    //activity.add(msg.from, msg.chat);
+    activity.add(msg.chat.id, msg.from.id);
 
-    console.log(`Activity (size: ${activity.size})`);
+    console.log(
+      `Activity (size: ${activity.size}, channels: ${activity.channels})`
+    );
   }
 
   // For debugging
