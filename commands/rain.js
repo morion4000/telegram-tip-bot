@@ -155,11 +155,13 @@ module.exports = (bot, activity) => async (msg, match) => {
       // TODO: Insert tip in db
     }
 
-    await telegram.send_message(
-      msg.chat.id,
-      message.join(' ▫️ '),
-      Telegram.PARSE_MODE.MARKDOWN
-    );
+    if (message.length) {
+      await telegram.send_message(
+        msg.chat.id,
+        message.join(' ▫️ '),
+        Telegram.PARSE_MODE.MARKDOWN
+      );
+    }
   } catch (e) {
     console.error(e);
   }
