@@ -9,6 +9,7 @@
 ## Commands
 
 * __help__ - Shows the help message
+* __rain__ - Tip the users active on the channel
 * __tip__ - Tip the user with the specified amount
 * __tipbalance__ - Shows your balance
 * __wallet__ - Shows your WEBD wallet for deposits and withdrawals
