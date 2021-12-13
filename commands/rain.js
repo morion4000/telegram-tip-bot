@@ -1,9 +1,6 @@
 const user = require('./../models').user;
 const Telegram = require('./../services/telegram');
-const {
-  Activity,
-  DEFAULT_ACTIVITY_INTERVAL_MINUTES,
-} = require('./../services/activity');
+const { DEFAULT_ACTIVITY_INTERVAL_MINUTES } = require('./../services/activity');
 const {
   check_public_message,
   check_and_extract_amount,
@@ -21,7 +18,6 @@ module.exports = (bot, activity) => async (msg, match) => {
     const amount = await check_and_extract_amount(msg, '/rain');
     const amount_usd = await convert_to_usd(amount);
     const telegram = new Telegram();
-    const activity = new Activity();
 
     const found_user = await find_user_by_id_or_username(
       msg.from.id,
