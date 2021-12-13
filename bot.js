@@ -71,7 +71,7 @@ bot.on('message', async (msg) => {
     activity.add(msg.chat.id, msg.from.id, msg.from.username);
 
     console.log(
-      `Activity (size: ${activity.size}, channels: ${activity.channels})`
+      `[ACTIVITY] New event (size: ${activity.size}, channels: ${activity.channels})`
     );
   }
 
