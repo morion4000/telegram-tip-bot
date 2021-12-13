@@ -43,10 +43,11 @@ class Activity {
     );
   }
 
-  add(channel_id, user_id, time = new Date()) {
+  add(channel_id, user_id, user_name, time = new Date()) {
     this.activities.push({
       channel_id,
       user_id,
+      user_name,
       time,
     });
   }

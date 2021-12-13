@@ -6,6 +6,7 @@ describe('Activity', () => {
   const channel_id2 = '24145464664';
   const user_id = '1';
   const user_id2 = '2';
+  const user_name = 'test';
 
   beforeEach(() => {
     activity.prune();
@@ -37,6 +38,7 @@ describe('Activity', () => {
     activity.add(
       channel_id,
       user_id,
+      user_name,
       new Date(Date.now() - activity.stale_after_minutes * 60 * 1000)
     );
 
@@ -48,10 +50,11 @@ describe('Activity', () => {
   });
 
   it('should get activities for channel', () => {
-    activity.add(channel_id2, user_id);
+    activity.add(channel_id2, user_id, user_name);
     activity.add(
       channel_id,
       user_id,
+      user_name,
       new Date(Date.now() - DEFAULT_ACTIVITY_INTERVAL_MINUTES * 60 * 1000)
     );
 
@@ -82,7 +85,7 @@ describe('Activity', () => {
   });
 
   it('should get activities for channel grouped by user', () => {
-    activity.add(channel_id, user_id2);
+    activity.add(channel_id, user_id2, user_name);
 
     const activities =
       activity.get_activities_for_channel_grouped_by_user(channel_id);

@@ -68,7 +68,7 @@ bot.on('message', async (msg) => {
   if (msg.chat && msg.chat.type && msg.chat.type !== 'private') {
     //console.log(msg.chat);
 
-    activity.add(msg.chat.id, msg.from.id);
+    activity.add(msg.chat.id, msg.from.id, msg.from.username);
 
     console.log(
       `Activity (size: ${activity.size}, channels: ${activity.channels})`

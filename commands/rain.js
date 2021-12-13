@@ -1,6 +1,7 @@
 const user = require('./../models').user;
 const Telegram = require('./../services/telegram');
 const { DEFAULT_ACTIVITY_INTERVAL_MINUTES } = require('./../services/activity');
+const config = require('./../config');
 const {
   check_public_message,
   check_and_extract_amount,
@@ -18,6 +19,7 @@ module.exports = (bot, activity) => async (msg, match) => {
     const amount = await check_and_extract_amount(msg, '/rain');
     const amount_usd = await convert_to_usd(amount);
     const telegram = new Telegram();
+    let message = [];
 
     const found_user = await find_user_by_id_or_username(
       msg.from.id,
@@ -45,24 +47,18 @@ module.exports = (bot, activity) => async (msg, match) => {
     }
 
     // Testing
-    //activity.add(msg.chat.id, msg.from.id);
-    //activity.add(msg.chat.id, '12222');
+    // activity.add(msg.chat.id, msg.from.id, msg.from.username);
+    // activity.add(msg.chat.id, '12222', 'testing123455');
 
     const grouped_activities =
-      activity.get_activities_for_channel_grouped_by_user(
-        msg.chat.id,
-        msg.from.id
-      );
-    const activities = activity.get_activities_for_channel(
-      msg.chat.id,
-      msg.from.id
-    );
+      activity.get_activities_for_channel_grouped_by_user(msg.chat.id);
+    const activities = activity.get_activities_for_channel(msg.chat.id);
     const users = Object.keys(grouped_activities).length;
 
     if (activities.length === 0) {
       await telegram.send_message(
         msg.chat.id,
-        `ℹ️ No active users on the channel in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes.`,
+        `ℹ️ No active users on the channel in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes.`,
         Telegram.PARSE_MODE.MARKDOWN
       );
 
@@ -82,9 +78,11 @@ module.exports = (bot, activity) => async (msg, match) => {
 
     await telegram.send_message(
       msg.chat.id,
-      `💧 Rained *${format_number(amount)}* WEBD ($${format_number(
+      `💧 @${msg.from.username} rained *${format_number(
+        amount
+      )}* WEBD ($${format_number(
         amount_usd
-      )}) to ${users} users on the channel (active in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes).`,
+      )}) to *${users}* users on the channel (active in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes).`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
@@ -95,12 +93,23 @@ module.exports = (bot, activity) => async (msg, match) => {
         (user_activities.length / activities.length) * 100;
       const user_amount = Math.floor((user_percentage * amount) / 100);
       const user_amount_usd = await convert_to_usd(user_amount);
+      const user_name = user_activities.length
+        ? user_activities[0].user_name
+        : null;
+      const user_display_name = user_name || user_id;
 
-      // TODO: Find receiving user or create a new one
-      const _found_user = await find_user_by_id_or_username(
-        user_id,
-        'not_implemented_!!!'
-      );
+      const find_or_create = await user.model.findOrCreate({
+        where: {
+          telegram_id: user_id,
+        },
+        defaults: {
+          telegram_id: user_id,
+          telegram_username: user_name,
+          balance: config.initial_balance,
+        },
+      });
+
+      const _found_user = find_or_create.length ? find_or_create[0] : null;
 
       if (!_found_user) {
         continue;
@@ -117,29 +126,40 @@ module.exports = (bot, activity) => async (msg, match) => {
         }
       );
 
-      await telegram.send_message(
-        msg.chat.id,
-        `💰 @${_found_user.telegram_username} received ${format_number(
+      // await telegram.send_message(
+      //   msg.chat.id,
+      //   `💰 [@${user_display_name}](tg://user?id=${user_id}) received *${format_number(
+      //     user_amount
+      //   )}* WEBD ($${format_number(user_amount_usd)})`,
+      //   Telegram.PARSE_MODE.MARKDOWN
+      // );
+
+      message.push(
+        `[@${user_display_name}](tg://user?id=${user_id}) got *${format_number(
           user_amount
-        )} WEBD ($${format_number(user_amount_usd)})`,
-        Telegram.PARSE_MODE.HTML
+        )}* WEBD`
       );
+
+      const private_message = `💰 You were tipped *${format_number(
+        user_amount
+      )}* WEBD ($${format_number(user_amount_usd)}) by @${msg.from.username}`;
 
       // Call will likely fail for users that blocked the bot
       telegram
-        .send_message(
-          user_id,
-          `💰 You were tipped *${format_number(
-            user_amount
-          )} WEBD* ($${format_number(user_amount_usd)}) by @${
-            msg.from.username
-          }`,
-          Telegram.PARSE_MODE.MARKDOWN
-        )
-        .catch(console.error);
+        .send_message(user_id, private_message, Telegram.PARSE_MODE.MARKDOWN)
+        .catch((error) => {
+          console.debug(private_message);
+          console.error(error);
+        });
 
       // TODO: Insert tip in db
     }
+
+    await telegram.send_message(
+      msg.chat.id,
+      message.join(' ▫️ '),
+      Telegram.PARSE_MODE.MARKDOWN
+    );
   } catch (e) {
     console.error(e);
   }
