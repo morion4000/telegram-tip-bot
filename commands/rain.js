@@ -32,8 +32,7 @@ module.exports = (bot, activity) => async (msg, match) => {
       await telegram.send_message(
         msg.chat.id,
         'ℹ️ Your user can not be found. Create a new acount /start',
-        Telegram.PARSE_MODE.HTML,
-        true
+        Telegram.PARSE_MODE.HTML
       );
 
       throw new Error('User not found');
@@ -43,11 +42,35 @@ module.exports = (bot, activity) => async (msg, match) => {
       await telegram.send_message(
         msg.chat.id,
         `ℹ️ You don't have enough /tipbalance to rain ${amount}.`,
-        Telegram.PARSE_MODE.HTML,
-        true
+        Telegram.PARSE_MODE.HTML
       );
 
       throw new Error('Not enough balance');
+    }
+
+    // Testing
+    //activity.add(msg.chat.id, msg.from.id);
+    //activity.add(msg.chat.id, '12222');
+
+    const grouped_activities =
+      activity.get_activities_for_channel_grouped_by_user(
+        msg.chat.id,
+        msg.from.id
+      );
+    const activities = activity.get_activities_for_channel(
+      msg.chat.id,
+      msg.from.id
+    );
+    const users = Object.keys(grouped_activities).length;
+
+    if (activities.length === 0) {
+      await telegram.send_message(
+        msg.chat.id,
+        `ℹ️ No active users on the channel in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes.`,
+        Telegram.PARSE_MODE.MARKDOWN
+      );
+
+      return;
     }
 
     await user.model.update(
@@ -61,44 +84,23 @@ module.exports = (bot, activity) => async (msg, match) => {
       }
     );
 
-    // Remove after testing
-    //activity.add(msg.chat.id, msg.from.id);
-    //activity.add(msg.chat.id, '24242424242');
-
-    if (activity.size === 0) {
-      await telegram.send_message(
-        msg.chat.id,
-        `ℹ️ No active users on the channel in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes.`,
-        Telegram.PARSE_MODE.MARKDOWN,
-        true
-      );
-
-      return;
-    }
-
-    const grouped_activities =
-      activity.get_activities_for_channel_grouped_by_user(msg.chat.id);
-    const activities = activity.get_activities_for_channel(msg.chat.id);
-    // TODO: group_activities_by_user
-    const users = Object.keys(grouped_activities).length;
-
     await telegram.send_message(
       msg.chat.id,
       `💧 Rained *${format_number(amount)}* WEBD ($${format_number(
         amount_usd
-      )}) to ${users} users on the channel (active in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes):`,
+      )}) to ${users} users on the channel (active in the past ${DEFAULT_ACTIVITY_INTERVAL_MINUTES} minutes).`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
-    for (const [user_id, _activities] of Object.entries(grouped_activities)) {
-      const user_percentage = (_activities.length / activities.length) * 100;
+    for (const [user_id, user_activities] of Object.entries(
+      grouped_activities
+    )) {
+      const user_percentage =
+        (user_activities.length / activities.length) * 100;
       const user_amount = Math.floor((user_percentage * amount) / 100);
       const user_amount_usd = await convert_to_usd(user_amount);
 
-      // TODO: Create service to Tip
-      // Find receiving user or create a new one
-      // Substract amount
-      // Insert tip in db
+      // TODO: Find receiving user or create a new one
       const _found_user = await find_user_by_id_or_username(
         user_id,
         'not_implemented_!!!'
@@ -121,21 +123,26 @@ module.exports = (bot, activity) => async (msg, match) => {
 
       await telegram.send_message(
         msg.chat.id,
-        `💰 [@${
-          _found_user.telegram_username
-        }](tg://user?id=${user_id}) received *${format_number(
+        `💰 @${_found_user.telegram_username} received ${format_number(
           user_amount
-        )}* WEBD ($${format_number(user_amount_usd)})`,
-        Telegram.PARSE_MODE.MARKDOWN
+        )} WEBD ($${format_number(user_amount_usd)})`,
+        Telegram.PARSE_MODE.HTML
       );
 
-      await telegram.send_message(
-        user_id,
-        `💰 You were tipped *${format_number(
-          user_amount
-        )} WEBD* ($${format_number(user_amount_usd)}) by @${msg.from.username}`,
-        Telegram.PARSE_MODE.MARKDOWN
-      );
+      // Call will likely fail for users that blocked the bot
+      telegram
+        .send_message(
+          user_id,
+          `💰 You were tipped *${format_number(
+            user_amount
+          )} WEBD* ($${format_number(user_amount_usd)}) by @${
+            msg.from.username
+          }`,
+          Telegram.PARSE_MODE.MARKDOWN
+        )
+        .catch(console.error);
+
+      // TODO: Insert tip in db
     }
   } catch (e) {
     console.error(e);

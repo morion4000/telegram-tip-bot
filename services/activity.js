@@ -53,31 +53,35 @@ class Activity {
 
   get_activities_for_channel(
     channel_id,
+    exclude_user_id = null,
     interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
   ) {
     return this.activities.filter(
       (activity) =>
         activity.channel_id === channel_id &&
+        activity.user_id !== exclude_user_id &&
         activity.time > new Date(Date.now() - interval_minutes * 60 * 1000)
     );
   }
 
   get_activities_for_channel_grouped_by_user(
     channel_id,
+    exclude_user_id = null,
     interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
   ) {
-    return this.get_activities_for_channel(channel_id, interval_minutes).reduce(
-      (acc, activity) => {
-        if (!acc[activity.user_id]) {
-          acc[activity.user_id] = [];
-        }
+    return this.get_activities_for_channel(
+      channel_id,
+      exclude_user_id,
+      interval_minutes
+    ).reduce((acc, activity) => {
+      if (!acc[activity.user_id]) {
+        acc[activity.user_id] = [];
+      }
 
-        acc[activity.user_id].push(activity);
+      acc[activity.user_id].push(activity);
 
-        return acc;
-      },
-      {}
-    );
+      return acc;
+    }, {});
   }
 }
 

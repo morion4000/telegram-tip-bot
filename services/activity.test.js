@@ -59,9 +59,26 @@ describe('Activity', () => {
     expect(
       activity.get_activities_for_channel(
         channel_id,
+        null,
         DEFAULT_ACTIVITY_INTERVAL_MINUTES + 1
       ).length
     ).toBe(2);
+
+    expect(
+      activity.get_activities_for_channel(
+        channel_id,
+        user_id2,
+        DEFAULT_ACTIVITY_INTERVAL_MINUTES + 1
+      ).length
+    ).toBe(2);
+
+    expect(
+      activity.get_activities_for_channel(
+        channel_id,
+        user_id,
+        DEFAULT_ACTIVITY_INTERVAL_MINUTES + 1
+      ).length
+    ).toBe(0);
   });
 
   it('should get activities for channel grouped by user', () => {
