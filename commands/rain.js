@@ -144,7 +144,9 @@ module.exports = (bot, activity) => async (msg, match) => {
 
       const private_message = `💰 You were tipped *${format_number(
         user_amount
-      )}* WEBD ($${format_number(user_amount_usd)}) by @${msg.from.username}`;
+      )}* WEBD ($${format_number(user_amount_usd)}) by [@${
+        msg.from.username
+      }](tg://user?id=${msg.from.id})`;
 
       // Call will likely fail for users that blocked the bot
       telegram
