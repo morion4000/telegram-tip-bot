@@ -26,6 +26,16 @@ module.exports = (bot, activity) => async (msg, match) => {
       msg.from.username
     );
 
+    if (!amount) {
+      await telegram.send_message(
+        msg.chat.id,
+        'ℹ️ Amount must be at least 1',
+        Telegram.PARSE_MODE.HTML
+      );
+
+      throw new Error('Amount is 0');
+    }
+
     if (!found_user) {
       await telegram.send_message(
         msg.chat.id,
@@ -51,14 +61,20 @@ module.exports = (bot, activity) => async (msg, match) => {
     // activity.add(msg.chat.id, '12222', 'testing123455');
 
     const grouped_activities =
-      activity.get_activities_for_channel_grouped_by_user(msg.chat.id);
-    const activities = activity.get_activities_for_channel(msg.chat.id);
+      activity.get_activities_for_channel_grouped_by_user(
+        msg.chat.id,
+        msg.from.id
+      );
+    const activities = activity.get_activities_for_channel(
+      msg.chat.id,
+      msg.from.id
+    );
     const users = Object.keys(grouped_activities).length;
 
     if (activities.length === 0) {
       await telegram.send_message(
         msg.chat.id,
-        `ℹ️ No active users on the channel in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes.`,
+        `ℹ️ No active users on the channel in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes or bot doesn't have access to messages.`,
         Telegram.PARSE_MODE.MARKDOWN
       );
 
@@ -93,7 +109,7 @@ module.exports = (bot, activity) => async (msg, match) => {
     )) {
       const user_percentage =
         (user_activities.length / activities.length) * 100;
-      const user_amount = Math.floor((user_percentage * amount) / 100);
+      const user_amount = Math.floor((user_percentage * amount) / 100) || 1;
       const user_amount_usd = await convert_to_usd(user_amount);
       const user_name = user_activities.length
         ? user_activities[0].user_name
