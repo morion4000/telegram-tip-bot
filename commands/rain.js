@@ -92,17 +92,15 @@ module.exports = (bot, activity) => async (msg, match) => {
       }
     );
 
-    telegram
-      .send_message(
-        msg.chat.id,
-        `💧 [@${msg.from.username}](tg://user?id=${
-          msg.from.id
-        }) rained *${format_number(amount)}* WEBD ($${format_number(
-          amount_usd
-        )}) to *${users}* users on the channel (active in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes).`,
-        Telegram.PARSE_MODE.MARKDOWN
-      )
-      .catch(console.error);
+    await telegram.send_message(
+      msg.chat.id,
+      `💧 [@${msg.from.username}](tg://user?id=${
+        msg.from.id
+      }) rained *${format_number(amount)}* WEBD ($${format_number(
+        amount_usd
+      )}) to *${users}* users on the channel (active in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes).`,
+      Telegram.PARSE_MODE.MARKDOWN
+    );
 
     for (const [user_id, user_activities] of Object.entries(
       grouped_activities
