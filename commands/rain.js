@@ -94,7 +94,7 @@ module.exports = (bot, activity) => async (msg, match) => {
 
     await telegram.send_message(
       msg.chat.id,
-      `💧 [@${msg.from.username}](tg://user?id=${
+      `💦 [@${msg.from.username}](tg://user?id=${
         msg.from.id
       }) rained *${format_number(amount)}* WEBD ($${format_number(
         amount_usd
