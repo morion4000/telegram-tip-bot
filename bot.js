@@ -105,6 +105,7 @@ bot.onText(/\/tip@webdollar_tip_bot @\w+  \$\w+$/, tip_command);
 
 bot.onText(/\/rain$/, rain_command);
 bot.onText(/\/rain [0-9]+$/, rain_command);
+bot.onText(/\/rain [0-9]+ [0-9]+$/, rain_command);
 bot.onText(/\/start$/, start_command);
 bot.onText(/\/tipbalance$/, balance_command);
 bot.onText(/\/deposit$/, deposit_command);
@@ -144,6 +145,7 @@ bot.onText(/\/lotteryhistory$/, lotteryhistory_command);
 
 bot.onText(/\/rain@webdollar_tip_bot$/, rain_command);
 bot.onText(/\/rain@webdollar_tip_bot [0-9]+$/, rain_command);
+bot.onText(/\/rain@webdollar_tip_bot [0-9]+ [0-9]+$/, rain_command);
 bot.onText(/\/start@webdollar_tip_bot$/, start_command);
 bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
 bot.onText(/\/deposit@webdollar_tip_bot$/, deposit_command);

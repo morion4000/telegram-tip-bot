@@ -4,6 +4,7 @@ const { DEFAULT_ACTIVITY_INTERVAL_MINUTES } = require('./../services/activity');
 const config = require('./../config');
 const {
   check_public_message,
+  extract_amount,
   check_and_extract_amount,
   format_number,
   find_user_by_id_or_username,
@@ -18,6 +19,10 @@ module.exports = (bot, activity) => async (msg, match) => {
 
     const amount = await check_and_extract_amount(msg, '/rain');
     const amount_usd = await convert_to_usd(amount);
+    const duration = extract_amount(msg, 1);
+    const duration_minutes = duration
+      ? duration * 60
+      : DEFAULT_ACTIVITY_INTERVAL_MINUTES;
     const telegram = new Telegram();
     let message = [];
 
@@ -26,14 +31,24 @@ module.exports = (bot, activity) => async (msg, match) => {
       msg.from.username
     );
 
-    if (!amount) {
+    if (duration > 12) {
       await telegram.send_message(
         msg.chat.id,
-        'ℹ️ Amount must be at least 1',
+        'ℹ️ Duration cannot exceed 12 hours',
         Telegram.PARSE_MODE.HTML
       );
 
-      throw new Error('Amount is 0');
+      throw new Error('Amount less than 10');
+    }
+
+    if (amount < 10) {
+      await telegram.send_message(
+        msg.chat.id,
+        'ℹ️ Amount must be at least 10 WEBD',
+        Telegram.PARSE_MODE.HTML
+      );
+
+      throw new Error('Amount less than 10');
     }
 
     if (!found_user) {
@@ -63,18 +78,22 @@ module.exports = (bot, activity) => async (msg, match) => {
     const grouped_activities =
       activity.get_activities_for_channel_grouped_by_user(
         msg.chat.id,
-        msg.from.id
+        msg.from.id,
+        duration_minutes
       );
     const activities = activity.get_activities_for_channel(
       msg.chat.id,
-      msg.from.id
+      msg.from.id,
+      duration_minutes
     );
     const users = Object.keys(grouped_activities).length;
 
     if (activities.length === 0) {
       await telegram.send_message(
         msg.chat.id,
-        `ℹ️ No active users on the channel in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes or bot doesn't have access to messages.`,
+        `ℹ️ No active users on the channel in the past *${
+          duration_minutes / 60
+        }* hours or bot doesn't have access to messages.`,
         Telegram.PARSE_MODE.MARKDOWN
       );
 
@@ -98,7 +117,9 @@ module.exports = (bot, activity) => async (msg, match) => {
         msg.from.id
       }) rained *${format_number(amount)}* WEBD ($${format_number(
         amount_usd
-      )}) to *${users}* users on the channel (active in the past *${DEFAULT_ACTIVITY_INTERVAL_MINUTES}* minutes).`,
+      )}) to *${users}* users on the channel (active in the past *${
+        duration_minutes / 60
+      }* hours).`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
@@ -167,7 +188,7 @@ module.exports = (bot, activity) => async (msg, match) => {
         .send_message(user_id, private_message, Telegram.PARSE_MODE.MARKDOWN)
         .catch((error) => {
           console.debug(private_message);
-          console.error(error);
+          console.error(error.message);
         });
 
       // TODO: Insert tip in db
@@ -182,7 +203,7 @@ module.exports = (bot, activity) => async (msg, match) => {
         )
         .catch((error) => {
           console.debug(JSON.stringify(message));
-          console.error(error);
+          console.error(error.message);
         });
     }
   } catch (e) {

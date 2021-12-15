@@ -158,14 +158,14 @@ async function check_telegram_username(msg) {
   }
 }
 
-async function extract_amount(msg) {
-  const amount_match = msg.text.match(/ [0-9]+/);
+function extract_amount(msg, index = 0) {
+  const amount_match = msg.text.match(/ [0-9]+/g);
 
   if (amount_match === null) {
     return null;
   }
 
-  let amount = amount_match[0];
+  let amount = amount_match.length >= index ? amount_match[index] : null;
 
   if (_.isString(amount)) {
     amount = amount.trim();
@@ -178,7 +178,7 @@ async function extract_amount(msg) {
 
 async function check_and_extract_amount(msg, extra_msg) {
   const telegram = new Telegram();
-  const amount = await extract_amount(msg);
+  const amount = extract_amount(msg);
   let message = 'ℹ️ You need to specify the amount.';
 
   // TODO: Check this logic
