@@ -119,7 +119,7 @@ module.exports = (bot, activity) => async (msg, match) => {
         amount_usd
       )}) to *${users}* users active in the past *${
         duration_minutes / 60
-      }* hours.`,
+      }* hour(s).`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
