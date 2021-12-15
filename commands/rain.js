@@ -117,9 +117,9 @@ module.exports = (bot, activity) => async (msg, match) => {
         msg.from.id
       }) rained *${format_number(amount)}* WEBD ($${format_number(
         amount_usd
-      )}) to *${users}* users on the channel (active in the past *${
+      )}) to *${users}* users active in the past *${
         duration_minutes / 60
-      }* hours).`,
+      }* hours.`,
       Telegram.PARSE_MODE.MARKDOWN
     );
 
