@@ -41,14 +41,14 @@ module.exports = (bot, activity) => async (msg, match) => {
       throw new Error('Amount less than 10');
     }
 
-    if (amount < 10) {
+    if (amount < 100) {
       await telegram.send_message(
         msg.chat.id,
-        'ℹ️ Amount must be at least 10 WEBD',
+        'ℹ️ Amount must be at least 100 WEBD',
         Telegram.PARSE_MODE.HTML
       );
 
-      throw new Error('Amount less than 10');
+      throw new Error('Amount less than 100');
     }
 
     if (!found_user) {
