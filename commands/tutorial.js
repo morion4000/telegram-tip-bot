@@ -1,3 +1,5 @@
+var config = require('./../config');
+
 var Command = function (bot) {
   return async function (msg, match) {
     var resp = '';
