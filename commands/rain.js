@@ -24,7 +24,7 @@ module.exports = (bot, activity) => async (msg, match) => {
       ? duration * 60
       : DEFAULT_ACTIVITY_INTERVAL_MINUTES;
     const telegram = new Telegram();
-    let message = [];
+    let rewards = [];
 
     const found_user = await find_user_by_id_or_username(
       msg.from.id,
@@ -171,11 +171,12 @@ module.exports = (bot, activity) => async (msg, match) => {
       //   Telegram.PARSE_MODE.MARKDOWN
       // );
 
-      message.push(
-        `[@${user_display_name}](tg://user?id=${user_id}) got *${format_number(
+      rewards.push({
+        amount: user_amount,
+        message: `[@${user_display_name}](tg://user?id=${user_id}) got *${format_number(
           user_amount
-        )}* WEBD`
-      );
+        )}* WEBD`,
+      });
 
       const private_message = `💦 You were rained *${format_number(
         user_amount
@@ -194,11 +195,14 @@ module.exports = (bot, activity) => async (msg, match) => {
       // TODO: Insert tip in db
     }
 
-    if (message.length) {
+    if (rewards.length) {
       telegram
         .send_message(
           msg.chat.id,
-          message.join(' ▫️ '),
+          rewards
+            .sort((r) => r.amount)
+            .map((r) => r.message)
+            .join(' ▫️ '),
           Telegram.PARSE_MODE.MARKDOWN
         )
         .catch((error) => {
