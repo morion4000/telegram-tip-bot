@@ -71,7 +71,7 @@ exports.handler = async function (event) {
 
       await bot.sendMessage(
         config.admin.telegram_chat_id,
-        `💵 New purchase: @${user.telegram_username} purchased *${numeral(
+        `💵 New purchase: ${user.telegram_username} purchased *${numeral(
           transaction.amount
         ).format('0,0')}* WEBD`,
         {
