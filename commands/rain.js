@@ -76,7 +76,7 @@ module.exports = (bot, activity) => async (msg, match) => {
     // activity.add(msg.chat.id, '12222', 'testing123455');
     // activity.add(msg.chat.id, '12221', 'testing123453');
     // activity.add(msg.chat.id, '12221', 'testing123453');
- 
+
     const grouped_activities =
       activity.get_activities_for_channel_grouped_by_user(
         msg.chat.id,
@@ -202,7 +202,8 @@ module.exports = (bot, activity) => async (msg, match) => {
         .send_message(
           msg.chat.id,
           rewards
-            .sort((r) => r.amount)
+            .sort((a, b) => a.amount - b.amount)
+            .reverse()
             .map((r) => r.message)
             .join(' ▫️ '),
           Telegram.PARSE_MODE.MARKDOWN
