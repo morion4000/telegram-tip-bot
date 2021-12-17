@@ -63,15 +63,15 @@ module.exports = {
   topup: {
     package1: {
       webd: 10000,
-      usd: 10,
+      usd: 6,
     },
     package2: {
       webd: 10000,
-      usd: 10,
+      usd: 6,
     },
     package3: {
       webd: 10000,
-      usd: 10,
+      usd: 6,
     },
   },
   blockchain: {
