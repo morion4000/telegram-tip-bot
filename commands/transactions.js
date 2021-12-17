@@ -1,5 +1,6 @@
 var user = require('./../models').user,
   transaction = require('./../models').transaction,
+  config = require('./../config'),
   numeral = require('numeral'),
   moment = require('moment'),
   Sequelize = require('sequelize');
