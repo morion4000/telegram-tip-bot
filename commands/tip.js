@@ -22,15 +22,17 @@ var Command = function (bot) {
         return;
       }
 
-      if (msg.text.indexOf('beer') !== -1) {
-        var beer_price = parseInt(1 / config.webd_price_usd);
-        amount_match = [beer_price];
-      } else if (msg.text.indexOf('block') !== -1) {
-        amount_match = [6000];
-      } else if (msg.text.indexOf('banana') !== -1) {
-        var banana_price = parseInt(0.1 / config.webd_price_usd);
-        amount_match = [banana_price];
-      }
+      // TODO: Revisit this code
+      // BUG: if `/tip @blockuser 10`, the user will receive 6000 WEBD
+      // if (msg.text.indexOf('beer') !== -1) {
+      //   var beer_price = parseInt(1 / config.webd_price_usd);
+      //   amount_match = [beer_price];
+      // } else if (msg.text.indexOf('block') !== -1) {
+      //   amount_match = [6000];
+      // } else if (msg.text.indexOf('banana') !== -1) {
+      //   var banana_price = parseInt(0.1 / config.webd_price_usd);
+      //   amount_match = [banana_price];
+      // }
 
       if (user_match === null || amount_match === null) {
         resp =
