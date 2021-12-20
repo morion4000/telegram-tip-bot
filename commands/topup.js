@@ -45,8 +45,8 @@ var Command = function (bot) {
         resp =
           '<u><b>Available packages</b></u>\n\n' +
           `\t 💰 ${package1_webd} WEBD - 💵 ${config.topup.package1.usd} USD\n` +
-          //`\t 💰 ${package2_webd} WEBD - 💵 ${config.topup.package2.usd} USD\n` +
-          //`\t 💰 ${package3_webd} WEBD - 💵 ${config.topup.package3.usd} USD\n` +
+          `\t 💰 ${package2_webd} WEBD - 💵 ${config.topup.package2.usd} USD\n` +
+          `\t 💰 ${package3_webd} WEBD - 💵 ${config.topup.package3.usd} USD\n` +
           '\n' +
           '▫️ <i>The amount is going to be credited to your /tipbalance after you complete the payment</i>\n' +
           '▫️ <i>Prices displayed include a comission and are subjected to change without notice</i>\n' +
@@ -64,14 +64,14 @@ var Command = function (bot) {
                   text: `Buy ${package1_webd} WEBD`,
                   url: `${url}&amount=${config.topup.package1.webd}&price=${config.topup.package1.usd}`,
                 },
-                //                 {
-                //                   text: `Buy ${package2_webd} WEBD`,
-                //                   url: `${url}&amount=${config.topup.package2.webd}&price=${config.topup.package2.usd}`,
-                //                 },
-                //                 {
-                //                   text: `Buy ${package3_webd} WEBD`,
-                //                   url: `${url}&amount=${config.topup.package3.webd}&price=${config.topup.package3.usd}`,
-                //                 },
+                {
+                  text: `Buy ${package2_webd} WEBD`,
+                  url: `${url}&amount=${config.topup.package2.webd}&price=${config.topup.package2.usd}`,
+                },
+                {
+                  text: `Buy ${package3_webd} WEBD`,
+                  url: `${url}&amount=${config.topup.package3.webd}&price=${config.topup.package3.usd}`,
+                },
               ],
             ],
           },

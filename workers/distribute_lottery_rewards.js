@@ -35,7 +35,10 @@ exports.handler = async function (event) {
     hash
   );
 
-  const winner_user = await lottery.get_winner_user_for_round(winner_ticket_number, round);
+  const winner_user = await lottery.get_winner_user_for_round(
+    winner_ticket_number,
+    round
+  );
   const winner_tickets_number =
     await lottery.calculate_tickets_number_for_user_and_round(
       winner_user,
@@ -47,7 +50,7 @@ exports.handler = async function (event) {
   console.log(`Winner user id: ${winner_user.id}`);
 
   const participants = await lottery.get_participants();
-  const prize = round.prize + bonus;
+  const prize = Math.floor(round.prize + bonus);
   const prize_usd = await convert_to_usd(prize);
 
   for (const participant of participants) {
@@ -57,9 +60,11 @@ exports.handler = async function (event) {
         `🎲 Weekly round finished. Winning ticket number is *${winner_ticket_number}* ([block](${webdchain.get_block_url_by_hash(
           hash
         )})).\n\n` +
-          `💵 Prize of ${format_number(prize)} WEBD ($${format_number(
+          `💵 Prize of *${format_number(prize)}* WEBD ($${format_number(
             prize_usd
-          )}) was won by @${winner_user.telegram_username}.`,
+          )}) was won by [@${winner_user.telegram_username}](tg://user?id=${
+            winner_user.telegram_id
+          }).`,
         Telegram.PARSE_MODE.MARKDOWN
       )
       .catch(console.error);
