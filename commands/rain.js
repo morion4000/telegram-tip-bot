@@ -137,7 +137,9 @@ module.exports = (bot, activity) => async (msg, match) => {
         (acc, cur) => acc + cur.message_size,
         0
       );
-      const user_percentage = (user_score / total_score) * 100;
+      //const user_percentage = (user_score / total_score) * 100;
+      const user_percentage =
+        (user_activities.length / activities.length) * 100;
       const user_amount = Math.floor((user_percentage * amount) / 100) || 1;
       const user_amount_usd = await convert_to_usd(user_amount);
       const user_name = user_activities.length
