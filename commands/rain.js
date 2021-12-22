@@ -16,7 +16,7 @@ module.exports = (bot, activity) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
   try {
-    await check_public_message(msg);
+    // await check_public_message(msg);
 
     const amount = await check_and_extract_amount(msg, '/rain');
     const amount_usd = await convert_to_usd(amount);
@@ -73,10 +73,10 @@ module.exports = (bot, activity) => async (msg, match) => {
     }
 
     // Testing
-    // activity.add(msg.chat.id, msg.from.id, msg.from.username);
-    // activity.add(msg.chat.id, '12221', 'testing123453');
-    // activity.add(msg.chat.id, '12221', 'testing123453');
-    // activity.add(msg.chat.id, '12222', 'testing123455');
+    activity.add(msg.chat.id, msg.from.id, msg.from.username, 1);
+    activity.add(msg.chat.id, '12221', 'testing123453', 3);
+    activity.add(msg.chat.id, '12221', 'testing123453', 5);
+    activity.add(msg.chat.id, '12222', 'testing123455', 7);
 
     const grouped_activities =
       activity.get_activities_for_channel_grouped_by_user(
@@ -90,6 +90,10 @@ module.exports = (bot, activity) => async (msg, match) => {
       duration_minutes
     );
     const users = Object.keys(grouped_activities).length;
+    const total_score = activities.reduce(
+      (acc, cur) => acc + cur.message_size,
+      0
+    );
 
     if (activities.length === 0) {
       await telegram.send_message(
@@ -129,8 +133,11 @@ module.exports = (bot, activity) => async (msg, match) => {
     for (const [user_id, user_activities] of Object.entries(
       grouped_activities
     )) {
-      const user_percentage =
-        (user_activities.length / activities.length) * 100;
+      const user_score = user_activities.reduce(
+        (acc, cur) => acc + cur.message_size,
+        0
+      );
+      const user_percentage = (user_score / total_score) * 100;
       const user_amount = Math.floor((user_percentage * amount) / 100) || 1;
       const user_amount_usd = await convert_to_usd(user_amount);
       const user_name = user_activities.length
