@@ -22,7 +22,7 @@ var Command = function (bot) {
 
       if (msg.chat.type !== 'private') {
         resp =
-          'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
+          'Private command. Please message @webdollar_tip_bot to use the command.';
 
         return bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',

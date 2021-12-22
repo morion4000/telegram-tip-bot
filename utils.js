@@ -141,7 +141,7 @@ async function check_private_message(msg) {
   ) {
     await telegram.send_message(
       msg.chat.id,
-      'ℹ️ Private command. Please DM the bot: @webdollar_tip_bot to use the command.',
+      'ℹ️ Private command. Please message @webdollar_tip_bot to use the command.',
       Telegram.PARSE_MODE.HTML,
       true
     );

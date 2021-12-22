@@ -25,7 +25,7 @@ var Command = function (bot) {
         !config.public_channels.includes(msg.chat.id)
       ) {
         resp =
-          'Private command. Please DM the bot: @webdollar_tip_bot to use the command.';
+          'Private command. Please message @webdollar_tip_bot to use the command.';
 
         bot.sendMessage(msg.chat.id, resp, {
           //parse_mode: 'Markdown',
