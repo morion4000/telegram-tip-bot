@@ -71,7 +71,7 @@ exports.handler = async function (event) {
 
       const { tickets, price } = await lottery.buy_tickets(
         user,
-        user.balance_lottery
+        bonus_lottery
       );
 
       await transaction_model.update(
