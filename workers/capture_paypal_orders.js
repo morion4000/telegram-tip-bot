@@ -100,7 +100,7 @@ exports.handler = async function (event) {
           user.telegram_id,
           `🎁 You received ${format_number(
             tickets
-          )} /lotterytickets as a bonus (${format_number(
+          )} /lotterytickets as a bonus for your purchase (${format_number(
             price
           )} WEBD / ticket).`
         )
