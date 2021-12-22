@@ -22,16 +22,18 @@ var Command = function (bot) {
 
       if (amount_match === null) {
         resp =
-          '1,000,000 WEBD ➡️ **$' +
+          '*1,000,000* WEBD ➡️ $*' +
           parseInt(webdollar.price_usd * 1000000) +
-          '**\n\n';
+          '*\n\n';
         resp += '▫️ USD: ' + webdollar.price_usd.toFixed(10) + '\n';
         resp += '▫️ BTC: ' + webdollar.price_btc.toFixed(10) + '\n';
         resp += '▫️ ETH: ' + webdollar.price_eth.toFixed(10) + '\n\n';
         //resp += '24hr High: $' + webdollar.volume_daily_high_usd + '\n';
         //resp += '24hr Low: $' + webdollar.volume_daily_low_usd + '\n';
         resp +=
-          '24hr Volume: $' + parseInt(webdollar.volume_daily_total_usd) + ' ';
+          '24hr Volume: $' +
+          numeral(parseInt(webdollar.volume_daily_total_usd)).format('0,0') +
+          ' ';
         //resp += '([source](https://www.coingecko.com/en/coins/webdollar))\n';
         resp += '([source](https://coinmarketcap.com/currencies/webdollar/))\n';
       } else {
