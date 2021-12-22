@@ -39,6 +39,7 @@ describe('Activity', () => {
       channel_id,
       user_id,
       user_name,
+      0,
       new Date(Date.now() - activity.stale_after_minutes * 60 * 1000)
     );
 
@@ -55,6 +56,7 @@ describe('Activity', () => {
       channel_id,
       user_id,
       user_name,
+      0,
       new Date(Date.now() - DEFAULT_ACTIVITY_INTERVAL_MINUTES * 60 * 1000)
     );
 

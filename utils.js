@@ -48,7 +48,27 @@ function get_amount_for_price(price) {
   return amount;
 }
 
-async function transfer_funds(username, amount) {
+function get_package_for_amount(amount) {
+  let pgk = config.topup.package1;
+
+  switch (amount) {
+    case config.topup.package1.webd:
+      pgk = config.topup.package1;
+      break;
+
+    case config.topup.package2.webd:
+      pgk = config.topup.package2;
+      break;
+
+    case config.topup.package3.webd:
+      pgk = config.topup.package3;
+      break;
+  }
+
+  return pgk;
+}
+
+async function transfer_funds(username, amount, amount_lottery = 0) {
   const telegram = new Telegram();
 
   try {
@@ -63,10 +83,12 @@ async function transfer_funds(username, amount) {
     }
 
     const new_balance = user.balance + amount;
+    const new_balance_lottery = user.balance_lottery + amount_lottery;
 
     await user_model.update(
       {
         balance: new_balance,
+        balance_lottery: new_balance_lottery,
       },
       {
         where: {
@@ -217,6 +239,7 @@ function find_user_by_id_or_username(id, username) {
 
 module.exports = {
   get_amount_for_price,
+  get_package_for_amount,
   transfer_funds,
   update_username,
   format_number,

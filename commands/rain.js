@@ -1,4 +1,5 @@
 const user = require('./../models').user;
+const tip = require('./../models').tip;
 const Telegram = require('./../services/telegram');
 const { DEFAULT_ACTIVITY_INTERVAL_MINUTES } = require('./../services/activity');
 const config = require('./../config');
@@ -73,9 +74,9 @@ module.exports = (bot, activity) => async (msg, match) => {
 
     // Testing
     // activity.add(msg.chat.id, msg.from.id, msg.from.username);
+    // activity.add(msg.chat.id, '12221', 'testing123453');
+    // activity.add(msg.chat.id, '12221', 'testing123453');
     // activity.add(msg.chat.id, '12222', 'testing123455');
-    // activity.add(msg.chat.id, '12221', 'testing123453');
-    // activity.add(msg.chat.id, '12221', 'testing123453');
 
     const grouped_activities =
       activity.get_activities_for_channel_grouped_by_user(
@@ -165,6 +166,18 @@ module.exports = (bot, activity) => async (msg, match) => {
         }
       );
 
+      await tip.model.create({
+        amount: user_amount,
+        private: false,
+        rain: true,
+        telegram_id: msg.chat.id,
+        telegram_message_id: msg.message_id,
+        telegram_chat_id: msg.chat.id,
+        telegram_text: msg.text,
+        from_user: found_user.id,
+        to_user: _found_user.id,
+      });
+
       // await telegram.send_message(
       //   msg.chat.id,
       //   `💰 [@${user_display_name}](tg://user?id=${user_id}) received *${format_number(
@@ -177,7 +190,7 @@ module.exports = (bot, activity) => async (msg, match) => {
         amount: user_amount,
         message: `[@${user_display_name}](tg://user?id=${user_id}) got *${format_number(
           user_amount
-        )}* WEBD`,
+        )}*`,
       });
 
       const private_message = `💦 You were rained *${format_number(
@@ -193,8 +206,6 @@ module.exports = (bot, activity) => async (msg, match) => {
           console.debug(private_message);
           console.error(error.message);
         });
-
-      // TODO: Insert tip in db
     }
 
     if (rewards.length) {

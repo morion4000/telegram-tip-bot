@@ -64,14 +64,17 @@ module.exports = {
     package1: {
       webd: 10000,
       usd: 5,
+      bonus_lottery: 1000,
     },
     package2: {
       webd: 50000,
       usd: 20,
+      bonus_lottery: 5000,
     },
     package3: {
       webd: 100000,
       usd: 30,
+      bonus_lottery: 10000,
     },
   },
   blockchain: {

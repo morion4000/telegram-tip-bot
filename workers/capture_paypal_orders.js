@@ -1,10 +1,15 @@
 const transaction_model = require('./../models').transaction.model;
 const user_model = require('./../models').user.model;
 const config = require('./../config');
-const { transfer_funds } = require('./../utils');
-const numeral = require('numeral');
+const Webdchain = require('./../services/webdchain');
+const Lottery = require('./../services/lottery');
+const Telegram = require('./../services/telegram');
+const {
+  transfer_funds,
+  format_number,
+  get_package_for_amount,
+} = require('./../utils');
 const paypal = require('@paypal/checkout-server-sdk');
-const TelegramBot = require('node-telegram-bot-api');
 
 exports.handler = async function (event) {
   const environment = new paypal.core.LiveEnvironment(
@@ -12,9 +17,10 @@ exports.handler = async function (event) {
     config.paypal.client_secret
   );
   const client = new paypal.core.PayPalHttpClient(environment);
-  const bot = new TelegramBot(config.telegram.token, {
-    polling: false,
-  });
+  const telegram = new Telegram();
+  const webdchain = new Webdchain();
+  const current_height = await webdchain.get_height();
+  const lottery = new Lottery(current_height);
 
   const transactions = await transaction_model.findAll({
     where: {
@@ -55,7 +61,18 @@ exports.handler = async function (event) {
       // If call returns body in response, you can get the deserialized version from the result attribute of the response.
       console.log(`Capture: ${JSON.stringify(response.result)}`);
 
-      await transfer_funds(user.telegram_username, transaction.amount);
+      const { bonus_lottery } = get_package_for_amount(transaction.amount);
+
+      await transfer_funds(
+        user.telegram_username,
+        transaction.amount,
+        bonus_lottery
+      );
+
+      const { tickets, price } = await lottery.buy_tickets(
+        user,
+        user.balance_lottery
+      );
 
       await transaction_model.update(
         {
@@ -69,15 +86,25 @@ exports.handler = async function (event) {
         }
       );
 
-      await bot.sendMessage(
-        config.admin.telegram_chat_id,
-        `💵 New purchase: @${user.telegram_username} purchased ${numeral(
-          transaction.amount
-        ).format('0,0')} WEBD`,
-        {
-          disable_web_page_preview: true,
-        }
-      );
+      telegram
+        .send_message(
+          config.admin.telegram_chat_id,
+          `💵 New purchase: @${
+            user.telegram_username
+          } purchased ${format_number(transaction.amount)} WEBD`
+        )
+        .catch(console.error);
+
+      telegram
+        .send_message(
+          user.telegram_id,
+          `🎁 You received ${format_number(
+            tickets
+          )} /lotterytickets as a bonus (${format_number(
+            price
+          )} WEBD / ticket).`
+        )
+        .catch(console.error);
     } catch (error) {
       console.error(error.message || error);
 

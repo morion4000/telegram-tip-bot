@@ -6,6 +6,7 @@ var Tip = function (sequelize) {
     'id',
     'amount',
     'private',
+    'rain',
     'from_user',
     'to_user',
     'telegram_message_id',
@@ -20,6 +21,7 @@ var Tip = function (sequelize) {
     {
       amount: Sequelize.INTEGER,
       private: Sequelize.BOOLEAN,
+      rain: Sequelize.BOOLEAN,
       telegram_message_id: Sequelize.STRING,
       telegram_chat_id: Sequelize.STRING,
       telegram_text: Sequelize.STRING,
