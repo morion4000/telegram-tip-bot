@@ -16,7 +16,7 @@ module.exports = (bot, activity) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
   try {
-    // await check_public_message(msg);
+    await check_public_message(msg);
 
     const amount = await check_and_extract_amount(msg, '/rain');
     const amount_usd = await convert_to_usd(amount);
@@ -73,10 +73,10 @@ module.exports = (bot, activity) => async (msg, match) => {
     }
 
     // Testing
-    activity.add(msg.chat.id, msg.from.id, msg.from.username, 1);
-    activity.add(msg.chat.id, '12221', 'testing123453', 3);
-    activity.add(msg.chat.id, '12221', 'testing123453', 5);
-    activity.add(msg.chat.id, '12222', 'testing123455', 7);
+    // activity.add(msg.chat.id, msg.from.id, msg.from.username, 1);
+    // activity.add(msg.chat.id, '12221', 'testing123453', 3);
+    // activity.add(msg.chat.id, '12221', 'testing123453', 5);
+    // activity.add(msg.chat.id, '12222', 'testing123455', 7);
 
     const grouped_activities =
       activity.get_activities_for_channel_grouped_by_user(
