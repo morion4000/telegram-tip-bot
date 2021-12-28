@@ -11,6 +11,7 @@ var User = function (sequelize) {
     'id',
     'wallet',
     'balance',
+    'balance_locked',
     'balance_lottery',
     'balance_lottery_withdraw',
     'telegram_id',
@@ -26,6 +27,7 @@ var User = function (sequelize) {
     {
       wallet: Sequelize.STRING,
       balance: Sequelize.INTEGER,
+      balance_locked: Sequelize.INTEGER,
       balance_lottery: Sequelize.INTEGER,
       balance_lottery_withdraw: Sequelize.INTEGER,
       telegram_id: Sequelize.STRING,

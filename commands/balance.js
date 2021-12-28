@@ -76,17 +76,31 @@ var Command = function (bot) {
           numeral(balance_usd).format('0,0.00') +
           '). Receiving /staking rewards at *' +
           config.staking.yearly_percentage +
-          '%* per year.\n\n';
+          '%* per year.\n';
 
-        const balance_lottery_usd = parseFloat(
-          found_user.balance_lottery * webdollar.price_usd
-        );
+        if (found_user.balance_locked) {
+          const balance_locked_usd = parseFloat(
+            found_user.balance_locked * webdollar.price_usd
+          );
 
-        resp += `🎲 Lottery balance: *${numeral(
-          found_user.balance_lottery
-        ).format('0,0')}* WEBD ($${numeral(balance_lottery_usd).format(
-          '0,0.00'
-        )}). Eligible for weekly /lottery rewards.\n`;
+          resp += `\n🔒 Balance locked: *${numeral(
+            found_user.balance_locked
+          ).format('0,0')}* WEBD ($${numeral(balance_locked_usd).format(
+            '0,0.00'
+          )}). Purchases made recent via /topup.\n`;
+        }
+
+        if (found_user.balance_lottery) {
+          const balance_lottery_usd = parseFloat(
+            found_user.balance_lottery * webdollar.price_usd
+          );
+
+          resp += `\n🎲 Lottery balance: *${numeral(
+            found_user.balance_lottery
+          ).format('0,0')}* WEBD ($${numeral(balance_lottery_usd).format(
+            '0,0.00'
+          )}). Eligible for weekly /lottery rewards.\n`;
+        }
 
         resp += '\nℹ️ You can add more funds using /topup.';
       } else {

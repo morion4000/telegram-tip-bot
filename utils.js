@@ -112,6 +112,57 @@ async function transfer_funds(username, amount, amount_lottery = 0) {
   }
 }
 
+async function transfer_funds_locked(
+  username,
+  amount,
+  amount_lottery = 0,
+  locked_period_days = 0
+) {
+  const telegram = new Telegram();
+
+  try {
+    const user = await user_model.findOne({
+      where: {
+        telegram_username: username,
+      },
+    });
+
+    if (!user) {
+      throw new Error(`username not found: ${username}`);
+    }
+
+    const new_balance = user.balance_locked + amount;
+    const new_balance_lottery = user.balance_lottery + amount_lottery;
+
+    await user_model.update(
+      {
+        balance_locked: new_balance,
+        balance_lottery: new_balance_lottery,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+      }
+    );
+
+    const message =
+      '💰 Your account was credited with *' +
+      format_number(amount) +
+      '* WEBD from your purchase. The funds are locked for ' +
+      locked_period_days +
+      ' days.';
+
+    await telegram.send_message(
+      user.telegram_id,
+      message,
+      Telegram.PARSE_MODE.MARKDOWN
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 // Telegram users can change username
 // Make sure we keep it up to date, otherwise accounts can get split
 async function update_username(from) {
@@ -241,6 +292,7 @@ module.exports = {
   get_amount_for_price,
   get_package_for_amount,
   transfer_funds,
+  transfer_funds_locked,
   update_username,
   format_number,
   convert_to_usd,

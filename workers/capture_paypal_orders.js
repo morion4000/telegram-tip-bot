@@ -5,7 +5,7 @@ const Webdchain = require('./../services/webdchain');
 const Lottery = require('./../services/lottery');
 const Telegram = require('./../services/telegram');
 const {
-  transfer_funds,
+  transfer_funds_locked,
   format_number,
   get_package_for_amount,
 } = require('./../utils');
@@ -61,22 +61,23 @@ exports.handler = async function (event) {
       // If call returns body in response, you can get the deserialized version from the result attribute of the response.
       console.log(`Capture: ${JSON.stringify(response.result)}`);
 
-      const { bonus_lottery } = get_package_for_amount(transaction.amount);
+      const { bonus_lottery, locked_period_days } = get_package_for_amount(
+        transaction.amount
+      );
 
-      await transfer_funds(
+      await transfer_funds_locked(
         user.telegram_username,
         transaction.amount,
-        bonus_lottery
+        bonus_lottery,
+        locked_period_days
       );
 
-      const { tickets, price } = await lottery.buy_tickets(
-        user,
-        bonus_lottery
-      );
+      const { tickets, price } = await lottery.buy_tickets(user, bonus_lottery);
 
       await transaction_model.update(
         {
           processed: true,
+          locked: true,
         },
         {
           where: {
