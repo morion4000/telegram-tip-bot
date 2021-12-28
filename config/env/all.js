@@ -71,13 +71,13 @@ module.exports = {
       webd: 50000,
       usd: 20,
       bonus_lottery: 5000,
-      locked_period_days: 5,
+      locked_period_days: 2,
     },
     package3: {
       webd: 100000,
       usd: 30,
       bonus_lottery: 10000,
-      locked_period_days: 10,
+      locked_period_days: 5,
     },
   },
   blockchain: {
