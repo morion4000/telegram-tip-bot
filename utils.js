@@ -147,7 +147,7 @@ async function transfer_funds_locked(
     );
 
     const message =
-      '💰 Your account was credited with *' +
+      '💰 Your /tipbalance was credited with *' +
       format_number(amount) +
       '* WEBD from your purchase. The funds are locked for ' +
       locked_period_days +
