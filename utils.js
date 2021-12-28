@@ -151,7 +151,7 @@ async function transfer_funds_locked(
       format_number(amount) +
       '* WEBD from your purchase. The funds are locked for ' +
       locked_period_days +
-      ' days.';
+      ' day(s).';
 
     await telegram.send_message(
       user.telegram_id,
