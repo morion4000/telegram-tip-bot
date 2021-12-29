@@ -70,14 +70,12 @@ exports.handler = async function (event) {
           }
         );
 
-        telegram
-          .send_message(
-            user.telegram_id,
-            `🔓 Your funds: ${format_number(
-              transaction.amount
-            )} WEBD from purchase were added to your /tipbalance.`
-          )
-          .catch(console.error);
+        await telegram.send_message(
+          user.telegram_id,
+          `🔓 Your funds: ${format_number(
+            transaction.amount
+          )} WEBD from purchase were added to your /tipbalance.`
+        );
       }
     } catch (error) {
       console.error(error.message || error);
