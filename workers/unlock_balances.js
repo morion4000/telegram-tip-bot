@@ -74,7 +74,7 @@ exports.handler = async function (event) {
           user.telegram_id,
           `🔓 Your funds: ${format_number(
             transaction.amount
-          )} WEBD from purchase were added to your /tipbalance.`
+          )} WEBD where unlocked and added to your /tipbalance.`
         );
       }
     } catch (error) {
