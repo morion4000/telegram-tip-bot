@@ -63,20 +63,20 @@ module.exports = {
   topup: {
     package1: {
       webd: 10000,
-      usd: 5,
-      bonus_lottery: 1000,
+      usd: 8,
+      bonus_lottery: 500,
       locked_period_days: 1,
     },
     package2: {
       webd: 50000,
-      usd: 20,
-      bonus_lottery: 5000,
+      usd: 40,
+      bonus_lottery: 2500,
       locked_period_days: 2,
     },
     package3: {
       webd: 100000,
-      usd: 30,
-      bonus_lottery: 10000,
+      usd: 70,
+      bonus_lottery: 5000,
       locked_period_days: 5,
     },
   },
