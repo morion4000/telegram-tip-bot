@@ -81,6 +81,14 @@ bot.on('message', async (msg) => {
   // console.log(msg);
 });
 
+bot.on('callback_query', function (q) {
+  bot.answerCallbackQuery(q.id, { url: 'https://web.hauntedtower.com' });
+});
+
+bot.onText(/\/game$/, function (msg) {
+  bot.sendGame(msg.chat.id, 'hauntedtower');
+});
+
 bot.onText(/\/tip$/, tip_empty_command);
 bot.onText(/\/tip \w+$/, tip_empty_command);
 bot.onText(/\/tip @\w+$/, tip_empty_command);
