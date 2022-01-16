@@ -9,4 +9,8 @@ module.exports = {
   telegram: {
     token: process.env.TELEGRAM_TOKEN_DEV,
   },
+  game: {
+    id: 'hauntedtower',
+    url: 'https://a0e3-79-119-254-64.ngrok.io',
+  },
 };

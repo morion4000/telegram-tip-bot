@@ -82,11 +82,12 @@ bot.on('message', async (msg) => {
 });
 
 bot.on('callback_query', function (q) {
-  bot.answerCallbackQuery(q.id, { url: 'https://web.hauntedtower.com' });
+  console.log(`callback`, q);
+  bot.answerCallbackQuery(q.id, { url: config.game.url });
 });
 
 bot.onText(/\/game$/, function (msg) {
-  bot.sendGame(msg.chat.id, 'hauntedtower');
+  bot.sendGame(msg.chat.id, config.game.id);
 });
 
 bot.onText(/\/tip$/, tip_empty_command);
