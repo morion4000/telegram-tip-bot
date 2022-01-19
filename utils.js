@@ -68,6 +68,49 @@ function get_package_for_amount(amount) {
   return pgk;
 }
 
+async function transfer_reward(username, amount) {
+  const telegram = new Telegram();
+
+  try {
+    const user = await user_model.findOne({
+      where: {
+        telegram_username: username,
+      },
+    });
+
+    if (!user) {
+      throw new Error(`username not found: ${username}`);
+    }
+
+    const new_balance = user.balance + amount;
+
+    await user_model.update(
+      {
+        balance: new_balance,
+        balance_lottery: new_balance_lottery,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+      }
+    );
+
+    const message =
+      '🎮 Your account was rewarded with *' +
+      format_number(amount) +
+      '* WEBD from playing Haunted Tower. Funds in your /tipbalance are receiving /staking rewards.';
+
+    await telegram.send_message(
+      user.telegram_id,
+      message,
+      Telegram.PARSE_MODE.MARKDOWN
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 async function transfer_funds(username, amount, amount_lottery = 0) {
   const telegram = new Telegram();
 
@@ -291,6 +334,7 @@ function find_user_by_id_or_username(id, username) {
 module.exports = {
   get_amount_for_price,
   get_package_for_amount,
+  transfer_reward,
   transfer_funds,
   transfer_funds_locked,
   update_username,

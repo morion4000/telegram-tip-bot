@@ -1,9 +1,4 @@
-const util = require('util');
-
-const transaction_model = require('./../models').transaction.model;
-const user_model = require('./../models').user.model;
-const config = require('./../config');
-const { get_amount_for_price } = require('./../utils');
+const { transfer_reward } = require('./../utils');
 
 class Game {
   constructor() {
@@ -22,6 +17,10 @@ class Game {
         const { from, message, inline_message_id } = this.queries[query];
         const options = {};
 
+        if (score > 1000) {
+          throw new Error('Score too high');
+        }
+
         if (message) {
           options.chat_id = message.chat.id;
           options.message_id = message.message_id;
@@ -31,10 +30,9 @@ class Game {
 
         await this.bot.setGameScore(from.id, parseInt(score), options);
 
-        // TODO: Tip user
-        //delete this.queries[query];
+        await transfer_reward(from.username, score);
       } catch (err) {
-        console.error(err);
+        console.error(err.message);
 
         return res.status(400).send(`Game Error: ${err.message}`);
       }
