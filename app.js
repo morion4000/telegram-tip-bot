@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const webhooks = require('./controllers/webhooks');
+const game = require('./controllers/game');
 const config = require('./config');
 
 const app = express();
@@ -13,6 +14,9 @@ const port = process.env.PORT || 4000;
 app.use(
   cors({
     origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
@@ -25,11 +29,15 @@ app.post(
 */
 
 app.post('/webhooks/paypal', bodyParser.json(), webhooks.paypal.bind(webhooks));
+app.post('/game/scores', bodyParser.json(), game.scores.bind(game));
 
 app.get('/v1/prices', (req, res, next) => res.send(config.topup));
 
 app.listen(port, () => {
   console.log(`App listening on ${port}`);
 
-  require('./bot');
+  const bot = require('./bot');
+
+  game.queries = bot.queries;
+  game.bot = bot.bot;
 });

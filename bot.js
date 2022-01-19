@@ -21,6 +21,7 @@ const bot = new TelegramBot(config.telegram.token, {
 });
 
 const activity = new Activity();
+const queries = {};
 
 // To clear activity backlog
 activity.watch();
@@ -81,9 +82,20 @@ bot.on('message', async (msg) => {
   // console.log(msg);
 });
 
+bot.on('inline_query', function (iq) {
+  bot.answerInlineQuery(iq.id, [
+    { type: 'game', id: '0', game_short_name: config.game.id },
+  ]);
+});
+
 bot.on('callback_query', function (q) {
-  console.log(`callback`, q);
-  bot.answerCallbackQuery(q.id, { url: config.game.url });
+  const url = `${config.game.url}/#query=${q.id}`;
+
+  console.log(`[CALLBACK] ${q.id} ${url}`);
+
+  queries[q.id] = q;
+
+  bot.answerCallbackQuery(q.id, { url });
 });
 
 bot.onText(/\/game$/, function (msg) {
@@ -199,3 +211,5 @@ bot.onText(
 );
 bot.onText(/\/lotteryfaq@webdollar_tip_bot$/, lotteryfaq_command);
 bot.onText(/\/lotteryhistory@webdollar_tip_bot$/, lotteryhistory_command);
+
+module.exports = { queries, bot };
