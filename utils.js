@@ -87,7 +87,6 @@ async function transfer_reward(username, amount) {
     await user_model.update(
       {
         balance: new_balance,
-        balance_lottery: new_balance_lottery,
       },
       {
         where: {
