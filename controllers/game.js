@@ -1,5 +1,6 @@
+const config = require('./../config');
 const log_model = require('./../models').log.model;
-const { transfer_reward } = require('./../utils');
+const { transfer_reward, format_number } = require('./../utils');
 
 class Game {
   constructor() {
@@ -54,6 +55,20 @@ class Game {
             logging: false,
           }
         );
+
+        this.bot
+          .sendMessage(
+            config.admin.telegram_chat_id,
+            `🎮 New reward: @${from.username} received ${format_number(
+              score
+            )} WEBD`,
+            {
+              // parse_mode: 'Markdown',
+              disable_web_page_preview: true,
+              disable_notification: true,
+            }
+          )
+          .catch(console.error);
       } catch (err) {
         console.error(err.message);
 
