@@ -47,7 +47,7 @@ class Game {
               balance,
               new_balance,
               score,
-              query,
+              query: this.queries[query],
             }),
             source: 'controllers.game',
           },
