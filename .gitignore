@@ -65,3 +65,4 @@ tmp/
 .idea
 .serverless
 build
+scores_req.sh

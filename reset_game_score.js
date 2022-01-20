@@ -8,7 +8,7 @@ const bot = new TelegramBot(config.telegram.token, {
 });
 
 const user = '528354447';
-const message = 781333;
+const message = '781333';
 const score = 10;
 
 bot
