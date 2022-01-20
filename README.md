@@ -9,6 +9,7 @@
 ## Commands
 
 * __help__ - Shows the help message
+* __game__ - Play a tower defence game and win rewards
 * __rain__ - Tip the users active on the channel
 * __tip__ - Tip the user with the specified amount
 * __tipbalance__ - Shows your balance
