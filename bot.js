@@ -90,8 +90,9 @@ bot.on('inline_query', function (iq) {
 
 bot.on('callback_query', function (q) {
   const url = `${config.game.url}/#query=${q.id}`;
+  const message = q.message ? q.message.message_id : null;
 
-  console.log(`[CALLBACK] ${q.id} ${url}`);
+  console.log(`[CALLBACK] query: ${q.id}, url: ${url}, message: ${message}`);
 
   queries[q.id] = q;
 
