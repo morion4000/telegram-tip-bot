@@ -96,15 +96,19 @@ async function transfer_reward(username, amount) {
     );
 
     const message =
-      '🎮 Your account was rewarded with *' +
+      '🎮 You were rewarded with *' +
       format_number(amount) +
       '* WEBD from playing Haunted Tower. Funds in your /tipbalance are receiving /staking rewards.';
 
-    await telegram.send_message(
-      user.telegram_id,
-      message,
-      Telegram.PARSE_MODE.MARKDOWN
-    );
+    telegram
+      .send_message(user.telegram_id, message, Telegram.PARSE_MODE.MARKDOWN)
+      .catch(console.error);
+
+    return {
+      user,
+      new_balance,
+      balance: user.balance,
+    };
   } catch (error) {
     console.error(error);
   }
