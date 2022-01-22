@@ -66,3 +66,4 @@ tmp/
 .serverless
 build
 scores_req.sh
+.DS_Store
