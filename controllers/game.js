@@ -19,7 +19,7 @@ class Game {
         const { from, message, inline_message_id } = this.queries[query];
         const options = {};
 
-        if (score > 300) {
+        if (score > config.game.max_score) {
           throw new Error('Score too high');
         }
 

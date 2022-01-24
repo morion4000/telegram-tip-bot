@@ -82,11 +82,16 @@ async function transfer_reward(username, amount) {
       throw new Error(`username not found: ${username}`);
     }
 
+    if (user.game_rewards > config.game.max_user_rewards) {
+      throw new Error(`rewards limit reached: ${config.game.max_user_rewards}`);
+    }
+
     const new_balance = user.balance + amount;
 
     await user_model.update(
       {
         balance: new_balance,
+        game_rewards: user.game_rewards + amount,
       },
       {
         where: {

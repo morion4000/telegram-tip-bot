@@ -90,4 +90,8 @@ module.exports = {
     duration_blocks: 15120, // ~7 days (1 block = ~40 seconds)
     duration_days: 7,
   },
+  game: {
+    max_score: 100,
+    max_user_rewards: 10000,
+  },
 };
