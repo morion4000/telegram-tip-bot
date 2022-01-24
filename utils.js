@@ -98,7 +98,7 @@ async function transfer_reward(username, amount) {
     const message =
       '🎮 You were rewarded with *' +
       format_number(amount) +
-      '* WEBD from playing Haunted Tower. Funds in your /tipbalance are receiving /staking rewards.';
+      '* WEBD from playing 👻 Haunted Tower. Funds in your /tipbalance are receiving /staking rewards.';
 
     telegram
       .send_message(user.telegram_id, message, Telegram.PARSE_MODE.MARKDOWN)
