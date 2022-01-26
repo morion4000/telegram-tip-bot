@@ -91,7 +91,7 @@ module.exports = {
     duration_days: 7,
   },
   game: {
-    max_score: 100,
+    max_score: 2000,
     max_user_rewards: 10000,
   },
 };
