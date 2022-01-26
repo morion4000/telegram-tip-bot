@@ -103,6 +103,10 @@ bot.onText(/\/game$/, function (msg) {
   bot.sendGame(msg.chat.id, config.game.id);
 });
 
+bot.onText(/\/game@webdollar_tip_bot$/, function (msg) {
+  bot.sendGame(msg.chat.id, config.game.id);
+});
+
 bot.onText(/\/tip$/, tip_empty_command);
 bot.onText(/\/tip \w+$/, tip_empty_command);
 bot.onText(/\/tip @\w+$/, tip_empty_command);
