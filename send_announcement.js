@@ -4,11 +4,11 @@ const TelegramBot = require('node-telegram-bot-api');
 const _ = require('underscore');
 const user = require('./models').user;
 
-(async function () {
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
+(async function () {
   const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {
     polling: false,
   });
@@ -92,16 +92,14 @@ const user = require('./models').user;
     '\t ✅ *Rewards*. You are receiving WEBD each time you get a new highscore. \n\n';
   resp +=
     '\t ✅ *Compete*. Top players for each group are shown publicly. \n\n';
-  resp += '\t ✅ *Fun*. Playing a Tower Defense game focused on strategy. \n\n';
+  resp += '\t ✅ *Fun*. Play a Tower Defense game focused on strategy. \n\n';
   resp +=
-    '*Try it out*: run `/game` in a group to compete against other players and earn rewards.';
+    '*Try it out*: run /game in a group to compete against other players and earn rewards.';
 
   const found_users = await user.model.findAll();
   let sent_to_users = 0;
 
-  for (let i = 0; i < found_users.length; i++) {
-    let found_user = found_users[i];
-
+  for (const found_user of found_users) {
     if (!found_user.telegram_id) {
       continue;
     }
@@ -138,6 +136,7 @@ const user = require('./models').user;
     console.log(`sent to users: ${sent_to_users}/${found_users.length}`);
 
     // To avoid getting blocked by Telegram
+    // https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
     sleep(10000);
   }
 })();
