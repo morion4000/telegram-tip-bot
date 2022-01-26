@@ -137,6 +137,7 @@ const user = require('./models').user;
 
     console.log(`sent to users: ${sent_to_users}/${found_users.length}`);
 
-    sleep(2000);
+    // To avoid getting blocked by Telegram
+    sleep(10000);
   }
 })();
