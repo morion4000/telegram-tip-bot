@@ -4,34 +4,34 @@
 
 ## Supported cryptocurrencies
 
-* WebDollar - <https://webdollar.io>
+- WebDollar - <https://webdollar.io>
 
 ## Commands
 
-* __help__ - Shows the help message
-* __game__ - Play a tower defence game and win rewards
-* __rain__ - Tip the users active on the channel
-* __tip__ - Tip the user with the specified amount
-* __tipbalance__ - Shows your balance
-* __wallet__ - Shows your WEBD wallet for deposits and withdrawals
-* __setwallet__ - Set the WEBD wallet that you are using for deposits and withdrawals
-* __deposit__ - Deposit funds to your account from the wallet you set
-* __withdraw__ - Withdraw funds from your account to the wallet you set or a WEBD adress
-* __transactions__ - Shows the transactions for your account
-* __fees__ - Shows the fees
-* __price__ - Shows the price and volume for WEBD
-* __staking__ - Shows the staking rewards received
-* __system__ - Private and hidden command. Only admin can call it
-* __stats__ - Bot statistics
-* __scoreboard__ - Top 10 tippers (only public tips are counted)
-* __topup__ - Buy WEBD with your card or PayPal
-* __tutorial__ - How to use WebDollar in the browser
-* __lottery__ - Shows information about the current round
-* __lotterytickets__ - Shows the tickets for the current round
-* __lotterydeposit__ - Move funds to lottery balance
-* __lotterywithdraw__ - Move funds to balance
-* __lotteryfaq__ - Most common questions about the lottery
-* __lotteryhistory__ - Shows the last 10 rounds
+- **help** - Shows the help message
+- **game** - Play 👻 Haunted Tower and win rewards
+- **rain** - Tip the users active on the channel
+- **tip** - Tip the user with the specified amount
+- **tipbalance** - Shows your balance
+- **wallet** - Shows your WEBD wallet for deposits and withdrawals
+- **setwallet** - Set the WEBD wallet that you are using for deposits and withdrawals
+- **deposit** - Deposit funds to your account from the wallet you set
+- **withdraw** - Withdraw funds from your account to the wallet you set or a WEBD adress
+- **transactions** - Shows the transactions for your account
+- **fees** - Shows the fees
+- **price** - Shows the price and volume for WEBD
+- **staking** - Shows the staking rewards received
+- **system** - Private and hidden command. Only admin can call it
+- **stats** - Bot statistics
+- **scoreboard** - Top 10 tippers (only public tips are counted)
+- **topup** - Buy WEBD with your card or PayPal
+- **tutorial** - How to use WebDollar in the browser
+- **lottery** - Shows information about the current round
+- **lotterytickets** - Shows the tickets for the current round
+- **lotterydeposit** - Move funds to lottery balance
+- **lotterywithdraw** - Move funds to balance
+- **lotteryfaq** - Most common questions about the lottery
+- **lotteryhistory** - Shows the last 10 rounds
 
 ## Install
 

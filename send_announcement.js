@@ -1,9 +1,11 @@
+require('dotenv').config();
+
 var user = require('./models').user,
   config = require('./config'),
   TelegramBot = require('node-telegram-bot-api'),
   _ = require('underscore');
 
-var bot = new TelegramBot(config.telegram.token, {
+var bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {
   polling: false,
 });
 
@@ -71,15 +73,23 @@ var bot = new TelegramBot(config.telegram.token, {
 // resp += '\t ✅ You can /tip USD amounts (the amount gets converted to WEBD at the current price) 💵💵💵 \n\n';
 // resp += '*Try it out*: run `/tip @morion4000 $1` to test it out';
 
-var resp = '*@webdollar_tip_bot /lottery has launched* 🚀\n\n';
-resp +=
-  '\t ✅ *No-loss*. You are participating in the lottery with your /staking rewards. \n\n';
-resp += '\t ✅ *Weekly prize*. The winner is selected every week. \n\n';
-resp +=
-  '\t ✅ *Transparent draw*. The winner selection process is done using the WebDollar blockchain. \n\n';
+// var resp = '*@webdollar_tip_bot /lottery has launched* 🚀\n\n';
+// resp +=
+//   '\t ✅ *No-loss*. You are participating in the lottery with your /staking rewards. \n\n';
+// resp += '\t ✅ *Weekly prize*. The winner is selected every week. \n\n';
+// resp +=
+//   '\t ✅ *Transparent draw*. The winner selection process is done using the WebDollar blockchain. \n\n';
 
+// resp +=
+//   '*Try it out*: run `/lotterydeposit 1000` to receive tickets for the current round';
+
+var resp = '*👻 Haunted Tower /game has launched*\n\n';
 resp +=
-  '*Try it out*: run `/lotterydeposit 1000` to receive tickets for the current round';
+  '\t ✅ *Rewards*. You are receiving WEBD each time you get a new highscore. \n\n';
+resp += '\t ✅ *Compete*. Top players for each group are shown publicly. \n\n';
+resp += '\t ✅ *Fun*. Playing a Tower Defense game focused on strategy. \n\n';
+resp +=
+  '*Try it out*: run `/game` in a group to compete against other players and earn rewards.';
 
 user.model.findAll().then(async function (found_users) {
   var sent_to_users = 0;
@@ -93,7 +103,7 @@ user.model.findAll().then(async function (found_users) {
 
     // only me (@morion4000)
     if (found_user.telegram_id !== '528354447') {
-      continue;
+      // continue;
     }
 
     console.log(found_user.id, found_user.telegram_username);
@@ -103,7 +113,7 @@ user.model.findAll().then(async function (found_users) {
     try {
       await bot.sendPhoto(
         found_user.telegram_id,
-        'https://www.hostero.eu/assets/img/tipbot/lottery.jpg',
+        'https://web.hauntedtower.com/assets/game/logo/telegram_banner.png',
         {
           //caption: 'No-loss /lottery. Weekly prizes.',
         }

@@ -9,6 +9,6 @@ ADD . /usr/src/app
 
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-RUN npm install
+RUN yarn
 
 CMD [ "node app" ]
