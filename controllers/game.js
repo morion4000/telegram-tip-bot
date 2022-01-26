@@ -47,7 +47,7 @@ class Game {
               balance,
               new_balance,
               score,
-              options: options,
+              options,
             }),
             source: 'controllers.game',
           },
