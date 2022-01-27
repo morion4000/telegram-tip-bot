@@ -12,5 +12,7 @@ module.exports = {
   game: {
     id: 'hauntedtower',
     url: 'https://telegram.hauntedtower.com',
+    max_score: 100,
+    max_user_rewards: 2500,
   },
 };

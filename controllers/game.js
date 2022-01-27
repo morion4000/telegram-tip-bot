@@ -32,8 +32,6 @@ class Game {
 
         await this.bot.setGameScore(from.id, score, options);
 
-        throw new Error('Disabled rewards');
-
         const { user, balance, new_balance } = await transfer_reward(
           from.username,
           score
