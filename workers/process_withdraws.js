@@ -5,6 +5,7 @@ const config = require('./../config');
 const TelegramBot = require('node-telegram-bot-api');
 const numeral = require('numeral');
 const axios = require('axios');
+const moment = require('moment');
 const mailgun = require('mailgun-js')({
   apiKey: config.mailgun.key,
   domain: config.mailgun.domain,
@@ -15,7 +16,7 @@ const MAX_TRIES = 1;
 const FROM_ADDRESS = config.vault;
 const API_KEY = config.webdollar.node.key;
 const URL = config.webdollar.node.url + '/' + API_KEY;
-const WAIT_TIME_HOURS = config.withdraws.wait_time_hours;
+const WAIT_TIME_MILI = config.withdraws.wait_time_hours * 60 * 60 * 1000;
 
 exports.handler = async function (event) {
   const bot = new TelegramBot(config.telegram.token, {
@@ -45,11 +46,10 @@ exports.handler = async function (event) {
 
   for (let i = 0; i < transactions.length; i++) {
     const transaction = transactions[i];
+    const date_for_processing =
+      transaction.createdAt.getTime() + WAIT_TIME_MILI;
 
-    if (
-      transaction.createdAt.getTime() <
-      new Date().getTime() - WAIT_TIME_HOURS
-    ) {
+    if (moment(date_for_processing).isAfter(new Date())) {
       console.log('transaction', transaction.id, 'is not due yet. aborting...');
 
       continue;

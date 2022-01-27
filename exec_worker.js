@@ -1,3 +1,3 @@
-const worker = require('./workers/unlock_balances');
+const worker = require('./workers/process_withdraws');
 
 worker.handler();
