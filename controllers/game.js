@@ -74,6 +74,8 @@ class Game {
 
         return res.status(400).send(`Game Error: ${err.message}`);
       }
+    } else {
+      console.log('Game Error: Invalid query or score');
     }
 
     return res.json({ received: true });
