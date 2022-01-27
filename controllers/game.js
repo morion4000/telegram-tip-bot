@@ -58,7 +58,7 @@ class Game {
 
         this.bot
           .sendMessage(
-            config.admin.telegram_chat_id,
+            config.game.telegram_channel,
             `🎮 New reward: @${from.username} received ${format_number(
               score
             )} WEBD`,

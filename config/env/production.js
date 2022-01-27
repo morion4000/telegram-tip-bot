@@ -14,5 +14,6 @@ module.exports = {
     url: 'https://telegram.hauntedtower.com',
     max_score: 100,
     max_user_rewards: 2500,
+    telegram_channel: '-1001510982248',
   },
 };
