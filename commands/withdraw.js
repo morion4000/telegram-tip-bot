@@ -2,10 +2,6 @@ var user = require('./../models').user,
   transaction = require('./../models').transaction,
   config = require('./../config'),
   numeral = require('numeral'),
-  mailgun = require('mailgun-js')({
-    apiKey: config.mailgun.key,
-    domain: config.mailgun.domain,
-  }),
   _ = require('underscore'),
   Sequelize = require('sequelize');
 
@@ -137,7 +133,9 @@ var Command = function (bot) {
                   numeral(amount).format('0,0') +
                   ' WEBD* are going to be in your wallet `' +
                   wallet +
-                  '` in up to an hour.\n\n*Withdraw fee:* ' +
+                  '` in ' +
+                  config.withdraws.wait_time_hours +
+                  ' hour(s).\n\n*Withdraw fee:* ' +
                   config.fees.withdraw +
                   ' WEBD';
 

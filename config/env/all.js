@@ -90,4 +90,7 @@ module.exports = {
     duration_blocks: 15120, // ~7 days (1 block = ~40 seconds)
     duration_days: 7,
   },
+  withdraws: {
+    wait_time_hours: 24,
+  },
 };

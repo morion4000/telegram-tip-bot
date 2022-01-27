@@ -15,6 +15,7 @@ const MAX_TRIES = 1;
 const FROM_ADDRESS = config.vault;
 const API_KEY = config.webdollar.node.key;
 const URL = config.webdollar.node.url + '/' + API_KEY;
+const WAIT_TIME_HOURS = config.withdraws.wait_time_hours;
 
 exports.handler = async function (event) {
   const bot = new TelegramBot(config.telegram.token, {
@@ -44,6 +45,15 @@ exports.handler = async function (event) {
 
   for (let i = 0; i < transactions.length; i++) {
     const transaction = transactions[i];
+
+    if (
+      transaction.createdAt.getTime() <
+      new Date().getTime() - WAIT_TIME_HOURS
+    ) {
+      console.log('transaction', transaction.id, 'is not due yet. aborting...');
+
+      continue;
+    }
 
     if (transaction.tries >= MAX_TRIES) {
       console.log(
