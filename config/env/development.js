@@ -14,6 +14,6 @@ module.exports = {
     url: 'https://a0e3-79-119-254-64.ngrok.io',
     max_score: 1000,
     max_user_rewards: 10000,
-    telegram_channel: '528354447',
+    telegram_channel: 528354447,
   },
 };
