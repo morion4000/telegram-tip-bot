@@ -146,6 +146,6 @@ function sleep(ms) {
 
     // To avoid getting blocked by Telegram
     // https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
-    await sleep(1000);
+    await sleep(2000);
   }
 })();
