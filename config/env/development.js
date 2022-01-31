@@ -15,5 +15,6 @@ module.exports = {
     max_score: 1000,
     max_user_rewards: 10000,
     telegram_channel: 528354447,
+    telegram_origin: 'http://localhost:4200',
   },
 };

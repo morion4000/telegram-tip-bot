@@ -19,6 +19,10 @@ class Game {
         const { from, message, inline_message_id } = this.queries[query];
         const options = {};
 
+        if (req.get('origin') !== config.game.telegram_origin) {
+          throw new Error('Invalid origin');
+        }
+
         if (score > config.game.max_score) {
           throw new Error('Score too high');
         }
@@ -76,6 +80,8 @@ class Game {
       }
     } else {
       console.log('Game Error: Invalid query or score');
+
+      return res.status(400).send('Game Error: Invalid query or score');
     }
 
     return res.json({ received: true });

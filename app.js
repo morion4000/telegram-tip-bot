@@ -29,7 +29,17 @@ app.post(
 */
 
 app.post('/webhooks/paypal', bodyParser.json(), webhooks.paypal.bind(webhooks));
-app.post('/game/scores', bodyParser.json(), game.scores.bind(game));
+app.post(
+  '/game/scores',
+  cors({
+    origin: config.game.telegram_origin,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  }),
+  bodyParser.json(),
+  game.scores.bind(game)
+);
 
 app.get('/v1/prices', (req, res, next) => res.send(config.topup));
 
