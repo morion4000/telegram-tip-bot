@@ -87,12 +87,21 @@ function sleep(ms) {
   // resp +=
   //   '*Try it out*: run `/lotterydeposit 1000` to receive tickets for the current round';
 
-  let resp = '*👻 Haunted Tower /game has launched*\n\n';
+  // let resp = '*👻 Haunted Tower /game has launched*\n\n';
+  // resp +=
+  //   '\t ✅ *Rewards*. You are receiving WEBD each time you get a new highscore. \n\n';
+  // resp +=
+  //   '\t ✅ *Compete*. Top players for each group are shown publicly. \n\n';
+  // resp += '\t ✅ *Fun*. Play a Tower Defense game focused on strategy. \n\n';
+  // resp +=
+  //   '*Try it out*: run /game in a group to compete against other players and earn rewards.';
+
+  let resp = '*@webdollar_tip_bot bot has been updated:*\n\n';
+  resp += ' \t ✅ Added a 24 hour wait period for withdraws. \n\n';
   resp +=
-    '\t ✅ *Rewards*. You are receiving WEBD each time you get a new highscore. \n\n';
+    ' \t ✅ Created a cold storage wallet `WEBD$gCpXBKwTGPJ+A2HpEAN6FPsJaBPTtCzeez$` to increase security. \n\n';
   resp +=
-    '\t ✅ *Compete*. Top players for each group are shown publicly. \n\n';
-  resp += '\t ✅ *Fun*. Play a Tower Defense game focused on strategy. \n\n';
+    ' \t ✅ Launched the 👻 Haunted Tower /game. Find out more in the dedicated channel: https://t.me/hauntedtower. \n\n';
   resp +=
     '*Try it out*: run /game in a group to compete against other players and earn rewards.';
 
@@ -106,7 +115,7 @@ function sleep(ms) {
 
     // only me (@morion4000)
     if (found_user.telegram_id !== '528354447') {
-      continue;
+      // continue;
     }
 
     console.log(found_user.id, found_user.telegram_username);
@@ -137,6 +146,6 @@ function sleep(ms) {
 
     // To avoid getting blocked by Telegram
     // https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
-    sleep(10000);
+    await sleep(1000);
   }
 })();
