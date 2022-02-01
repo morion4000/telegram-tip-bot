@@ -9,6 +9,9 @@ module.exports = {
   telegram: {
     token: process.env.TELEGRAM_TOKEN_DEV,
   },
+  redis: {
+    connection_string: 'redis://@localhost:6379/0',
+  },
   game: {
     id: 'hauntedtower',
     url: 'https://a0e3-79-119-254-64.ngrok.io',

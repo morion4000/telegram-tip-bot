@@ -9,6 +9,9 @@ module.exports = {
   telegram: {
     token: process.env.TELEGRAM_TOKEN,
   },
+  redis: {
+    connection_string: process.env.REDIS_CONNECTION_STRING,
+  },
   game: {
     id: 'hauntedtower',
     url: 'https://telegram.hauntedtower.com',
