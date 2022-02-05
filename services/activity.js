@@ -1,3 +1,6 @@
+const redis = require('redis');
+const config = require('./../config');
+
 const DEFAULT_ACTIVITY_INTERVAL_MINUTES = 60;
 
 class Activity {
@@ -5,6 +8,13 @@ class Activity {
     this.activities = [];
     this.stale_after_minutes = 60 * 12; // Do not keep activity more than 12 hours
     this.clean_interval_ms = 30 * 60 * 1000; // Clean every half an hour
+
+    this.client = redis.createClient(config.redis.connection_string);
+
+    this.client.on('connect', () => console.log('[ACTIVITY] Redis connected'));
+    this.client.on('error', (err) => console.log('Redis Client Error', err));
+
+    this.client.connect();
   }
 
   get size() {
@@ -44,6 +54,10 @@ class Activity {
   }
 
   add(channel_id, user_id, user_name, message_size = 0, time = new Date()) {
+    const unix = time.getTime();
+
+    this.client.hSet(channel_id, user_id, unix);
+
     this.activities.push({
       channel_id,
       user_id,

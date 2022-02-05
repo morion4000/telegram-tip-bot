@@ -60,19 +60,19 @@ class Game {
           }
         );
 
-        this.bot
-          .sendMessage(
-            config.game.telegram_channel,
-            `🎮 New reward: @${from.username} received ${format_number(
-              score
-            )} WEBD`,
-            {
-              // parse_mode: 'Markdown',
-              disable_web_page_preview: true,
-              disable_notification: true,
-            }
-          )
-          .catch(console.error);
+        // this.bot
+        //   .sendMessage(
+        //     config.game.telegram_channel,
+        //     `🎮 New reward: @${from.username} received ${format_number(
+        //       score
+        //     )} WEBD`,
+        //     {
+        //       // parse_mode: 'Markdown',
+        //       disable_web_page_preview: true,
+        //       disable_notification: true,
+        //     }
+        //   )
+        //   .catch(console.error);
       } catch (err) {
         console.error(err.message);
 
