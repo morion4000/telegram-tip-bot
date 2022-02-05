@@ -6,9 +6,10 @@ const DEFAULT_ACTIVITY_INTERVAL_MINUTES = 60;
 class Activity {
   constructor() {
     this.activities = [];
-    this.stale_after_minutes = 60 * 12; // Do not keep activity more than 12 hours
+    this.stale_after_minutes = 60 * 24 * 7; // Do not keep activity more than 7 days
     this.clean_interval_ms = 30 * 60 * 1000; // Clean every half an hour
 
+    // TODO: Use redis service
     this.client = redis.createClient(config.redis);
 
     this.client.on('ready', () => console.log('[ACTIVITY] Redis connected'));
@@ -55,10 +56,28 @@ class Activity {
     );
   }
 
-  add(channel_id, user_id, user_name, message_size = 0, time = new Date()) {
+  async add(
+    channel_id,
+    user_id,
+    user_name,
+    message_size = 0,
+    time = new Date()
+  ) {
     const unix = time.getTime();
+    const key = `activity_${channel_id}_${user_id}_${unix}`;
 
-    this.client.hSet(channel_id, user_id, unix);
+    await this.client.set(
+      key,
+      JSON.stringify({
+        channel_id,
+        user_id,
+        user_name,
+        message_size,
+        time,
+      })
+    );
+
+    await this.client.expire(key, this.stale_after_minutes * 60);
 
     this.activities.push({
       channel_id,
@@ -69,11 +88,18 @@ class Activity {
     });
   }
 
-  get_activities_for_channel(
+  async get_activities_for_channel(
     channel_id,
     exclude_user_id = null,
     interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
   ) {
+    // this.client.keys(`activity_${channel_id}_*`, (err, keys) => {
+    //   if (err) {
+    //     console.log(`[ACTIVITY] Error getting keys: ${err}`);
+    //     return;
+    //   }
+    // });
+
     return this.activities.filter(
       (activity) =>
         activity.channel_id === channel_id &&
