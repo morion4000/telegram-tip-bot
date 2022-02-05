@@ -78,17 +78,13 @@ module.exports = (bot, activity) => async (msg, match) => {
     // activity.add(msg.chat.id, '12221', 'testing123453', 5);
     // activity.add(msg.chat.id, '12222', 'testing123455', 7);
 
-    const grouped_activities =
-      activity.get_activities_for_channel_grouped_by_user(
-        msg.chat.id,
-        msg.from.id,
-        duration_minutes
-      );
-    const activities = activity.get_activities_for_channel(
+    const activities = await activity.get_activities_for_channel(
       msg.chat.id,
       msg.from.id,
       duration_minutes
     );
+
+    const grouped_activities = activity.group_by_user(activities);
     const users = Object.keys(grouped_activities).length;
     const total_score = activities.reduce(
       (acc, cur) => acc + cur.message_size,

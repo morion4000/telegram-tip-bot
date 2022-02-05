@@ -5,9 +5,8 @@ const DEFAULT_ACTIVITY_INTERVAL_MINUTES = 60;
 
 class Activity {
   constructor() {
-    this.activities = [];
-    this.stale_after_minutes = 60 * 24 * 7; // Do not keep activity more than 7 days
-    this.clean_interval_ms = 30 * 60 * 1000; // Clean every half an hour
+    // Do not keep activity more than 7 days
+    this.stale_after_minutes = 60 * 24 * 7;
 
     // TODO: Use redis service
     this.client = redis.createClient(config.redis);
@@ -18,42 +17,6 @@ class Activity {
     );
 
     this.client.connect();
-  }
-
-  get size() {
-    return this.activities.length;
-  }
-
-  get channels() {
-    return [...new Set(this.activities.map((a) => a.channel_id))].length;
-  }
-
-  get last_activity() {
-    return this.activities[this.activities.length - 1];
-  }
-
-  watch() {
-    console.log(`[ACTIVITY] Started watching: ${this.clean_interval_ms}ms`);
-
-    this.clean_interval = setInterval(() => {
-      const old_size = this.size;
-
-      this.clean();
-
-      console.log(`[ACTIVITY] Ran clean: ${old_size} => ${this.size}`);
-    }, this.clean_interval_ms);
-  }
-
-  prune() {
-    this.activities = [];
-  }
-
-  clean() {
-    this.activities = this.activities.filter(
-      (activity) =>
-        activity.time >
-        new Date(Date.now() - this.stale_after_minutes * 60 * 1000)
-    );
   }
 
   async add(
@@ -78,14 +41,6 @@ class Activity {
     );
 
     await this.client.expire(key, this.stale_after_minutes * 60);
-
-    this.activities.push({
-      channel_id,
-      user_id,
-      user_name,
-      message_size,
-      time,
-    });
   }
 
   async get_activities_for_channel(
@@ -93,31 +48,42 @@ class Activity {
     exclude_user_id = null,
     interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
   ) {
-    // this.client.keys(`activity_${channel_id}_*`, (err, keys) => {
-    //   if (err) {
-    //     console.log(`[ACTIVITY] Error getting keys: ${err}`);
-    //     return;
-    //   }
-    // });
+    const activities = [];
 
-    return this.activities.filter(
-      (activity) =>
-        activity.channel_id === channel_id &&
-        activity.user_id !== exclude_user_id &&
-        activity.time > new Date(Date.now() - interval_minutes * 60 * 1000)
-    );
+    for await (const key of this.client.scanIterator({
+      MATCH: `activity_${channel_id}_*`,
+      // COUNT: 1000,
+    })) {
+      // FIXME: Use the timestamp in key for faster filtration
+      const activityRaw = await this.client.get(key);
+
+      try {
+        if (!activityRaw) {
+          throw new Error('Activity is empty');
+        }
+
+        const activity = JSON.parse(activityRaw);
+
+        if (
+          new Date(activity.time) >
+          new Date(Date.now() - interval_minutes * 60 * 1000)
+        ) {
+          if (exclude_user_id && exclude_user_id === activity.user_id) {
+            continue;
+          }
+
+          activities.push(activity);
+        }
+      } catch (err) {
+        console.log(`[ACTIVITY] Error parsing activity: ${err}`);
+      }
+    }
+
+    return activities;
   }
 
-  get_activities_for_channel_grouped_by_user(
-    channel_id,
-    exclude_user_id = null,
-    interval_minutes = DEFAULT_ACTIVITY_INTERVAL_MINUTES
-  ) {
-    return this.get_activities_for_channel(
-      channel_id,
-      exclude_user_id,
-      interval_minutes
-    ).reduce((acc, activity) => {
+  group_by_user(activities) {
+    return activities.reduce((acc, activity) => {
       if (!acc[activity.user_id]) {
         acc[activity.user_id] = [];
       }

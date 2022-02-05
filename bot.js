@@ -23,12 +23,10 @@ const bot = new TelegramBot(config.telegram.token, {
 const activity = new Activity();
 const queries = {};
 
-// To clear activity backlog
-activity.watch();
-
 const start_command = commands.start(bot);
 const tip_empty_command = commands.tip_empty(bot);
 const tip_command = commands.tip(bot);
+// FIXME: Read activity in the command directly
 const rain_command = commands.rain(bot, activity);
 const balance_command = commands.balance(bot);
 const deposit_command = commands.deposit(bot);
@@ -71,10 +69,11 @@ bot.on('message', async (msg) => {
 
     const message_size = msg.text ? msg.text.length : 0;
 
-    activity.add(msg.chat.id, msg.from.id, msg.from.username, message_size);
-
-    console.log(
-      `[ACTIVITY] New event (size: ${activity.size}, channels: ${activity.channels})`
+    await activity.add(
+      msg.chat.id,
+      msg.from.id,
+      msg.from.username,
+      message_size
     );
   }
 
