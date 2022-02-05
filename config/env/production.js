@@ -10,7 +10,10 @@ module.exports = {
     token: process.env.TELEGRAM_TOKEN,
   },
   redis: {
-    connection_string: process.env.REDIS_CONNECTION_STRING,
+    socket: {
+      host: process.env.REDIS_HOSTNAME,
+    },
+    password: process.env.REDIS_PASSWORD,
   },
   game: {
     id: 'hauntedtower',
