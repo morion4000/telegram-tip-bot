@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 const TelegramBot = require('node-telegram-bot-api');
+const redis = require('redis');
+
 const config = require('./config');
 const commands = require('./commands');
 // const sequelize = require('./models').sequelize;
@@ -20,6 +22,15 @@ const bot = new TelegramBot(config.telegram.token, {
   polling: true,
 });
 
+// FIXME: Use Redis service
+const redisClient = redis.createClient(config.redis);
+
+redisClient.on('ready', () => console.log('[ACTIVITY] Redis connected'));
+redisClient.on('error', (err) =>
+  console.log('[ACTIVITY] Redis Client Error', err)
+);
+
+this.client.connect();
 const activity = new Activity();
 const queries = {};
 
@@ -69,12 +80,9 @@ bot.on('message', async (msg) => {
 
     const message_size = msg.text ? msg.text.length : 0;
 
-    await activity.add(
-      msg.chat.id,
-      msg.from.id,
-      msg.from.username,
-      message_size
-    );
+    activity
+      .add(msg.chat.id, msg.from.id, msg.from.username, message_size)
+      .catch(console.error);
   }
 
   // For debugging
@@ -94,6 +102,8 @@ bot.on('callback_query', function (q) {
   console.log(`[CALLBACK] query: ${q.id}, url: ${url}, message: ${message}`);
 
   queries[q.id] = q;
+
+  redisClient.set(`query_${q.id}`, JSON.stringify(q));
 
   bot.answerCallbackQuery(q.id, { url });
 });
