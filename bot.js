@@ -29,8 +29,8 @@ redisClient.on('ready', () => console.log('[ACTIVITY] Redis connected'));
 redisClient.on('error', (err) =>
   console.log('[ACTIVITY] Redis Client Error', err)
 );
+redisClient.connect();
 
-this.client.connect();
 const activity = new Activity();
 const queries = {};
 
