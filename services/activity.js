@@ -39,10 +39,9 @@ class Activity {
   ) {
     const activities = [];
 
-    for await (const key of this.redis.scanIterator({
-      MATCH: `activity_${channel_id}_*`,
-      // COUNT: 1000,
-    })) {
+    for await (const key of this.redis.scanIterator(
+      `activity_${channel_id}_*`
+    )) {
       // FIXME: Use the timestamp in key for faster filtration
       const activityRaw = await this.redis.get(key);
 

@@ -80,10 +80,10 @@ module.exports = (bot) => async (msg, match) => {
     }
 
     // Testing
-    // activity.add(msg.chat.id, msg.from.id, msg.from.username, 1);
-    // activity.add(msg.chat.id, '12221', 'testing123453', 3);
-    // activity.add(msg.chat.id, '12221', 'testing123453', 5);
-    // activity.add(msg.chat.id, '12222', 'testing123455', 7);
+    // await activity.add(msg.chat.id, msg.from.id, msg.from.username, 1);
+    // await activity.add(msg.chat.id, '12221', 'testing123453', 3);
+    // await activity.add(msg.chat.id, '12221', 'testing123453', 5);
+    // await activity.add(msg.chat.id, '12222', 'testing123455', 7);
 
     const activities = await activity.get_activities_for_channel(
       msg.chat.id,
