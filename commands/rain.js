@@ -16,12 +16,6 @@ const {
   convert_to_usd,
 } = require('./../utils');
 
-const telegram = new Telegram();
-const redis = new Redis();
-const activity = new Activity(redis);
-
-redis.connect();
-
 module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
@@ -39,6 +33,11 @@ module.exports = (bot) => async (msg, match) => {
       msg.from.username
     );
     let rewards = [];
+    const telegram = new Telegram();
+    const redis = new Redis();
+    const activity = new Activity(redis);
+
+    await redis.connect();
 
     if (duration > 12) {
       await telegram.send_message(
@@ -236,6 +235,8 @@ module.exports = (bot) => async (msg, match) => {
           console.debug(JSON.stringify(message));
           console.error(error.message);
         });
+
+      await redis.quit();
     }
   } catch (e) {
     console.error(e);
