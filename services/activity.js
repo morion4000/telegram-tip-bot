@@ -1,22 +1,11 @@
-const redis = require('redis');
-const config = require('./../config');
-
 const DEFAULT_ACTIVITY_INTERVAL_MINUTES = 60;
 
 class Activity {
-  constructor() {
+  constructor(redis) {
     // Do not keep activity more than 7 days
     this.stale_after_minutes = 60 * 24 * 7;
 
-    // TODO: Use redis service
-    this.client = redis.createClient(config.redis);
-
-    this.client.on('ready', () => console.log('[ACTIVITY] Redis connected'));
-    this.client.on('error', (err) =>
-      console.log('[ACTIVITY] Redis Client Error', err)
-    );
-
-    this.client.connect();
+    this.redis = redis;
   }
 
   async add(
@@ -29,7 +18,7 @@ class Activity {
     const unix = time.getTime();
     const key = `activity_${channel_id}_${user_id}_${unix}`;
 
-    await this.client.set(
+    await this.redis.set(
       key,
       JSON.stringify({
         channel_id,
@@ -40,7 +29,7 @@ class Activity {
       })
     );
 
-    await this.client.expire(key, this.stale_after_minutes * 60);
+    await this.redis.expire(key, this.stale_after_minutes * 60);
   }
 
   async get_activities_for_channel(
@@ -50,12 +39,12 @@ class Activity {
   ) {
     const activities = [];
 
-    for await (const key of this.client.scanIterator({
+    for await (const key of this.redis.scanIterator({
       MATCH: `activity_${channel_id}_*`,
       // COUNT: 1000,
     })) {
       // FIXME: Use the timestamp in key for faster filtration
-      const activityRaw = await this.client.get(key);
+      const activityRaw = await this.redis.get(key);
 
       try {
         if (!activityRaw) {

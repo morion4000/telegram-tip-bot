@@ -49,4 +49,8 @@ module.exports = class Telegram {
       reply_markup,
     });
   }
+
+  setGameScore(userId, score, options = {}) {
+    return this.bot.setGameScore(userId, score, options);
+  }
 };

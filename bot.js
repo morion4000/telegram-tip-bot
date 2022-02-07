@@ -1,12 +1,12 @@
 require('dotenv').config();
 
 const TelegramBot = require('node-telegram-bot-api');
-const redis = require('redis');
 
 const config = require('./config');
 const commands = require('./commands');
 // const sequelize = require('./models').sequelize;
 const { Activity } = require('./services/activity');
+const Redis = require('./services/redis');
 const { update_username } = require('./utils');
 
 // sequelize
@@ -22,23 +22,15 @@ const bot = new TelegramBot(config.telegram.token, {
   polling: true,
 });
 
-// FIXME: Use Redis service
-const redisClient = redis.createClient(config.redis);
+const redis = new Redis();
+const activity = new Activity(redis);
 
-redisClient.on('ready', () => console.log('[ACTIVITY] Redis connected'));
-redisClient.on('error', (err) =>
-  console.log('[ACTIVITY] Redis Client Error', err)
-);
-redisClient.connect();
-
-const activity = new Activity();
-const queries = {};
+redis.connect();
 
 const start_command = commands.start(bot);
 const tip_empty_command = commands.tip_empty(bot);
 const tip_command = commands.tip(bot);
-// FIXME: Read activity in the command directly
-const rain_command = commands.rain(bot, activity);
+const rain_command = commands.rain(bot);
 const balance_command = commands.balance(bot);
 const deposit_command = commands.deposit(bot);
 const withdraw_command = commands.withdraw(bot);
@@ -97,13 +89,13 @@ bot.on('inline_query', function (iq) {
 
 bot.on('callback_query', function (q) {
   const url = `${config.game.url}/#query=${q.id}`;
+  const key = `query_${q.id}`;
   const message = q.message ? q.message.message_id : null;
 
   console.log(`[CALLBACK] query: ${q.id}, url: ${url}, message: ${message}`);
 
-  queries[q.id] = q;
-
-  redisClient.set(`query_${q.id}`, JSON.stringify(q));
+  redis.set(key, JSON.stringify(q));
+  redis.expire(key, 60 * 60 * 24 * 30); // 1 month
 
   bot.answerCallbackQuery(q.id, { url });
 });
@@ -226,4 +218,4 @@ bot.onText(
 bot.onText(/\/lotteryfaq@webdollar_tip_bot$/, lotteryfaq_command);
 bot.onText(/\/lotteryhistory@webdollar_tip_bot$/, lotteryhistory_command);
 
-module.exports = { queries, bot };
+module.exports = { bot };

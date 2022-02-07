@@ -1,8 +1,12 @@
+const config = require('./../config');
 const user = require('./../models').user;
 const tip = require('./../models').tip;
 const Telegram = require('./../services/telegram');
-const { DEFAULT_ACTIVITY_INTERVAL_MINUTES } = require('./../services/activity');
-const config = require('./../config');
+const Redis = require('./../services/redis');
+const {
+  Activity,
+  DEFAULT_ACTIVITY_INTERVAL_MINUTES,
+} = require('./../services/activity');
 const {
   check_public_message,
   extract_amount,
@@ -12,7 +16,13 @@ const {
   convert_to_usd,
 } = require('./../utils');
 
-module.exports = (bot, activity) => async (msg, match) => {
+const telegram = new Telegram();
+const redis = new Redis();
+const activity = new Activity(redis);
+
+redis.connect();
+
+module.exports = (bot) => async (msg, match) => {
   console.log(msg.text, msg.chat.id);
 
   try {
@@ -24,13 +34,11 @@ module.exports = (bot, activity) => async (msg, match) => {
     const duration_minutes = duration
       ? duration * 60
       : DEFAULT_ACTIVITY_INTERVAL_MINUTES;
-    const telegram = new Telegram();
-    let rewards = [];
-
     const found_user = await find_user_by_id_or_username(
       msg.from.id,
       msg.from.username
     );
+    let rewards = [];
 
     if (duration > 12) {
       await telegram.send_message(

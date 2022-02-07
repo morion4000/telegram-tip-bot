@@ -46,8 +46,5 @@ app.get('/v1/prices', (req, res, next) => res.send(config.topup));
 app.listen(port, () => {
   console.log(`App listening on ${port}`);
 
-  const bot = require('./bot');
-
-  game.queries = bot.queries;
-  game.bot = bot.bot;
+  const { bot } = require('./bot');
 });

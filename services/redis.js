@@ -1,7 +1,7 @@
 const redis = require('redis');
 const config = require('./../config');
 
-module.exports = class Telegram {
+module.exports = class Redis {
   constructor() {
     this.client = redis.createClient(config.redis);
 
@@ -17,13 +17,21 @@ module.exports = class Telegram {
     return this.client.set(key, value);
   }
 
-  expires(key, seconds) {
+  get(key) {
+    return this.client.get(key);
+  }
+
+  expire(key, seconds) {
     return this.client.expire(key, seconds);
+  }
+
+  quit() {
+    return this.client.quit();
   }
 
   scanIterator(match) {
     return this.client.scanIterator({
-      MATCH: math,
+      MATCH: match,
       // COUNT: 1000,
     });
   }

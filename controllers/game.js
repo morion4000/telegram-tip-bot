@@ -1,22 +1,28 @@
 const config = require('./../config');
 const log_model = require('./../models').log.model;
+const Telegram = require('./../services/telegram');
+const Redis = require('./../services/redis');
 const { transfer_reward, format_number } = require('./../utils');
 
 class Game {
   constructor() {
-    this.queries = {};
-    this.bot = null;
+    this.telegram = new Telegram();
+    this.redis = new Redis();
+
+    this.redis.connect();
   }
 
   async scores(req, res, next) {
     console.log(`POST /game/scores`);
 
-    const query = req.headers ? req.headers.query : null;
+    const queryId = req.headers ? req.headers.query : null;
     const score = req.body ? parseInt(req.body.score) : null;
+    const key = await this.redis.get(`query_${queryId}`);
 
-    if (query && score && this.queries.hasOwnProperty(query)) {
+    if (queryId && score && key) {
       try {
-        const { from, message, inline_message_id } = this.queries[query];
+        const query = JSON.parse(key);
+        const { from, message, inline_message_id } = query;
         const options = {};
 
         if (req.get('origin') !== config.game.telegram_origin) {
@@ -34,7 +40,7 @@ class Game {
           options.inline_message_id = inline_message_id;
         }
 
-        await this.bot.setGameScore(from.id, score, options);
+        await this.telegram.setGameScore(from.id, score, options);
 
         const { user, balance, new_balance } = await transfer_reward(
           from.username,
@@ -59,20 +65,6 @@ class Game {
             logging: false,
           }
         );
-
-        // this.bot
-        //   .sendMessage(
-        //     config.game.telegram_channel,
-        //     `🎮 New reward: @${from.username} received ${format_number(
-        //       score
-        //     )} WEBD`,
-        //     {
-        //       // parse_mode: 'Markdown',
-        //       disable_web_page_preview: true,
-        //       disable_notification: true,
-        //     }
-        //   )
-        //   .catch(console.error);
       } catch (err) {
         console.error(err.message);
 
