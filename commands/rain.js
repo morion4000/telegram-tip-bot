@@ -90,7 +90,6 @@ module.exports = (bot) => async (msg, match) => {
       msg.from.id,
       duration_minutes
     );
-
     const grouped_activities = activity.group_by_user(activities);
     const users = Object.keys(grouped_activities).length;
     const total_score = activities.reduce(
