@@ -42,10 +42,10 @@ class Activity {
     for await (const key of this.redis.scanIterator(
       `activity_${channel_id}_*`
     )) {
-      // FIXME: Use the timestamp in key for faster filtration
-      const activityRaw = await this.redis.get(key);
-
       try {
+        // FIXME: Use the timestamp in key for faster filtration
+        const activityRaw = await this.redis.get(key);
+
         if (!activityRaw) {
           throw new Error('Activity is empty');
         }
