@@ -57,27 +57,29 @@ exports.handler = async function (event) {
     });
   }
 
-  const message = `👻 Haunted Tower rewarded *${format_number(
-    amount
-  )}* WEBD to *${
-    Object.entries(users_rewards).length
-  }* users that played in the past day.`;
+  if (amount > 0) {
+    const message = `👻 Haunted Tower rewarded *${format_number(
+      amount
+    )}* WEBD to *${
+      Object.entries(users_rewards).length
+    }* users that played in the past day.`;
 
-  await telegram.send_message(
-    config.game.telegram_channel,
-    message,
-    Telegram.PARSE_MODE.MARKDOWN
-  );
+    await telegram.send_message(
+      config.game.telegram_channel,
+      message,
+      Telegram.PARSE_MODE.MARKDOWN
+    );
 
-  await telegram.send_message(
-    config.game.telegram_channel,
-    rewards
-      .sort((a, b) => a.amount - b.amount)
-      .reverse()
-      .map((r) => r.message)
-      .join(' ▫️ '),
-    Telegram.PARSE_MODE.MARKDOWN
-  );
+    await telegram.send_message(
+      config.game.telegram_channel,
+      rewards
+        .sort((a, b) => a.amount - b.amount)
+        .reverse()
+        .map((r) => r.message)
+        .join(' ▫️ '),
+      Telegram.PARSE_MODE.MARKDOWN
+    );
+  }
 
   return {
     message: `Found ${logs.length} logs`,
