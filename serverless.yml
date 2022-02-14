@@ -125,3 +125,11 @@ functions:
       - schedule: rate(60 minutes)
     environment:
       NODE_ENV: production
+
+  show_game_rewards:
+    memorySize: 256
+    handler: workers/show_game_rewards.handler
+    events:
+      - schedule: cron(0 13 * * ? *)
+    environment:
+      NODE_ENV: production
