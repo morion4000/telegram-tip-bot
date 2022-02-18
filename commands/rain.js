@@ -14,6 +14,7 @@ const {
   format_number,
   find_user_by_id_or_username,
   convert_to_usd,
+  array_chunks,
 } = require('./../utils');
 
 module.exports = (bot) => async (msg, match) => {
@@ -38,6 +39,13 @@ module.exports = (bot) => async (msg, match) => {
     const activity = new Activity(redis);
 
     await redis.connect();
+
+    // Testing
+    // await activity.add(msg.chat.id, msg.from.id, msg.from.username, 1);
+    // for (let i = 0; i < 110; i++) {
+    //   await activity.add(msg.chat.id, i, `test${i}`, i);
+    // }
+    // return;
 
     if (duration > 12) {
       await telegram.send_message(
@@ -79,12 +87,6 @@ module.exports = (bot) => async (msg, match) => {
       throw new Error('Not enough balance');
     }
 
-    // Testing
-    // await activity.add(msg.chat.id, msg.from.id, msg.from.username, 1);
-    // await activity.add(msg.chat.id, '12221', 'testing123453', 3);
-    // await activity.add(msg.chat.id, '12221', 'testing123453', 5);
-    // await activity.add(msg.chat.id, '12222', 'testing123455', 7);
-
     const activities = await activity.get_activities_for_channel(
       msg.chat.id,
       msg.from.id,
@@ -92,10 +94,11 @@ module.exports = (bot) => async (msg, match) => {
     );
     const grouped_activities = activity.group_by_user(activities);
     const users = Object.keys(grouped_activities).length;
-    const total_score = activities.reduce(
-      (acc, cur) => acc + cur.message_size,
-      0
-    );
+    // TODO: Better scoring mechanism
+    // const total_score = activities.reduce(
+    //   (acc, cur) => acc + cur.message_size,
+    //   0
+    // );
 
     if (activities.length === 0) {
       await telegram.send_message(
@@ -135,10 +138,11 @@ module.exports = (bot) => async (msg, match) => {
     for (const [user_id, user_activities] of Object.entries(
       grouped_activities
     )) {
-      const user_score = user_activities.reduce(
-        (acc, cur) => acc + cur.message_size,
-        0
-      );
+      // TODO: Better scoring mechanism
+      // const user_score = user_activities.reduce(
+      //   (acc, cur) => acc + cur.message_size,
+      //   0
+      // );
       //const user_percentage = (user_score / total_score) * 100;
       const user_percentage =
         (user_activities.length / activities.length) * 100;
@@ -189,14 +193,6 @@ module.exports = (bot) => async (msg, match) => {
         to_user: _found_user.id,
       });
 
-      // await telegram.send_message(
-      //   msg.chat.id,
-      //   `💰 [@${user_display_name}](tg://user?id=${user_id}) received *${format_number(
-      //     user_amount
-      //   )}* WEBD ($${format_number(user_amount_usd)})`,
-      //   Telegram.PARSE_MODE.MARKDOWN
-      // );
-
       rewards.push({
         amount: user_amount,
         message: `[@${user_display_name}](tg://user?id=${user_id}) got *${format_number(
@@ -220,20 +216,23 @@ module.exports = (bot) => async (msg, match) => {
     }
 
     if (rewards.length) {
-      telegram
-        .send_message(
-          msg.chat.id,
-          rewards
-            .sort((a, b) => a.amount - b.amount)
-            .reverse()
-            .map((r) => r.message)
-            .join(' ▫️ '),
-          Telegram.PARSE_MODE.MARKDOWN
-        )
-        .catch((error) => {
-          console.debug(JSON.stringify(message));
-          console.error(error.message);
-        });
+      rewards = rewards.sort((a, b) => a.amount - b.amount).reverse();
+
+      // 400 BAD_REQUEST MESSAGE_TOO_LONG Message was too long. Current maximum length is 4096 UTF8 characters
+      // https://stackoverflow.com/questions/55672791/how-to-extend-the-limit-for-reply-from-telegram-bot-and-what-is-the-limit-of-rep
+      // Issue with sending a message with a lot of text
+      const rewards_chunks = array_chunks(rewards, 100);
+
+      for (const rewards_chunk of rewards_chunks) {
+        const message = rewards_chunk.map((r) => r.message).join(' ▫️ ');
+
+        telegram
+          .send_message(msg.chat.id, message, Telegram.PARSE_MODE.MARKDOWN)
+          .catch((error) => {
+            console.debug(JSON.stringify(message));
+            console.error(error.message);
+          });
+      }
 
       await redis.quit();
     }

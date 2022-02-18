@@ -1,4 +1,13 @@
 module.exports = {
+  mysql: {
+    connection_string: process.env.MYSQL_CONNECTION_STRING,
+    logging: console.log,
+    max_concurent_queries: 200,
+    pool: {
+      maxConnections: 20,
+      maxIdleTime: 30,
+    },
+  },
   paypal: {
     mode: 'live',
     client_id:
