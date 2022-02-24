@@ -58,11 +58,11 @@ exports.handler = async function (event) {
   }
 
   if (amount > 0) {
-    const message = `👻 Haunted Tower rewarded *${format_number(
-      amount
-    )}* WEBD to *${
+    const message = `ℹ️ *${
       Object.entries(users_rewards).length
-    }* users that played in the past day.`;
+    }* users have played 👻 Haunted Tower in the last 24 hours and received *${format_number(
+      amount
+    )}* WEBD.`;
 
     await telegram.send_message(
       config.game.telegram_channel,
