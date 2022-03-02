@@ -2,11 +2,15 @@ const transaction_model = require('./../models').transaction.model;
 const config = require('./../config');
 const axios = require('axios');
 
-const url = `https://webdchain.io:2053/address-txs?address=${encodeURIComponent(
+// const url = `https://webdchain.io:2053/address-txs?address=${encodeURIComponent(
+//   config.vault
+// )}`;
+
+const url = `http://webdexplorer.ddns.net:5555/address-txs?address=${encodeURIComponent(
   config.vault
 )}`;
 
-exports.handler = async function (event) {
+http: exports.handler = async function (event) {
   const response = await axios.get(url, {
     headers: {
       Accept: 'application/json',
