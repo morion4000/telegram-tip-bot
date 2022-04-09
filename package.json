@@ -17,7 +17,7 @@
     "express": "^4.17.1",
     "influxdb-nodejs": "^2.7.6",
     "mailgun-js": "^0.22.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "momentjs": "^2.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^1.7.0",
