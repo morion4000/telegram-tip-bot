@@ -202,9 +202,9 @@ module.exports = (bot) => async (msg, match) => {
 
       const private_message = `💦 You were rained *${format_number(
         user_amount
-      )}* WEBD ($${format_number(user_amount_usd)}) by [@${
-        msg.from.username
-      }](tg://user?id=${msg.from.id}). You can add more funds using /topup.`;
+      )}* WEBD by [@${msg.from.username}](tg://user?id=${
+        msg.from.id
+      }). You can add more funds using /topup.`;
 
       // Call will likely fail for users that blocked the bot
       telegram
