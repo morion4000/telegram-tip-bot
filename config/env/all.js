@@ -34,7 +34,8 @@ module.exports = {
     tier2_threshold: 1000000,
     tier3_threshold: 10000000,
   },
-  public_channels: [-1001310583642, -1001329381051, -1001510982248],
+  //   public_channels: [-1001310583642, -1001329381051, -1001510982248],
+  public_channels: [],
   mailgun: {
     key: process.env.MAILGUN_KEY,
     domain: 'mg.hostero.eu',
