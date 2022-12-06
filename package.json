@@ -24,7 +24,7 @@
     "node-telegram-bot-api": "^0.30.0",
     "numeral": "^2.0.6",
     "paypal-rest-sdk": "^1.8.1",
-    "qs": "^6.10.1",
+    "qs": "^6.10.3",
     "redis": "^4.0.3",
     "request": "^2.88.2",
     "scp2": "^0.5.0",
