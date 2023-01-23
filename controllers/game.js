@@ -2,7 +2,7 @@ const config = require('./../config');
 const log_model = require('./../models').log.model;
 const Telegram = require('./../services/telegram');
 const Redis = require('./../services/redis');
-const { transfer_reward, format_number } = require('./../utils');
+const { transfer_reward, format_number, decrypt } = require('./../utils');
 
 class Game {
   constructor() {
@@ -15,12 +15,15 @@ class Game {
   async scores(req, res, next) {
     console.log(`POST /game/scores`);
 
-    const secret = req.params ? req.params.secret : null;
     const queryId = req.headers ? req.headers.query : null;
+    const encrypted_message = req.headers ? req.headers.message : null;
     const score = req.body ? parseInt(req.body.score) : null;
     const key = await this.redis.get(`query_${queryId}`);
+    const scores_key = config.game.scores_key;
 
-    if (secret !== config.game.scores_secret) {
+    const decrypted_message = decrypt(scores_key, encrypted_message);
+
+    if (decrypted_message !== `${queryId}:${score}:${scores_key}`) {
       console.log('Game Error: Invalid secret');
 
       return res.status(400).send('Game Error: Invalid secret');

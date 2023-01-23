@@ -31,6 +31,6 @@ module.exports = {
     max_user_rewards: 50000,
     telegram_channel: -1001510982248,
     telegram_origin: 'https://telegram.hauntedtower.com',
-    scores_secret: process.env.SCORES_SECRET,
+    scores_key: process.env.SCORES_KEY,
   },
 };

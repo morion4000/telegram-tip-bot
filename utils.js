@@ -14,6 +14,33 @@ function format_number(number) {
     : numeral(number).format('0,0.00');
 }
 
+function xor(char, key) {
+  return String.fromCharCode(char ^ key);
+}
+
+function encrypt(key, plaintext) {
+  var ciphertext = '',
+    len = plaintext.length;
+
+  for (var i = 0; i < len; i++) {
+    ciphertext += xor(plaintext.charCodeAt(i), key[i]);
+  }
+
+  return ciphertext;
+}
+
+function decrypt(key, ciphertext) {
+  var plaintext = '',
+    key = key.split(''),
+    len = ciphertext.length;
+
+  for (var i = 0; i < len; i++) {
+    plaintext += xor(ciphertext.charCodeAt(i), key[i]);
+  }
+
+  return plaintext;
+}
+
 async function convert_to_usd(amount) {
   const webdollar = await coin_model.findOne({
     where: {
@@ -362,4 +389,7 @@ module.exports = {
   extract_amount,
   find_user_by_id_or_username,
   array_chunks,
+  encrypt,
+  decrypt,
+  xor,
 };
