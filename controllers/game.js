@@ -24,7 +24,11 @@ class Game {
     const decrypted_message = decrypt(scores_key, encrypted_message);
 
     if (decrypted_message !== `${queryId}:${score}:${scores_key}`) {
-      console.log('Game Error: Invalid secret');
+      console.log(
+        'Game Error: Invalid secret',
+        encrypted_message,
+        decrypted_message
+      );
 
       return res.status(400).send('Game Error: Invalid secret');
     }

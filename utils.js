@@ -18,7 +18,7 @@ function xor(char, key) {
   return String.fromCharCode(char ^ key);
 }
 
-function encrypt(key, plaintext) {
+function encrypt(key = '', plaintext = '') {
   var ciphertext = '',
     len = plaintext.length;
 
@@ -29,7 +29,7 @@ function encrypt(key, plaintext) {
   return ciphertext;
 }
 
-function decrypt(key, ciphertext) {
+function decrypt(key = '', ciphertext = '') {
   var plaintext = '',
     key = key.split(''),
     len = ciphertext.length;
