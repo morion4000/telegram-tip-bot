@@ -9,7 +9,7 @@ const bot = new TelegramBot(config.telegram.token, {
 
 const user = '528354447'; // morion4000
 // const message = '8468'; // hauntedtower channel
-const message = '595558'; // webdollar channel
+const message = '595575'; // webdollar channel
 // const chat = '-1001510982248'; // hauntedtower channel
 const chat = '-1001347111227'; // webdollar channel
 
@@ -24,7 +24,9 @@ async function run() {
       `${score.position}\t${score.user.id} (${score.user.username})\t\t\t${score.score}`
     );
 
-    continue;
+    if (score.user.id !== 1169198680) {
+      continue;
+    }
 
     try {
       await bot.setGameScore(score.user.id, 0, {
