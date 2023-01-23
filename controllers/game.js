@@ -15,9 +15,16 @@ class Game {
   async scores(req, res, next) {
     console.log(`POST /game/scores`);
 
+    const secret = req.params ? req.params.secret : null;
     const queryId = req.headers ? req.headers.query : null;
     const score = req.body ? parseInt(req.body.score) : null;
     const key = await this.redis.get(`query_${queryId}`);
+
+    if (secret !== config.game.scores_secret) {
+      console.log('Game Error: Invalid secret');
+
+      return res.status(400).send('Game Error: Invalid secret');
+    }
 
     if (queryId && score && key) {
       try {

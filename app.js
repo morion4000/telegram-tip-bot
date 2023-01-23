@@ -30,7 +30,7 @@ app.post(
 
 app.post('/webhooks/paypal', bodyParser.json(), webhooks.paypal.bind(webhooks));
 app.post(
-  '/game/scores',
+  '/game/scores/:secret',
   cors({
     origin: config.game.telegram_origin,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

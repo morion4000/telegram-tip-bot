@@ -16,7 +16,7 @@ module.exports = {
     webhook_id: '8T272472T5937810F',
   },
   telegram: {
-    token: process.env.TELEGRAM_TOKEN_DEV,
+    token: process.env.TELEGRAM_TOKEN,
   },
   redis: {
     socket: {
@@ -30,5 +30,6 @@ module.exports = {
     max_user_rewards: 10000,
     telegram_channel: 528354447,
     telegram_origin: 'http://localhost:4200',
+    scores_secret: '913b780736ae384b556f8325079e9349',
   },
 };
