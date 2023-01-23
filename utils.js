@@ -1,11 +1,14 @@
 const numeral = require('numeral');
 const _ = require('underscore');
 const Sequelize = require('sequelize');
+const Cryptr = require('cryptr');
 
 const Telegram = require('./services/telegram');
 const user_model = require('./models').user.model;
 const coin_model = require('./models').coin.model;
 const config = require('./config');
+
+const cryptr = new Cryptr(config.game.scores_key);
 
 function format_number(number) {
   // Format number to 2 decimal places if float
@@ -14,31 +17,8 @@ function format_number(number) {
     : numeral(number).format('0,0.00');
 }
 
-function xor(char, key) {
-  return String.fromCharCode(char ^ key);
-}
-
-function encrypt(key = '', plaintext = '') {
-  var ciphertext = '',
-    len = plaintext.length;
-
-  for (var i = 0; i < len; i++) {
-    ciphertext += xor(plaintext.charCodeAt(i), key[i]);
-  }
-
-  return ciphertext;
-}
-
-function decrypt(key = '', ciphertext = '') {
-  var plaintext = '',
-    key = key.split(''),
-    len = ciphertext.length;
-
-  for (var i = 0; i < len; i++) {
-    plaintext += xor(ciphertext.charCodeAt(i), key[i]);
-  }
-
-  return plaintext;
+function decrypt(ciphertext = '') {
+  return cryptr.decrypt(ciphertext);
 }
 
 async function convert_to_usd(amount) {
@@ -389,7 +369,5 @@ module.exports = {
   extract_amount,
   find_user_by_id_or_username,
   array_chunks,
-  encrypt,
   decrypt,
-  xor,
 };
