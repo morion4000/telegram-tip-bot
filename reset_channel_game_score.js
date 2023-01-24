@@ -8,7 +8,7 @@ const bot = new TelegramBot(config.telegram.token, {
 });
 
 const user = '528354447'; // morion4000
-// const message = '8468'; // hauntedtower channel
+// const message = '8900'; // hauntedtower channel
 const message = '595575'; // webdollar channel
 // const chat = '-1001510982248'; // hauntedtower channel
 const chat = '-1001347111227'; // webdollar channel
