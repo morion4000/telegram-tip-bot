@@ -2,7 +2,7 @@ const config = require('./../config');
 const log_model = require('./../models').log.model;
 const Telegram = require('./../services/telegram');
 const Redis = require('./../services/redis');
-const { transfer_reward, format_number, decrypt } = require('./../utils');
+const { transfer_reward, decrypt } = require('./../utils');
 
 class Game {
   constructor() {
@@ -21,7 +21,7 @@ class Game {
     const key = await this.redis.get(`query_${queryId}`);
     const scores_key = config.game.scores_key;
 
-    const decrypted_message = decrypt(encrypted_message);
+    const decrypted_message = decrypt(scores_key, encrypted_message);
 
     if (decrypted_message !== `${queryId}:${score}:${scores_key}`) {
       console.log(

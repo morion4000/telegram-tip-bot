@@ -1,14 +1,12 @@
 const numeral = require('numeral');
 const _ = require('underscore');
 const Sequelize = require('sequelize');
-const Cryptr = require('cryptr');
+const AES = require('crypto-js/aes');
 
 const Telegram = require('./services/telegram');
 const user_model = require('./models').user.model;
 const coin_model = require('./models').coin.model;
 const config = require('./config');
-
-const cryptr = new Cryptr(config.game.scores_key);
 
 function format_number(number) {
   // Format number to 2 decimal places if float
@@ -17,8 +15,10 @@ function format_number(number) {
     : numeral(number).format('0,0.00');
 }
 
-function decrypt(ciphertext = '') {
-  return cryptr.decrypt(ciphertext);
+function decrypt(key = '', ciphertext = '') {
+  const bytes = AES.decrypt(ciphertext, key);
+
+  return bytes.toString(CryptoJS.enc.Utf8);
 }
 
 async function convert_to_usd(amount) {
