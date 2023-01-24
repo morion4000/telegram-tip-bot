@@ -1,7 +1,7 @@
 const numeral = require('numeral');
 const _ = require('underscore');
 const Sequelize = require('sequelize');
-const AES = require('crypto-js/aes');
+const CryptoJS = require('crypto-js');
 
 const Telegram = require('./services/telegram');
 const user_model = require('./models').user.model;
@@ -16,7 +16,7 @@ function format_number(number) {
 }
 
 function decrypt(key = '', ciphertext = '') {
-  const bytes = AES.decrypt(ciphertext, key);
+  const bytes = CryptoJS.AES.decrypt(ciphertext, key);
 
   return bytes.toString(CryptoJS.enc.Utf8);
 }
