@@ -16,9 +16,17 @@ function format_number(number) {
 }
 
 function decrypt(key = '', ciphertext = '') {
-  const bytes = CryptoJS.AES.decrypt(ciphertext, key);
+  const result = '';
 
-  return bytes.toString(CryptoJS.enc.Utf8);
+  try {
+    const bytes = CryptoJS.AES.decrypt(ciphertext, key);
+
+    result = bytes.toString(CryptoJS.enc.Utf8);
+  } catch (e) {
+    console.log('Error decrypting message', e, ciphertext, key);
+  }
+
+  return result;
 }
 
 async function convert_to_usd(amount) {
