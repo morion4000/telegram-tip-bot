@@ -23,7 +23,7 @@ function decrypt(key = '', ciphertext = '') {
 
     result = bytes.toString(CryptoJS.enc.Utf8);
   } catch (e) {
-    console.log('Error decrypting message', e, ciphertext, key);
+    console.log('Error decrypting message', e, ciphertext);
   }
 
   return result;
