@@ -16,7 +16,7 @@ function format_number(number) {
 }
 
 function decrypt(key = '', ciphertext = '') {
-  const result = '';
+  let result = '';
 
   try {
     const bytes = CryptoJS.AES.decrypt(ciphertext, key);
