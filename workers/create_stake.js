@@ -53,17 +53,27 @@ exports.handler = async function (event) {
   }
 
   const users = await user_model.findAll({
+    attributes: ['id'],
     logging: false,
   });
 
   console.log('found users', users.length);
 
   for (let i = 0; i < users.length; i++) {
-    const user = users[i];
+    const user = await user_model.findOne({
+      where: {
+        id: users[i].id,
+      },
+      logging: false,
+    });
 
     // if (user.telegram_id !== '528354447') {
     //   continue;
     // }
+
+    if (!user) {
+      continue;
+    }
 
     if (!user.telegram_id) {
       continue;
