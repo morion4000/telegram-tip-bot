@@ -54,6 +54,7 @@ exports.handler = async function (event) {
 
   const users = await user_model.findAll({
     attributes: ['id'],
+    order: [['balance', 'DESC']],
     logging: false,
   });
 
