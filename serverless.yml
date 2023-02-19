@@ -9,7 +9,7 @@ provider:
   runtime: nodejs12.x
   region: eu-central-1
   stage: ${opt:stage, 'prod'}
-  memorySize: 512
+  memorySize: 1024
   timeout: 900
   environment:
     MYSQL_CONNECTION_STRING: ${env:MYSQL_CONNECTION_STRING}
@@ -57,7 +57,7 @@ functions:
       NODE_ENV: production
 
   create_stake:
-    memorySize: 256
+    memorySize: 1024
     handler: workers/create_stake.handler
     events:
       - schedule: cron(0 10 * * ? *)
