@@ -1,6 +1,10 @@
 var user = require('./../models').user,
   transaction = require('./../models').transaction,
   config = require('./../config'),
+  mailgun = require('mailgun-js')({
+    apiKey: config.mailgun.key,
+    domain: config.mailgun.domain,
+  }),
   numeral = require('numeral'),
   _ = require('underscore'),
   Sequelize = require('sequelize');
@@ -139,14 +143,14 @@ var Command = function (bot) {
                   config.fees.withdraw +
                   ' WEBD';
 
-                /*
+                if (amount >= config.withdraws.alert_amount) {
                   mailgun.messages().send({
                     from: 'Hostero <no-reply@mg.hostero.eu>',
                     to: config.admin.email,
-                    subject: '[SYSTEM] NEW WITHDRAWAL - Telegram Tip Bot',
-                    text: resp
+                    subject: `[ALERT] NEW WITHDRAWAL: ${amount} WEBD`,
+                    text: resp,
                   });
-                  */
+                }
               }
             } else {
               resp = 'Configure your wallet first /setwallet';
