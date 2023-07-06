@@ -25,7 +25,7 @@ module.exports = {
   staking APR: 30% (90% POS)
   */
   staking: {
-    yearly_percentage: 5,
+    yearly_percentage: 2,
     yearly_percentage_tier1: 15,
     yearly_percentage_tier2: 20,
     yearly_percentage_tier3: 25,
