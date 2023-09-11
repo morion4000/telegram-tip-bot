@@ -17,9 +17,11 @@ class Game {
 
     const queryId = req.headers ? req.headers.query : null;
     const encrypted_message = req.headers ? req.headers.message : null;
-    const score = req.body ? parseInt(req.body.score) : null;
+    let score = req.body ? parseInt(req.body.score) : 0;
     const key = await this.redis.get(`query_${queryId}`);
     const scores_key = config.game.scores_key;
+
+    score = Math.round(score / 10);
 
     const decrypted_message = decrypt(scores_key, encrypted_message);
 
