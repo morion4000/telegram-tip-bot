@@ -88,9 +88,8 @@ exports.handler = async function (event) {
       (user.balance * config.staking.yearly_percentage) / 100 / 360
     );
 
-    // Allow staking with low amounts
     if (stake < 1) {
-      stake = 1;
+      continue;
     }
 
     const new_balance = user.balance + stake;

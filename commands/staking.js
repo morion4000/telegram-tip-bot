@@ -56,10 +56,15 @@ var Command = function (bot) {
         })
         .then(function (found_user) {
           if (found_user) {
-            resp +=
-              '📈 The staking reward is *' +
-              config.staking.yearly_percentage +
-              '%* per year, received daily.\n\n';
+            if (config.staking.yearly_percentage === 0) {
+              resp += '📈 Staking is disabled.\n\n';
+            } else {
+              resp +=
+                '📈 The staking reward is *' +
+                config.staking.yearly_percentage +
+                '%* per year, received daily.\n\n';
+            }
+
             resp += '💰 Latest 10 staking rewards:\n\n';
 
             log.model

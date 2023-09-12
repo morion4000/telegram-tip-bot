@@ -25,11 +25,11 @@ module.exports = {
   staking APR: 30% (90% POS)
   */
   staking: {
-    yearly_percentage: 2,
+    yearly_percentage: 0,
     yearly_percentage_tier1: 15,
     yearly_percentage_tier2: 20,
     yearly_percentage_tier3: 25,
-    threshold: 100000000000, // disable staking
+    threshold: 1,
     tier1_threshold: 10000,
     tier2_threshold: 1000000,
     tier3_threshold: 10000000,
