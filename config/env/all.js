@@ -84,7 +84,7 @@ module.exports = {
   },
   withdraws: {
     wait_time_hours: 24,
-    max_amount: 10000000,
+    max_amount: 200000000,
     alert_amount: 1000000,
   },
 };
