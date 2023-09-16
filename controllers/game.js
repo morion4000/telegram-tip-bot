@@ -17,12 +17,10 @@ class Game {
 
     const queryId = req.headers ? req.headers.query : null;
     const encrypted_message = req.headers ? req.headers.message : null;
-    let score = req.body ? parseInt(req.body.score) : 0;
+    const score = req.body ? parseInt(req.body.score) : 0;
+    const reward = Math.round(score / 10);
     const key = await this.redis.get(`query_${queryId}`);
     const scores_key = config.game.scores_key;
-
-    score = Math.round(score / 10);
-
     const decrypted_message = decrypt(scores_key, encrypted_message);
 
     if (decrypted_message !== `${queryId}:${score}:${scores_key}`) {
@@ -57,10 +55,10 @@ class Game {
         }
 
         await this.telegram.setGameScore(from.id, score, options);
-
+        
         const { user, balance, new_balance } = await transfer_reward(
           from.username,
-          score
+          reward
         );
 
         await log_model.create(
@@ -73,6 +71,7 @@ class Game {
               balance,
               new_balance,
               score,
+              reward,
               options,
             }),
             source: 'controllers.game',
