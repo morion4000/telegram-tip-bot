@@ -55,31 +55,33 @@ class Game {
         }
 
         await this.telegram.setGameScore(from.id, score, options);
-        
-        const { user, balance, new_balance } = await transfer_reward(
-          from.username,
-          reward
-        );
 
-        await log_model.create(
-          {
-            user_id: user.id,
-            event: 'reward',
-            message: 'New game reward',
-            extra_message: JSON.stringify({
-              game: 'hauntedtower',
-              balance,
-              new_balance,
-              score,
-              reward,
-              options,
-            }),
-            source: 'controllers.game',
-          },
-          {
-            logging: false,
-          }
-        );
+        if (reward > 0) {
+          const { user, balance, new_balance } = await transfer_reward(
+            from.username,
+            reward
+          );
+  
+          await log_model.create(
+            {
+              user_id: user.id,
+              event: 'reward',
+              message: 'New game reward',
+              extra_message: JSON.stringify({
+                game: 'hauntedtower',
+                balance,
+                new_balance,
+                score,
+                reward,
+                options,
+              }),
+              source: 'controllers.game',
+            },
+            {
+              logging: false,
+            }
+          );
+        }
       } catch (err) {
         console.error(err.message);
 
