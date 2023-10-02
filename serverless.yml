@@ -118,13 +118,13 @@ functions:
     environment:
       NODE_ENV: production
 
-  unlock_balances:
-    memorySize: 256
-    handler: workers/unlock_balances.handler
-    events:
-      - schedule: rate(60 minutes)
-    environment:
-      NODE_ENV: production
+  # unlock_balances:
+  #   memorySize: 256
+  #   handler: workers/unlock_balances.handler
+  #   events:
+  #     - schedule: rate(60 minutes)
+  #   environment:
+  #     NODE_ENV: production
 
   show_game_rewards:
     memorySize: 256
