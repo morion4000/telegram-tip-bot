@@ -24,29 +24,29 @@ provider:
     COINMARKETCAP_KEY: ${env:COINMARKETCAP_KEY}
 
 functions:
-  process_inbound_transactions:
-    memorySize: 256
-    handler: workers/process_inbound_transactions3.handler
-    events:
-      - schedule: rate(1 minute)
-    environment:
-      NODE_ENV: production
+  # process_inbound_transactions:
+  #   memorySize: 256
+  #   handler: workers/process_inbound_transactions3.handler
+  #   events:
+  #     - schedule: rate(1 minute)
+  #   environment:
+  #     NODE_ENV: production
 
-  process_outbound_transactions:
-    memorySize: 256
-    handler: workers/process_outbound_transactions3.handler
-    events:
-      - schedule: rate(1 minute)
-    environment:
-      NODE_ENV: production
+  # process_outbound_transactions:
+  #   memorySize: 256
+  #   handler: workers/process_outbound_transactions3.handler
+  #   events:
+  #     - schedule: rate(1 minute)
+  #   environment:
+  #     NODE_ENV: production
 
-  credit_accounts:
-    memorySize: 128
-    handler: workers/credit_accounts.handler
-    events:
-      - schedule: rate(1 minute)
-    environment:
-      NODE_ENV: production
+  # credit_accounts:
+  #   memorySize: 128
+  #   handler: workers/credit_accounts.handler
+  #   events:
+  #     - schedule: rate(1 minute)
+  #   environment:
+  #     NODE_ENV: production
 
   process_withdraws:
     memorySize: 256
@@ -56,13 +56,13 @@ functions:
     environment:
       NODE_ENV: production
 
-  create_stake:
-    memorySize: 1024
-    handler: workers/create_stake.handler
-    events:
-      - schedule: cron(0 10 * * ? *)
-    environment:
-      NODE_ENV: production
+  # create_stake:
+  #   memorySize: 1024
+  #   handler: workers/create_stake.handler
+  #   events:
+  #     - schedule: cron(0 10 * * ? *)
+  #   environment:
+  #     NODE_ENV: production
 
   update_webdollar_price:
     memorySize: 256
@@ -102,13 +102,13 @@ functions:
   #     NODE_URL: ${env:WEBDOLLAR_MADALIN_NODE_URL}
   #     DELTA: 10
 
-  capture_paypal_orders:
-    memorySize: 256
-    handler: workers/capture_paypal_orders.handler
-    events:
-      - schedule: rate(2 minutes)
-    environment:
-      NODE_ENV: production
+  # capture_paypal_orders:
+  #   memorySize: 256
+  #   handler: workers/capture_paypal_orders.handler
+  #   events:
+  #     - schedule: rate(2 minutes)
+  #   environment:
+  #     NODE_ENV: production
 
   distribute_lottery_rewards:
     memorySize: 256
