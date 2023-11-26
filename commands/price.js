@@ -4,11 +4,19 @@ const numeral = require('numeral');
 
 var Command = function (bot) {
   return async function (msg, match) {
+    console.log(msg.text, msg.chat.id);
+
+    bot.sendMessage(msg.chat.id, 'Command is disabled.\n\n', {
+      //parse_mode: 'Markdown',
+      disable_web_page_preview: true,
+      disable_notification: true,
+    });
+
+    return;
+
     try {
       const amount_match = msg.text.match(/ [0-9]+/);
       let resp = '';
-
-      console.log(msg.text, msg.chat.id);
 
       const webdollar = await coin_model.findOne({
         where: {
