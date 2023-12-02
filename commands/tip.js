@@ -8,13 +8,21 @@ var user_model = require('./../models').user.model,
   Sequelize = require('sequelize');
 
 var Command = function (bot) {
+  console.log(msg.text, msg.chat.id);
+
+  bot.sendMessage(msg.chat.id, 'Command is disabled.\n\n', {
+    //parse_mode: 'Markdown',
+    disable_web_page_preview: true,
+    disable_notification: true,
+  });
+
+  return;
+  
   return async function (msg, match) {
     try {
       var user_match = msg.text.match(/ @\w+ /);
       var amount_match = msg.text.match(/ \$?[0-9]+/);
       var resp = '';
-
-      console.log(msg.text, msg.chat.id);
 
       if (msg.forward_from) {
         console.log(`ignoring forwaded message: ${msg.text}`);
