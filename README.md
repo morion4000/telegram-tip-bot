@@ -1,3 +1,7 @@
+# Important
+
+The bot is not maintained anymore and will be gradually disabled.
+
 # Telegram Tip Bot
 
 <https://t.me/webdollar_tip_bot>
