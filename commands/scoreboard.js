@@ -4,11 +4,17 @@ var sequelize = require('./../models').sequelize,
 
 var Command = function (bot) {
   return function (msg, match) {
-    var resp = '';
+    var resp = '💰 Top 10 tippers (only public tips are counted):\n\n';
 
     console.log(msg.text, msg.chat.id);
 
-    resp = '💰 Top 10 tippers (only public tips are counted):\n\n';
+    bot.sendMessage(msg.chat.id, 'Command is disabled.\n\n', {
+      //parse_mode: 'Markdown',
+      disable_web_page_preview: true,
+      disable_notification: true,
+    });
+  
+    return;
 
     sequelize
       .query(
