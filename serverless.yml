@@ -64,23 +64,23 @@ functions:
   #   environment:
   #     NODE_ENV: production
 
-  update_webdollar_price:
-    memorySize: 256
-    handler: workers/update_webdollar_price.handler
-    events:
-      - schedule: rate(30 minutes)
-    environment:
-      NODE_ENV: production
+  # update_webdollar_price:
+  #   memorySize: 256
+  #   handler: workers/update_webdollar_price.handler
+  #   events:
+  #     - schedule: rate(30 minutes)
+  #   environment:
+  #     NODE_ENV: production
 
-  check_node_fork_tip_bot:
-    memorySize: 256
-    handler: workers/check_node_fork.handler
-    events:
-      - schedule: rate(20 minutes)
-    environment:
-      NODE_ENV: production
-      NODE_URL: ${env:WEBDOLLAR_NODE_URL}
-      DELTA: 10
+  # check_node_fork_tip_bot:
+  #   memorySize: 256
+  #   handler: workers/check_node_fork.handler
+  #   events:
+  #     - schedule: rate(20 minutes)
+  #   environment:
+  #     NODE_ENV: production
+  #     NODE_URL: ${env:WEBDOLLAR_NODE_URL}
+  #     DELTA: 10
 
   # check_node_fork_tip_bot_cold:
   #   memorySize: 256
