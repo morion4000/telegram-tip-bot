@@ -1,6 +1,4 @@
-FROM node:16-alpine
-
-RUN apk update && apk add --no-cache git openssh
+FROM node:19
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
