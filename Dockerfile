@@ -11,4 +11,4 @@ ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 RUN yarn
 
-CMD [ "node app" ]
+CMD [ "node", "app" ]
