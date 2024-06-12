@@ -20,8 +20,10 @@ module.exports = {
   },
   redis: {
     socket: {
-      host: 'localhost',
+      host: process.env.REDIS_HOSTNAME,
+      port: process.env.REDIS_PORT,
     },
+    password: process.env.REDIS_PASSWORD,
   },
   game: {
     id: 'hauntedtower',

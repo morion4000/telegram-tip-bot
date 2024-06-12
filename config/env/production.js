@@ -21,6 +21,7 @@ module.exports = {
   redis: {
     socket: {
       host: process.env.REDIS_HOSTNAME,
+      port: process.env.REDIS_PORT,
     },
     password: process.env.REDIS_PASSWORD,
   },
