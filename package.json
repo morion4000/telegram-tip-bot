@@ -37,7 +37,8 @@
   },
   "devDependencies": {
     "jest": "^27.4.3",
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.14",
+    "serverless": "^3.39.0"
   },
   "scripts": {
     "start": "nodemon app.js",
