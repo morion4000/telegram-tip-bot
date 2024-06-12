@@ -1,6 +1,6 @@
 module.exports = {
   mysql: {
-    connection_string: `${process.env.MYSQL_CONNECTION_STRING}_dev`,
+    connection_string: process.env.MYSQL_CONNECTION_STRING,
     logging: console.log,
     max_concurent_queries: 200,
     pool: {
