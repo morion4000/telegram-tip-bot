@@ -20,6 +20,14 @@ var Command = function (bot) {
 
       console.log(msg.text, msg.chat.id);
 
+      bot.sendMessage(msg.chat.id, 'Command is disabled.\n\n', {
+        //parse_mode: 'Markdown',
+        disable_web_page_preview: true,
+        disable_notification: true,
+      });
+
+      return;
+
       if (
         msg.chat.type !== 'private' &&
         !config.public_channels.includes(msg.chat.id)

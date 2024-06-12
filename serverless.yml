@@ -48,13 +48,13 @@ functions:
   #   environment:
   #     NODE_ENV: production
 
-  process_withdraws:
-    memorySize: 256
-    handler: workers/process_withdraws.handler
-    events:
-      - schedule: rate(10 minutes)
-    environment:
-      NODE_ENV: production
+  # process_withdraws:
+  #   memorySize: 256
+  #   handler: workers/process_withdraws.handler
+  #   events:
+  #     - schedule: rate(10 minutes)
+  #   environment:
+  #     NODE_ENV: production
 
   # create_stake:
   #   memorySize: 1024
@@ -126,10 +126,10 @@ functions:
   #   environment:
   #     NODE_ENV: production
 
-  show_game_rewards:
-    memorySize: 256
-    handler: workers/show_game_rewards.handler
-    events:
-      - schedule: cron(0 13 * * ? *)
-    environment:
-      NODE_ENV: production
+  # show_game_rewards:
+  #   memorySize: 256
+  #   handler: workers/show_game_rewards.handler
+  #   events:
+  #     - schedule: cron(0 13 * * ? *)
+  #   environment:
+  #     NODE_ENV: production
