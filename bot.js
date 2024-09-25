@@ -108,33 +108,33 @@ bot.onText(/\/game@webdollar_tip_bot$/, function (msg) {
   bot.sendGame(msg.chat.id, config.game.id);
 });
 
-bot.onText(/\/tip$/, tip_empty_command);
-bot.onText(/\/tip \w+$/, tip_empty_command);
-bot.onText(/\/tip @\w+$/, tip_empty_command);
-bot.onText(/\/tip \w+$/, tip_empty_command);
-bot.onText(/\/tip \w+ [0-9]+$/, tip_empty_command);
+// bot.onText(/\/tip$/, tip_empty_command);
+// bot.onText(/\/tip \w+$/, tip_empty_command);
+// bot.onText(/\/tip @\w+$/, tip_empty_command);
+// bot.onText(/\/tip \w+$/, tip_empty_command);
+// bot.onText(/\/tip \w+ [0-9]+$/, tip_empty_command);
 
-bot.onText(/\/tip@webdollar_tip_bot$/, tip_empty_command);
-bot.onText(/\/tip@webdollar_tip_bot \w+$/, tip_empty_command);
-bot.onText(/\/tip@webdollar_tip_bot @\w+$/, tip_empty_command);
-bot.onText(/\/tip@webdollar_tip_bot \w+$/, tip_empty_command);
-bot.onText(/\/tip@webdollar_tip_bot \w+ [0-9]+$/, tip_empty_command);
+// bot.onText(/\/tip@webdollar_tip_bot$/, tip_empty_command);
+// bot.onText(/\/tip@webdollar_tip_bot \w+$/, tip_empty_command);
+// bot.onText(/\/tip@webdollar_tip_bot @\w+$/, tip_empty_command);
+// bot.onText(/\/tip@webdollar_tip_bot \w+$/, tip_empty_command);
+// bot.onText(/\/tip@webdollar_tip_bot \w+ [0-9]+$/, tip_empty_command);
 
-bot.onText(/\/tip @\w+ \w+$/, tip_command);
-bot.onText(/\/tip @\w+ \w+ webd$/, tip_command);
-bot.onText(/\/tip @\w+  \w+$/, tip_command);
-bot.onText(/\/tip @\w+ \$\w+$/, tip_command);
-bot.onText(/\/tip @\w+  \$\w+$/, tip_command);
+// bot.onText(/\/tip @\w+ \w+$/, tip_command);
+// bot.onText(/\/tip @\w+ \w+ webd$/, tip_command);
+// bot.onText(/\/tip @\w+  \w+$/, tip_command);
+// bot.onText(/\/tip @\w+ \$\w+$/, tip_command);
+// bot.onText(/\/tip @\w+  \$\w+$/, tip_command);
 
-bot.onText(/\/tip@webdollar_tip_bot @\w+ \w+$/, tip_command);
-bot.onText(/\/tip@webdollar_tip_bot @\w+ \w+ webd$/, tip_command);
-bot.onText(/\/tip@webdollar_tip_bot @\w+  \w+$/, tip_command);
-bot.onText(/\/tip@webdollar_tip_bot @\w+ \$\w+$/, tip_command);
-bot.onText(/\/tip@webdollar_tip_bot @\w+  \$\w+$/, tip_command);
+// bot.onText(/\/tip@webdollar_tip_bot @\w+ \w+$/, tip_command);
+// bot.onText(/\/tip@webdollar_tip_bot @\w+ \w+ webd$/, tip_command);
+// bot.onText(/\/tip@webdollar_tip_bot @\w+  \w+$/, tip_command);
+// bot.onText(/\/tip@webdollar_tip_bot @\w+ \$\w+$/, tip_command);
+// bot.onText(/\/tip@webdollar_tip_bot @\w+  \$\w+$/, tip_command);
 
-bot.onText(/\/rain$/, rain_command);
-bot.onText(/\/rain [0-9]+$/, rain_command);
-bot.onText(/\/rain [0-9]+ [0-9]+$/, rain_command);
+// bot.onText(/\/rain$/, rain_command);
+// bot.onText(/\/rain [0-9]+$/, rain_command);
+// bot.onText(/\/rain [0-9]+ [0-9]+$/, rain_command);
 bot.onText(/\/start$/, start_command);
 bot.onText(/\/tipbalance$/, balance_command);
 bot.onText(/\/deposit$/, deposit_command);
@@ -151,30 +151,30 @@ bot.onText(
   /\/setwallet WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/,
   setwallet_command
 );
-bot.onText(/\/filantropica$/, filantropica_command);
-bot.onText(/\/nam$/, nam_command);
-bot.onText(/\/help$/, help_command);
+// bot.onText(/\/filantropica$/, filantropica_command);
+// bot.onText(/\/nam$/, nam_command);
+// bot.onText(/\/help$/, help_command);
 bot.onText(/\/fees$/, fees_command);
-bot.onText(/\/price$/, price_command);
-bot.onText(/\/price [0-9]+$/, price_command);
+// bot.onText(/\/price$/, price_command);
+// bot.onText(/\/price [0-9]+$/, price_command);
 bot.onText(/\/staking$/, staking_command);
-bot.onText(/\/system$/, system_command);
+// bot.onText(/\/system$/, system_command);
 // bot.onText(/\/stats$/, stats_command);
-bot.onText(/\/scoreboard$/, scoreboard_command);
+// bot.onText(/\/scoreboard$/, scoreboard_command);
 // bot.onText(/\/topup$/, topup_command);
-bot.onText(/\/tutorial$/, tutorial_command);
-bot.onText(/\/lottery$/, lottery_command);
-bot.onText(/\/lotterytickets$/, lotterytickets_command);
-bot.onText(/\/lotterydeposit$/, lotterydeposit_command);
-bot.onText(/\/lotterydeposit [0-9]+$/, lotterydeposit_command);
-bot.onText(/\/lotterywithdraw$/, lotterywithdraw_command);
-bot.onText(/\/lotterywithdraw [0-9]+$/, lotterywithdraw_command);
-bot.onText(/\/lotteryfaq$/, lotteryfaq_command);
-bot.onText(/\/lotteryhistory$/, lotteryhistory_command);
+// bot.onText(/\/tutorial$/, tutorial_command);
+// bot.onText(/\/lottery$/, lottery_command);
+// bot.onText(/\/lotterytickets$/, lotterytickets_command);
+// bot.onText(/\/lotterydeposit$/, lotterydeposit_command);
+// bot.onText(/\/lotterydeposit [0-9]+$/, lotterydeposit_command);
+// bot.onText(/\/lotterywithdraw$/, lotterywithdraw_command);
+// bot.onText(/\/lotterywithdraw [0-9]+$/, lotterywithdraw_command);
+// bot.onText(/\/lotteryfaq$/, lotteryfaq_command);
+// bot.onText(/\/lotteryhistory$/, lotteryhistory_command);
 
-bot.onText(/\/rain@webdollar_tip_bot$/, rain_command);
-bot.onText(/\/rain@webdollar_tip_bot [0-9]+$/, rain_command);
-bot.onText(/\/rain@webdollar_tip_bot [0-9]+ [0-9]+$/, rain_command);
+// bot.onText(/\/rain@webdollar_tip_bot$/, rain_command);
+// bot.onText(/\/rain@webdollar_tip_bot [0-9]+$/, rain_command);
+// bot.onText(/\/rain@webdollar_tip_bot [0-9]+ [0-9]+$/, rain_command);
 bot.onText(/\/start@webdollar_tip_bot$/, start_command);
 bot.onText(/\/tipbalance@webdollar_tip_bot$/, balance_command);
 bot.onText(/\/deposit@webdollar_tip_bot$/, deposit_command);
@@ -191,31 +191,31 @@ bot.onText(
   /\/setwallet@webdollar_tip_bot WEBD\$[a-km-zA-NP-Z0-9+@#$]{33,34}\$$/,
   setwallet_command
 );
-bot.onText(/\/filantropica@webdollar_tip_bot$/, filantropica_command);
-bot.onText(/\/nam@webdollar_tip_bot$/, nam_command);
-bot.onText(/\/help@webdollar_tip_bot$/, help_command);
+// bot.onText(/\/filantropica@webdollar_tip_bot$/, filantropica_command);
+// bot.onText(/\/nam@webdollar_tip_bot$/, nam_command);
+// bot.onText(/\/help@webdollar_tip_bot$/, help_command);
 bot.onText(/\/fees@webdollar_tip_bot$/, fees_command);
-bot.onText(/\/price@webdollar_tip_bot$/, price_command);
-bot.onText(/\/price@webdollar_tip_bot [0-9]+$/, price_command);
+// bot.onText(/\/price@webdollar_tip_bot$/, price_command);
+// bot.onText(/\/price@webdollar_tip_bot [0-9]+$/, price_command);
 bot.onText(/\/staking@webdollar_tip_bot$/, staking_command);
-bot.onText(/\/system@webdollar_tip_bot$/, system_command);
+// bot.onText(/\/system@webdollar_tip_bot$/, system_command);
 // bot.onText(/\/stats@webdollar_tip_bot$/, stats_command);
-bot.onText(/\/scoreboard@webdollar_tip_bot$/, scoreboard_command);
+// bot.onText(/\/scoreboard@webdollar_tip_bot$/, scoreboard_command);
 // bot.onText(/\/toptup@webdollar_tip_bot$/, topup_command);
-bot.onText(/\/tutorial@webdollar_tip_bot$/, tutorial_command);
-bot.onText(/\/lottery@webdollar_tip_bot$/, lottery_command);
-bot.onText(/\/lotterytickets@webdollar_tip_bot$/, lotterytickets_command);
-bot.onText(/\/lotterydeposit@webdollar_tip_bot$/, lotterydeposit_command);
-bot.onText(
-  /\/lotterydeposit@webdollar_tip_bot [0-9]+$/,
-  lotterydeposit_command
-);
-bot.onText(/\/lotterywithdraw@webdollar_tip_bot$/, lotterywithdraw_command);
-bot.onText(
-  /\/lotterywithdraw@webdollar_tip_bot [0-9]+$/,
-  lotterywithdraw_command
-);
-bot.onText(/\/lotteryfaq@webdollar_tip_bot$/, lotteryfaq_command);
-bot.onText(/\/lotteryhistory@webdollar_tip_bot$/, lotteryhistory_command);
+// bot.onText(/\/tutorial@webdollar_tip_bot$/, tutorial_command);
+// bot.onText(/\/lottery@webdollar_tip_bot$/, lottery_command);
+// bot.onText(/\/lotterytickets@webdollar_tip_bot$/, lotterytickets_command);
+// bot.onText(/\/lotterydeposit@webdollar_tip_bot$/, lotterydeposit_command);
+// bot.onText(
+//   /\/lotterydeposit@webdollar_tip_bot [0-9]+$/,
+//   lotterydeposit_command
+// );
+// bot.onText(/\/lotterywithdraw@webdollar_tip_bot$/, lotterywithdraw_command);
+// bot.onText(
+//   /\/lotterywithdraw@webdollar_tip_bot [0-9]+$/,
+//   lotterywithdraw_command
+// );
+// bot.onText(/\/lotteryfaq@webdollar_tip_bot$/, lotteryfaq_command);
+// bot.onText(/\/lotteryhistory@webdollar_tip_bot$/, lotteryhistory_command);
 
 module.exports = { bot };
