@@ -1,0 +1,63 @@
+{
+  "name": "telegram-tip-bot",
+  "version": "1.2.0",
+  "description": "Telegram bot for making tips and staking WebDollar (WEBD). ",
+  "author": "morion4000",
+  "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "async": "^2.6.3",
+    "axios": "^0.21.4",
+    "body-parser": "^1.19.0",
+    "cached-request": "^2.0.3",
+    "cheerio": "^0.22.0",
+    "cli": "^1.0.1",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^9.0.2",
+    "events": "^2.0.0",
+    "express": "^4.17.1",
+    "influxdb-nodejs": "^2.7.6",
+    "mailgun-js": "^0.22.0",
+    "moment": "^2.29.1",
+    "momentjs": "^2.0.0",
+    "mysql2": "^3.10.0",
+    "node-telegram-bot-api": "^0.30.0",
+    "numeral": "^2.0.6",
+    "paypal-rest-sdk": "^1.8.1",
+    "qs": "^6.10.1",
+    "redis": "^4.0.3",
+    "request": "^2.88.2",
+    "scp2": "^0.5.0",
+    "sequelize": "^5.22.4",
+    "socket.io": "2.4.0",
+    "socket.io-client": "^1.7.4",
+    "socketio-wildcard": "^2.0.0",
+    "stripe": "^8.186.1",
+    "underscore": "^1.13.1"
+  },
+  "devDependencies": {
+    "jest": "^27.4.3",
+    "nodemon": "^2.0.14",
+    "serverless": "^3.39.0"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "npx jest"
+  },
+  "jest": {
+    "testTimeout": 10000,
+    "setupFiles": [
+      "dotenv/config"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/config/env/test.js"
+    ],
+    "testEnvironment": "node",
+    "globalSetup": "./utils/jest_globalsetup.js",
+    "globalTeardown": "./utils/jest_globalteardown.js",
+    "snapshotResolver": "./utils/jest_snapshotresolver.js",
+    "moduleNameMapper": {
+      "@config/(.*)": "<rootDir>/config/$1"
+    }
+  }
+}
